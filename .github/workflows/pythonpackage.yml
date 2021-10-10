@@ -11,14 +11,13 @@ jobs:
       matrix:
         python-version: [3.6, 3.7, 3.8]
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout Code
+      uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
     - name: Test with pytest
-      uses: docker://mottosso/maya:2020
-      env:
-        PYTHONPATH: src
+      uses: docker://mottosso/maya:2022
       with:
         args: /usr/autodesk/maya/bin/mayapy -m unittest discover -s ./tests -v
