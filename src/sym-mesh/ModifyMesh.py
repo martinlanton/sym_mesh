@@ -135,6 +135,10 @@ class ModifyMesh(object):
         return symmetry_table, non_mirrored_table
 
     def get_vtcs_selection(self, reset=False):
+        """Get the current selection of vertices and set it.
+        :param reset: Set whether the currently stored selection should be set to an empty selection.
+        :type reset: bool
+        """
         if reset:
             self.vtcs_selection = {'objs_path': om2.MDagPath(),
                                    'indices': om2.MIntArray()}
