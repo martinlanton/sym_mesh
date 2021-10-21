@@ -305,11 +305,11 @@ class ModifyMesh(object):
 
             # Check if base is registered
             if not self.base_table['points_pos']:
-                log.info('No base selected')log.info("Selection list is : %s" % ))
+                log.info('No base selected')
                 return
             # Check if target is registered
             elif not self.target_table['points_pos']:
-                log.info('No target registered')log.info("Selection list is : %s" % ))
+                log.info('No target registered')
                 return
             # Check if something is selected
             elif not self.sel_vtces_idcs['objs_path']:
