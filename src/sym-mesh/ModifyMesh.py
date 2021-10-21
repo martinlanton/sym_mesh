@@ -208,11 +208,11 @@ class ModifyMesh(object):
                 return
             # Check if target is registered
             elif not self.target_table['points_pos']:
-                print 'No target registered'
+                log.info('No target registered')
                 return
             # Check if something is selected
             elif not self.sel_vtces_idcs['objs_path']:
-                print 'Nothing is selected'
+                log.info('Nothing is selected')
                 return
             # Revert to base
             else:
@@ -250,8 +250,6 @@ class ModifyMesh(object):
             self.current_table = self.get_selected_mesh_points(dag_path)
             self.temp_base_table = self.get_selected_mesh_points(self.base_table['objs_path'])
 
-            # print self.current_table['objs_path'].fullPathName()
-
             self.undo_table = {
                 'objs_path': self.current_table['objs_path'].fullPathName(),
                 'points_pos': self.current_table['points_pos']}
@@ -260,11 +258,11 @@ class ModifyMesh(object):
 
             # Check if base is registered
             if not self.temp_base_table['points_pos']:
-                print 'No base selected'
+                log.info('No base selected')
                 return
             # Check if something is selected
             elif not self.sel_vtces_idcs['objs_path']:
-                print 'Nothing is selected'
+                log.info('Nothing is selected')
                 return
             # Revert to base
             else:
@@ -297,7 +295,7 @@ class ModifyMesh(object):
             # Update current mesh table
             self.current_table = self.get_selected_mesh_points(dag_path)
 
-            print self.current_table['objs_path'].fullPathName()
+            log.debug(self.current_table['objs_path'].fullPathName())
 
             self.undo_table = {
                 'objs_path': self.current_table['objs_path'].fullPathName(),
@@ -307,15 +305,15 @@ class ModifyMesh(object):
 
             # Check if base is registered
             if not self.base_table['points_pos']:
-                print 'No base selected'
+                log.info('No base selected')log.info("Selection list is : %s" % ))
                 return
             # Check if target is registered
             elif not self.target_table['points_pos']:
-                print 'No target registered'
+                log.info('No target registered')log.info("Selection list is : %s" % ))
                 return
             # Check if something is selected
             elif not self.sel_vtces_idcs['objs_path']:
-                print 'Nothing is selected'
+                log.info('Nothing is selected')
                 return
             # Revert to base
             else:
@@ -384,7 +382,7 @@ class ModifyMesh(object):
         """
         # Get current selection
         selection_list = om2.MGlobal.getActiveSelectionList()
-        print selection_list
+        log.info("Selection list is : %s" % selection_list)
 
         # Get the dag dir_path and components of the first item in the list
         if selection_list.length() > 0:
@@ -516,10 +514,18 @@ class ModifyMesh(object):
         tgt_mesh.setPoints(destination_table, space)
 
     @staticmethod
-    def create_MDagPath(dag_object):
+    def create_MDagPath(path_to_dag_object):
+        """
+
+        :param path_to_dag_object: path to the dag object for which we want the MDagPath.
+        :type path_to_dag_object: str
+
+        :return: MDagPath of the object at the specified path or None.
+        :rtype: MDagPath
+        """
         selection_list = om2.MSelectionList()
         try:
-            selection_list.add(dag_object)
+            selection_list.add(path_to_dag_object)
         except:
             return None
         dag_path = selection_list.getDagPath(0)
