@@ -13,7 +13,4 @@ setup(
     url=url,
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
-    install_requires=[
-        "pytest-cov",
-    ]
 )
