@@ -31,7 +31,7 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v1
 
     # We'll lock each version to one that works with both Python 2.7 and 3.7
     - name: pip install
