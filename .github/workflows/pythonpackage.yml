@@ -3,21 +3,57 @@ name: Python package
 on: [push]
 
 jobs:
-  windows_test:
+  maya_test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
 
-    runs-on: windows-latest
     strategy:
-      max-parallel: 4
+
+      # Without this, all containers stop if any fail
+      # That's bad, we want to know whether it's only one
+      # or if it happens to multiples or all.
+      fail-fast: false
+
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        include:
+          - maya: "2017"
+            pip: "2.7/get-pip.py"
+          - maya: "2018"
+            pip: "2.7/get-pip.py"
+          - maya: "2019"
+            pip: "2.7/get-pip.py"
+          - maya: "2020"
+            pip: "2.7/get-pip.py"
+          - maya: "2022"
+            pip: "get-pip.py"
+
+    container: mottosso/maya:${{ matrix.maya }}
+
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Test with pytest
-      uses: docker://mottosso/maya:2022
-      with:
-        args: /usr/autodesk/maya/bin/mayapy -m unittest discover -s ./tests -v
+
+    # We'll lock each version to one that works with both Python 2.7 and 3.7
+    - name: pip install
+      run: |
+        wget https://bootstrap.pypa.io/pip/${{ matrix.pip }}
+        mayapy get-pip.py --user
+        mayapy -m pip install --user \
+          nose==1.3.7 \
+          nose-exclude==0.5.0 \
+          coverage==5.5 \
+          flaky==3.7.0 \
+          sphinx==1.8.5 \
+          sphinxcontrib-napoleon==0.7
+
+    - name: Environment
+      run: |
+        export XDG_RUNTIME_DIR=/var/tmp/runtime-root
+        export MAYA_DISABLE_ADP=1
+    - name: Unittests
+      run: |
+        pwd
+        ls
+        mayapy --version
+        mayapy unittest
+
