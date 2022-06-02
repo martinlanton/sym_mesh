@@ -1,15 +1,14 @@
 import maya.api.OpenMaya as om2
-import MultiPipe.general_utils.logger as mla_logger
 import logging
 
 
-log = mla_logger.get_logger("SymUI", shell=True)
+log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
 
 class ModifyMesh(object):
     def __init__(self):
-        # # Attributes
+        # Attributes
         self.base = ""
         self.target = ""
         self.get_vtcs_selection(reset=True)
@@ -48,6 +47,24 @@ class ModifyMesh(object):
     def revert_value(self, value):
         self._revert_value = value
 
+    def get_base_mesh(self, mesh):
+        """Set the specified mesh as base mesh.
+
+        :param mesh: mesh to set as base mesh
+        :type mesh: str or maya.api.OpenMaya.MDagPath
+
+        """
+        if isinstance(mesh, str):
+            selection_list = om2.MSelectionList()
+            try:
+                selection_list.add(mesh)
+            except:
+                log.error("Invalid name. The specified object either does not exist or is a non unique name.")
+                return
+            mesh = selection_list.getDagPath(0)
+        self.base = mesh
+        self.base_table = self.get_selected_mesh_points(mesh)
+
     def get_base(self):
         """
         Get base data and set its name in the corresponding lineEdit.
@@ -77,12 +94,9 @@ class ModifyMesh(object):
         # Get name
         self.target = self.target_table["objs_path"].partialPathName()
 
-    @staticmethod
-    def get_symmetry_table(base_tbl, axis="x", threshold=0.001):
+    def get_symmetry_table(self, axis="x", threshold=0.001):
         """
         Create symmetry table base on symmetry axis and threshold
-        :param base_tbl: positions of the points of the base mesh
-        :type base_tbl: MPointArray
 
         :param axis: axis to use for mirroring
         :type axis: basestring
@@ -93,6 +107,8 @@ class ModifyMesh(object):
         :return: symmetry table
         :rtype: dict
         """
+        base_tbl = self.base_table
+
         base_points = base_tbl["points_pos"]
         axis_idcs = {"x": 0, "y": 1, "z": 2}
         axis_idx = axis_idcs[axis]
