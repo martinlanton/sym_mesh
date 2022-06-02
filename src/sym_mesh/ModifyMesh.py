@@ -59,7 +59,9 @@ class ModifyMesh(object):
             try:
                 selection_list.add(mesh)
             except:
-                log.error("Invalid name. The specified object either does not exist or is a non unique name.")
+                log.error(
+                    "Invalid name. The specified object either does not exist or is a non unique name."
+                )
                 return
             mesh = selection_list.getDagPath(0)
         self.base = mesh
@@ -97,6 +99,11 @@ class ModifyMesh(object):
     def get_symmetry_table(self, axis="x", threshold=0.001):
         """
         Create symmetry table base on symmetry axis and threshold
+<<<<<<< Updated upstream
+=======
+        :param base_tbl: positions of the points of the base mesh
+        :type base_tbl: MPointArray
+>>>>>>> Stashed changes
 
         :param axis: axis to use for mirroring
         :type axis: basestring

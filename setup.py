@@ -3,10 +3,10 @@ from setuptools import setup, find_packages
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-name = "maya_template_project"
+name = "sym_mesh"
 author = "Martin L'Anton"
 author_email = "lantonmartin@gmail.com"
-url = "https://github.com/martinlanton/tox_template_project"
+url = "https://github.com/martinlanton/sym_mesh"
 
 description = "Template python package for Maya projects"
 
