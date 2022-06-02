@@ -54,7 +54,7 @@ class ModifyMesh(object):
         :type mesh: str or maya.api.OpenMaya.MDagPath
 
         """
-        if isinstance(mesh, str):
+        if not isinstance(mesh, om2.MDagPath):
             selection_list = om2.MSelectionList()
             try:
                 selection_list.add(mesh)
@@ -99,11 +99,6 @@ class ModifyMesh(object):
     def get_symmetry_table(self, axis="x", threshold=0.001):
         """
         Create symmetry table base on symmetry axis and threshold
-<<<<<<< Updated upstream
-=======
-        :param base_tbl: positions of the points of the base mesh
-        :type base_tbl: MPointArray
->>>>>>> Stashed changes
 
         :param axis: axis to use for mirroring
         :type axis: basestring

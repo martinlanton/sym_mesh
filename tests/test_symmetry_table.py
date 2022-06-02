@@ -26,9 +26,9 @@ class TestMaya(unittest.TestCase):
         common.teardown_maya_session(cls.state)
 
     def test_world_space_symmetry(self):
-        print("Nothing to see")
         self.mesh_modifier.get_base_mesh(self.sym_cube)
         symmetry_table = self.mesh_modifier.get_symmetry_table()
 
-        print(symmetry_table)
+        self.assertTrue(self.mesh_modifier)
+        self.assertEqual(symmetry_table, ({0: 1, 1: 0, 2: 3, 3: 2, 4: 5, 5: 4, 6: 7, 7: 6}, []))
 
