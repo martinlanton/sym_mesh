@@ -9,10 +9,11 @@ class TestMaya(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.state = common.startup_maya_session()
-        from sym_mesh.ModifyMesh import ModifyMesh
-        cls.mesh_modifier = ModifyMesh()
 
     def setUp(self):
+        from sym_mesh.ModifyMesh import ModifyMesh
+        self.mesh_modifier = ModifyMesh()
+
         mc.file(newFile=True, force=True)
         self.sphere = mc.polySphere(name="This_is_a_test_sphere")
         self.sym_cube = mc.polyCube(name="symmetrical_cube", constructionHistory=False)[0]
@@ -31,4 +32,3 @@ class TestMaya(unittest.TestCase):
 
         self.assertTrue(self.mesh_modifier)
         self.assertEqual(symmetry_table, ({0: 1, 1: 0, 2: 3, 3: 2, 4: 5, 5: 4, 6: 7, 7: 6}, []))
-
