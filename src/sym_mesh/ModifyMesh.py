@@ -1,6 +1,7 @@
 import maya.api.OpenMaya as om2
 import logging
 
+from sym_mesh.dag_path import create_MDagPath
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
@@ -55,15 +56,7 @@ class ModifyMesh(object):
 
         """
         if not isinstance(mesh, om2.MDagPath):
-            selection_list = om2.MSelectionList()
-            try:
-                selection_list.add(mesh)
-            except:
-                log.error(
-                    "Invalid name. The specified object either does not exist or is a non unique name."
-                )
-                return
-            mesh = selection_list.getDagPath(0)
+            mesh = create_MDagPath(mesh)
         self.base = mesh
         self.base_table = self.get_selected_mesh_points(mesh)
 
@@ -71,7 +64,6 @@ class ModifyMesh(object):
         """
         Get base data and set its name in the corresponding lineEdit.
 
-        :return:
         """
         # Get data
         self.base_table = self.get_selected_mesh_points()
@@ -88,7 +80,6 @@ class ModifyMesh(object):
         """
         Get target data and set its name in the corresponding lineEdit.
 
-        :return:
         """
         # Get data
         self.target_table = self.get_selected_mesh_points()
@@ -188,7 +179,6 @@ class ModifyMesh(object):
         """
         Undo the last move stored.
 
-        :return:
         """
         if len(self.undo) > 0:
             undo = self.undo.pop(-1)
@@ -196,7 +186,7 @@ class ModifyMesh(object):
             log.error("No undo action to undo.")
             return
 
-        dag_path = self.create_MDagPath(undo["objs_path"])
+        dag_path = create_MDagPath(undo["objs_path"])
 
         tgt_mesh = om2.MFnMesh(dag_path)
 
@@ -208,7 +198,6 @@ class ModifyMesh(object):
         value, using vertices selection (if one has been stored or is active) or
         on the whole mesh.
 
-        :return:
         """
         # Get selected vertices indices
         self.sel_vtces_idcs = self.get_sel_vtces_idcs()
@@ -265,7 +254,6 @@ class ModifyMesh(object):
         vertices selection (if one has been stored or is active) or on the whole
         mesh.
 
-        :return:
         """
         # Get selected vertices indices
         self.sel_vtces_idcs = self.get_sel_vtces_idcs()
@@ -319,7 +307,6 @@ class ModifyMesh(object):
         vertices selection (if one has been stored or is active) or on the whole
         mesh.
 
-        :return:
         """
         # Get selected vertices indices
         self.sel_vtces_idcs = self.get_sel_vtces_idcs()
@@ -620,22 +607,3 @@ class ModifyMesh(object):
 
         # Modify points position using the new coordinates
         tgt_mesh.setPoints(destination_table, space)
-
-    @staticmethod
-    def create_MDagPath(path_to_dag_object):
-        """
-
-        :param path_to_dag_object: path to the dag object for which we want the MDagPath.
-        :type path_to_dag_object: str
-
-        :return: MDagPath of the object at the specified path or None.
-        :rtype: MDagPath
-        """
-        selection_list = om2.MSelectionList()
-        try:
-            selection_list.add(path_to_dag_object)
-        except:
-            return None
-        dag_path = selection_list.getDagPath(0)
-
-        return dag_path
