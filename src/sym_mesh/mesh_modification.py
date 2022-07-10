@@ -7,7 +7,7 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
 
-class ModifyMesh(object):
+class MeshModifier(object):
     def __init__(self):
         # Attributes
         self.base = ""

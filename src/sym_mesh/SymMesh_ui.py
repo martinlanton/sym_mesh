@@ -4,7 +4,7 @@ import logging
 from MultiPipe.file_utils import Multi_import_utils as import_utils
 from MultiPipe.general_utils import Multi_ui_utils as ui_utils
 from MultiPipe.general_utils import logger as mla_logger
-import ModifyMesh as mla_MM
+import mesh_modification as mla_MM
 
 
 log = mla_logger.get_logger("SymUI", shell=True)
@@ -21,7 +21,7 @@ class SymMeshUI(dockable, QtWidgets.QDialog):
         self.setWindowTitle("SymMesh UI")
         # UI
         self.buildUI()
-        self.sym_mesh = mla_MM.ModifyMesh()
+        self.sym_mesh = mla_MM.MeshModifier()
 
         self.sym_mesh._revert_value = 100
 

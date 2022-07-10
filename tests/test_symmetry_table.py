@@ -1,6 +1,9 @@
 import maya.cmds as mc
 import unittest
+
 from tests.fixtures import common
+
+import sym_mesh
 
 
 class TestMaya(unittest.TestCase):
@@ -11,8 +14,8 @@ class TestMaya(unittest.TestCase):
         cls.state = common.startup_maya_session()
 
     def setUp(self):
-        from sym_mesh.ModifyMesh import ModifyMesh
-        self.mesh_modifier = ModifyMesh()
+        from sym_mesh.mesh_modification import MeshModifier
+        self.mesh_modifier = MeshModifier()
 
         mc.file(newFile=True, force=True)
         self.sphere = mc.polySphere(name="This_is_a_test_sphere")
@@ -27,8 +30,10 @@ class TestMaya(unittest.TestCase):
         common.teardown_maya_session(cls.state)
 
     def test_world_space_symmetry(self):
-        self.mesh_modifier.get_base_mesh(self.sym_cube)
-        symmetry_table = self.mesh_modifier.get_symmetry_table()
+        symmetry_table = sym_mesh.table.SymmetryTable(self.sym_cube)
 
         self.assertTrue(self.mesh_modifier)
-        self.assertEqual(symmetry_table, ({0: 1, 1: 0, 2: 3, 3: 2, 4: 5, 5: 4, 6: 7, 7: 6}, []))
+        expected_sym_table = {0: 1, 1: 0, 2: 3, 3: 2, 4: 5, 5: 4, 6: 7, 7: 6}
+        expected_non_mirrored_vertices_indices = []
+        expected = (expected_sym_table, expected_non_mirrored_vertices_indices)
+        self.assertEqual(symmetry_table.table, expected)

@@ -18,17 +18,20 @@ def startup_maya_session():
 
     standalone.initialize()
 
+    return {
+        "tmpMayaAppDir": os.environ["MAYA_APP_DIR"],
+        "origMayaAppDir": currentMayaAppDir,
+    }
+
+
+def setup_environment():
+    # Adding package into the environment
     path = get_src_folder_path()
     print(path)
     if path not in sys.path:
         sys.path.append(path)
     from pprint import pprint
     pprint(sys.path)
-
-    return {
-        "tmpMayaAppDir": os.environ["MAYA_APP_DIR"],
-        "origMayaAppDir": currentMayaAppDir,
-    }
 
 
 def teardown_maya_session(state):
