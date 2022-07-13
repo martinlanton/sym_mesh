@@ -3,13 +3,13 @@ import logging
 import maya.api.OpenMaya as om2
 
 from sym_mesh import dag_path
-
+from sym_mesh.selection import get_selected_mesh_points
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
 
-class SymmetryTable:
+class GeometryTable:
     def __init__(self, mesh, axis="x", threshold=0.001):
         """Initialize the symmetry table using the specified mesh.
 
@@ -21,12 +21,12 @@ class SymmetryTable:
         self._threshold = threshold
 
         self._reference_mesh = dag_path.create_MDagPath(mesh)
-        self._base_table = get_selected_mesh_points(self._reference_mesh)
-        self._table = self.build()
+        self._points_table = get_selected_mesh_points(self._reference_mesh)
+        self.build_symmetry_table()
 
     @property
-    def table(self):
-        return self._table
+    def symmetry_table(self):
+        return self._symmetry_table
 
     @property
     def axis(self):
@@ -44,14 +44,21 @@ class SymmetryTable:
     def threshold(self, value):
         self._threshold = value
     
-    def build(self):
+    def build_symmetry_table(self, base_mesh=None):
         """
         Create symmetry table base on symmetry self._axis and self._threshold
+
+        :param base_mesh: optional. Name of the mesh to use to build the symmetry table.
 
         :return: symmetry table
         :rtype: dict
         """
-        base_points = self._base_table["points_pos"]
+        if base_mesh:
+            path = dag_path.create_MDagPath(base_mesh)
+            points_table = get_selected_mesh_points(path)
+        else:
+            points_table = self._points_table
+        base_points = points_table["points_pos"]
         axis_idcs = {"x": 0, "y": 1, "z": 2}
         axis_idx = axis_idcs[self._axis]
 
@@ -63,11 +70,9 @@ class SymmetryTable:
         non_mirrored_table = list()
         symmetry_table = dict()
 
-        log.info(base_points.__len__())
-
         check_table = dict()
 
-        MItVtx = om2.MItMeshVertex(self._base_table["objs_path"])
+        MItVtx = om2.MItMeshVertex(points_table["objs_path"])
         while not MItVtx.isDone():
             position = (
                 round(MItVtx.position()[0], threshold_nb),
@@ -93,7 +98,7 @@ class SymmetryTable:
         else:
             log.info("Model is symmetrical")
 
-        MItVtx = om2.MItMeshVertex(self._base_table["objs_path"])
+        MItVtx = om2.MItMeshVertex(self._points_table["objs_path"])
         while not MItVtx.isDone():
             if MItVtx.index() not in symmetry_table:
                 non_mirrored_table.append(MItVtx.index())
@@ -103,27 +108,4 @@ class SymmetryTable:
         log.debug(len(symmetry_table))
         log.debug(symmetry_table)
 
-        return symmetry_table, non_mirrored_table
-
-
-def get_selected_mesh_points(obj_dag_path=None):
-    """
-    Get the position of every point of the selected mesh.
-
-    :return: dag dir_path of the object, position of the points
-    :rtype: MDagPath, MPointArray
-    """
-    if not obj_dag_path:
-        # Get current selection
-        selection_list = om2.MGlobal.getActiveSelectionList()
-
-        # Get the dag dir_path of the first item in the selection list
-        obj_dag_path = selection_list.getDagPath(0)
-
-    # Query vertex position
-    # create a Mesh functionSet from our dag object
-    mfn_object = om2.MFnMesh(obj_dag_path)
-
-    points = mfn_object.getPoints(space=om2.MSpace.kObject)
-
-    return {"objs_path": obj_dag_path, "points_pos": points}
+        self._symmetry_table = symmetry_table, non_mirrored_table

@@ -14,9 +14,6 @@ class TestMaya(unittest.TestCase):
         cls.state = common.startup_maya_session()
 
     def setUp(self):
-        from sym_mesh.mesh_modification import MeshModifier
-        self.mesh_modifier = MeshModifier()
-
         mc.file(newFile=True, force=True)
         self.sphere = mc.polySphere(name="This_is_a_test_sphere")
         self.sym_cube = mc.polyCube(name="symmetrical_cube", constructionHistory=False)[0]
@@ -29,11 +26,33 @@ class TestMaya(unittest.TestCase):
     def tearDownClass(cls):
         common.teardown_maya_session(cls.state)
 
-    def test_world_space_symmetry(self):
-        symmetry_table = sym_mesh.table.SymmetryTable(self.sym_cube)
+    def test_symmetry_table_for_symmetrical_geometry(self):
+        """Test that building a symmetry table for a symmetrical geometry produces the right
+        symmetry table."""
+        table = sym_mesh.table.GeometryTable(self.sym_cube)
 
-        self.assertTrue(self.mesh_modifier)
         expected_sym_table = {0: 1, 1: 0, 2: 3, 3: 2, 4: 5, 5: 4, 6: 7, 7: 6}
         expected_non_mirrored_vertices_indices = []
         expected = (expected_sym_table, expected_non_mirrored_vertices_indices)
-        self.assertEqual(symmetry_table.table, expected)
+        self.assertEqual(table.symmetry_table, expected)
+
+    def test_symmetry_table_for_asymmetrical_geometry(self):
+        """Test that building a symmetry table for an asymmetrical geometry produces the right
+        symmetry table."""
+        table = sym_mesh.table.GeometryTable(self.asym_cube)
+
+        expected_sym_table = {1: 2, 2: 1, 4: 7, 7: 4}
+        expected_non_mirrored_vertices_indices = [0, 3, 5, 6]
+        expected = (expected_sym_table, expected_non_mirrored_vertices_indices)
+        self.assertEqual(table.symmetry_table, expected)
+
+    def test_symmetry_table_from_different_geometry(self):
+        """Test that building a symmetry table for a specific geometry from a different geometry
+        produces the right symmetry table."""
+        table = sym_mesh.table.GeometryTable(self.asym_cube)
+        table.build_symmetry_table(self.sym_cube)
+
+        expected_sym_table = {0: 1, 1: 0, 2: 3, 3: 2, 4: 5, 5: 4, 6: 7, 7: 6}
+        expected_non_mirrored_vertices_indices = []
+        expected = (expected_sym_table, expected_non_mirrored_vertices_indices)
+        self.assertEqual(table.symmetry_table, expected)
