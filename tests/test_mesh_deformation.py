@@ -3,7 +3,7 @@ import unittest
 from tests.fixtures import common
 
 
-class TestSymmetryTable(unittest.TestCase):
+class TestMeshDeformation(unittest.TestCase):
     state = None
 
     @classmethod
