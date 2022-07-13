@@ -2,6 +2,8 @@ import maya.cmds as mc
 import unittest
 from tests.fixtures import common
 
+from sym_mesh import mesh_modification
+
 
 class TestMeshDeformation(unittest.TestCase):
     state = None
@@ -11,8 +13,7 @@ class TestMeshDeformation(unittest.TestCase):
         cls.state = common.startup_maya_session()
 
     def setUp(self):
-        from sym_mesh.mesh_modification import MeshModifier
-        self.mesh_modifier = MeshModifier()
+        self.mesh_modifier = mesh_modification.MeshModifier()
 
         mc.file(newFile=True, force=True)
         self.sphere = mc.polySphere(name="This_is_a_test_sphere")
@@ -26,11 +27,11 @@ class TestMeshDeformation(unittest.TestCase):
     def tearDownClass(cls):
         common.teardown_maya_session(cls.state)
 
-    #     # def test_revert_to_base(self):
-    #     #     self.mesh_modifier.get_base_mesh(self.sym_cube)
-    #     #     symmetry_table = self.mesh_modifier.get_symmetry_table()
-    #     #     base_table = self.mesh_modifier.get
-    #     #     self.mesh_modifier.revert_to_base()
-    #     #
-    #     #     self.assertTrue(self.mesh_modifier)
-    #     #     self.assertEqual(symmetry_table, ({0: 1, 1: 0, 2: 3, 3: 2, 4: 5, 5: 4, 6: 7, 7: 6}, []))
+    # def test_revert_to_base(self):
+    #     self.mesh_modifier.get_base_mesh(self.sym_cube)
+    #     symmetry_table = self.mesh_modifier.get_symmetry_table()
+    #     base_table = self.mesh_modifier.get
+    #     self.mesh_modifier.revert_to_base()
+    #
+    #     self.assertTrue(self.mesh_modifier)
+    #     self.assertEqual(symmetry_table, ({0: 1, 1: 0, 2: 3, 3: 2, 4: 5, 5: 4, 6: 7, 7: 6}, []))

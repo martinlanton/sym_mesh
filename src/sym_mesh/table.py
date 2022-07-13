@@ -22,6 +22,7 @@ class GeometryTable:
 
         self._reference_mesh = dag_path.create_MDagPath(mesh)
         self._points_table = get_selected_mesh_points(self._reference_mesh)
+        self._symmetry_table = None
         self.build_symmetry_table()
 
     @property
