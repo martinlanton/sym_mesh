@@ -1,5 +1,6 @@
 import maya.api.OpenMaya as om2
 import logging
+from pprint import pformat
 
 from sym_mesh.dag_path import create_MDagPath
 
@@ -159,7 +160,8 @@ class MeshModifier(object):
 
     def get_vtcs_selection(self, reset=False):
         """Get the current selection of vertices and set it.
-        :param reset: Set whether the currently stored selection should be set to an empty selection.
+        :param reset: Set whether the currently stored selection should be set
+        to an empty selection.
         :type reset: bool
         """
         if reset:
@@ -449,51 +451,66 @@ class MeshModifier(object):
         return {"objs_path": dag_path_list, "indices": selected_vertices_indices}
 
     @staticmethod
-    def revert_to_base(base_tbl, current_tbl, sel_vtcs_idcs, val, dag_path, space):
+    def revert_to_base(
+        base_table,
+        current_table,
+        sel_vtcs_idcs=(),
+        percentage=100,
+        space=om2.MSpace.kObject,
+    ):
         """
         Revert selected vertices on the target mesh to the base position.
 
-        :param base_tbl: positions of the points of the base mesh
-        :type base_tbl: MPointArray
+        :param base_table: positions of the points of the base mesh
+        :type base_table: sym_mesh.table.GeometryTable
 
-        :param current_tbl: positions of the points of the current mesh
-        :type current_tbl: MPointArray
+        :param current_table: positions of the points of the current mesh
+        :type current_table: MPointArray
 
         :param sel_vtcs_idcs: indices of the selected points on the target mesh
         :type sel_vtcs_idcs: MIntArray
 
-        :param val: percentage used for the revert to base function
-        :type val: int
-
-        :param dag_path: MDagPathArray of targets
-        :type dag_path: MDagPathArray
+        :param percentage: percentage used for the revert to base function. This
+        is a value from 0 to 100, a value of 0 means we're reverting the
+        position of the base, a value of 100 means we're staying at the current
+        position.
+        :type percentage: int
 
         :param space: space in which operate the deformation (object or world)
         :type space: constant
 
-        :return:
         """
+        base_point_array = base_table.point_array
+        log.info("base_point_array :\n%s", pformat(base_point_array))
+        current_point_array = current_table.point_array
+        log.info("current_point_array :\n%s", pformat(current_point_array))
+        dag_path = current_table.dag_path
+
         # Create new table for destination position
         destination_table = om2.MPointArray()
 
         # Init MFnMesh
-        tgt_mesh = om2.MFnMesh(dag_path)
+        tgt_mesh_functionset = om2.MFnMesh(dag_path)
 
         # Loop in MPointArray
-        for i in range(base_tbl.__len__()):
+        for i in range(base_point_array.__len__()):
+            log.info(i)
             # If the current point is also in selection
             if i in sel_vtcs_idcs or sel_vtcs_idcs.__len__() == 0:
                 # Modify new position
-                destination_table.append(
-                    base_tbl[i] + ((current_tbl[i] - base_tbl[i]) * (val / 100.00))
+                new_position = base_point_array[i] + (
+                    (current_point_array[i] - base_point_array[i])
+                    * (percentage / 100.00)
                 )
+                log.info("New position : %s", new_position)
+                destination_table.append(new_position)
             # If the current point is not selected
             else:
                 # Do nothing
-                destination_table.append(current_tbl[i])
+                destination_table.append(current_point_array[i])
 
         # Modify points position using the new coordinates
-        tgt_mesh.setPoints(destination_table, space)
+        tgt_mesh_functionset.setPoints(destination_table, space)
 
     # TODO : this needs to be tested
     @staticmethod

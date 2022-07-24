@@ -21,4 +21,4 @@ def get_selected_mesh_points(obj_dag_path=None):
 
     points = mfn_object.getPoints(space=om2.MSpace.kObject)
 
-    return {"objs_path": obj_dag_path, "points_pos": points}
+    return points

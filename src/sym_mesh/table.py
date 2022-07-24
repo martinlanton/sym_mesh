@@ -20,8 +20,8 @@ class GeometryTable:
         self._axis = axis
         self._threshold = threshold
 
-        self._reference_mesh = dag_path.create_MDagPath(mesh)
-        self._points_table = get_selected_mesh_points(self._reference_mesh)
+        self._dag_path = dag_path.create_MDagPath(mesh)
+        self._points_table = get_selected_mesh_points(self._dag_path)
         self._symmetry_table = None
         self.build_symmetry_table()
 
@@ -44,6 +44,14 @@ class GeometryTable:
     @threshold.setter
     def threshold(self, value):
         self._threshold = value
+
+    @property
+    def dag_path(self):
+        return self._dag_path
+
+    @property
+    def point_array(self):
+        return self._points_table
     
     def build_symmetry_table(self, base_mesh=None):
         """
@@ -58,8 +66,9 @@ class GeometryTable:
             path = dag_path.create_MDagPath(base_mesh)
             points_table = get_selected_mesh_points(path)
         else:
+            path = self._dag_path
             points_table = self._points_table
-        base_points = points_table["points_pos"]
+        base_points = points_table
         axis_idcs = {"x": 0, "y": 1, "z": 2}
         axis_idx = axis_idcs[self._axis]
 
@@ -73,7 +82,7 @@ class GeometryTable:
 
         check_table = dict()
 
-        MItVtx = om2.MItMeshVertex(points_table["objs_path"])
+        MItVtx = om2.MItMeshVertex(path)
         while not MItVtx.isDone():
             position = (
                 round(MItVtx.position()[0], threshold_nb),
@@ -99,7 +108,7 @@ class GeometryTable:
         else:
             log.info("Model is symmetrical")
 
-        MItVtx = om2.MItMeshVertex(self._points_table["objs_path"])
+        MItVtx = om2.MItMeshVertex(self._dag_path)
         while not MItVtx.isDone():
             if MItVtx.index() not in symmetry_table:
                 non_mirrored_table.append(MItVtx.index())
