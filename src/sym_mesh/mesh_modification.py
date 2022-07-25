@@ -455,7 +455,7 @@ class MeshModifier(object):
         base_table,
         current_table,
         sel_vtcs_idcs=(),
-        percentage=100,
+        percentage=0,
         space=om2.MSpace.kObject,
     ):
         """
@@ -515,69 +515,63 @@ class MeshModifier(object):
     # TODO : this needs to be tested
     @staticmethod
     def symmetrize(
-        base_tbl,
-        symmetry_tbl,
-        current_tbl,
-        sel_vtcs_idcs,
-        val,
-        dag_path,
-        space,
-        axis="x",
+        base_table,
+        current_table,
+        sel_vtcs_idcs=(),
+        percentage=0,
+        space=om2.MSpace.kObject,
     ):
         """
         Symmetrize selected vertices on the target mesh.
 
-        :param base_tbl: positions of the points of the base mesh
-        :type base_tbl: MPointArray
+        :param base_table: positions of the points of the base mesh
+        :type base_table: sym_mesh.table.GeometryTable
 
-        :param symmetry_tbl: table of correspondence for symmetry
-        :type symmetry_tbl: dict
-
-        :param current_tbl: positions of the points of the current mesh
-        :type current_tbl: MPointArray
+        :param current_table: positions of the points of the current mesh
+        :type current_table: sym_mesh.table.GeometryTable
 
         :param sel_vtcs_idcs: indices of the selected points on the target mesh
         :type sel_vtcs_idcs: MIntArray
 
-        :param val: percentage used for the revert to base function
-        :type val: int
-
-        :param dag_path: MDagPathArray of targets
-        :type dag_path: MDagPathArray
+        :param percentage: percentage used for the revert to base function
+        :type percentage: int
 
         :param space: space in which operate the deformation (object or world)
         :type space: constant
 
-        :param axis: axis to use for mirroring
-        :type axis: str
-
         :return:
         """
+        axis = base_table.axis
         axis_idcs = {"x": 0, "y": 1, "z": 2}
         axis_idx = axis_idcs[axis]
         # Create new table for destination position
-        destination_table = om2.MPointArray()
+        destination_point_array = om2.MPointArray()
+
+        dag_path = current_table.dag_path
+        current_point_array = current_table.point_array
+        base_point_array = base_table.point_array
+        symmetry_table = base_table.symmetry_table
 
         # Init MFnMesh
         tgt_mesh = om2.MFnMesh(dag_path)
 
         # Loop in MPointArray
-        for i in range(symmetry_tbl.__len__()):
+        for i in range(symmetry_table.__len__()):
             # If the current point is also in selection
             if i in sel_vtcs_idcs or sel_vtcs_idcs.__len__() == 0:
                 # Modify new position
-                symmetry_position = current_tbl[i]
+                symmetry_position = current_point_array[i]
                 symmetry_position[axis_idx] = -symmetry_position[axis_idx]
-                destination_table.append(
-                    base_tbl[i] + ((symmetry_position - base_tbl[i]) * (val / 100.00))
+                destination_point_array.append(
+                    base_point_array[i] + ((symmetry_position - base_point_array[i]) * (percentage / 100.00))
                 )
             # If the current point is not selected
             else:
                 # Do nothing
-                destination_table.append(current_tbl[i])
+                destination_point_array.append(current_point_array[i])
 
         # Modify points position using the new coordinates
-        tgt_mesh.setPoints(destination_table, space)
+        tgt_mesh.setPoints(destination_point_array, space)
 
     @staticmethod
     def bake_difference(base_tbl, tgt_tbl, current_tbl, sel_vtcs_idcs, dag_path, space):

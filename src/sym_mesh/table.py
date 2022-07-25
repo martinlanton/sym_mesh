@@ -62,6 +62,8 @@ class GeometryTable:
         :return: symmetry table
         :rtype: dict
         """
+        # TODO : symmetry table should only contain half of the points at the
+        #  end, based on the direction of the symmetry
         if base_mesh:
             path = dag_path.create_MDagPath(base_mesh)
             points_table = get_selected_mesh_points(path)
