@@ -10,7 +10,7 @@ log.setLevel(logging.INFO)
 
 
 class GeometryTable:
-    def __init__(self, mesh_dag_path, axis="x", threshold=0.001):
+    def __init__(self, mesh_dag_path, axis="x", threshold=0.001, direction="positive"):
         """Initialize the symmetry table using the specified mesh.
 
         :param mesh_dag_path: name of the maya mesh to use to build the symmetry table.
@@ -18,6 +18,7 @@ class GeometryTable:
 
         """
         self._axis = axis
+        self._direction = direction  # todo : convert this to an enum
         self._threshold = threshold
 
         self._dag_path = mesh_dag_path
@@ -52,6 +53,19 @@ class GeometryTable:
     @property
     def point_array(self):
         return self._points_table
+
+    @property
+    def positive(self):
+        if self._direction == "positive":
+            return True
+        return False
+
+    @positive.setter
+    def positive(self, value):
+        if value:
+            self._direction = "positive"
+        else:
+            self._direction = "negative"
     
     def build_symmetry_table(self, base_mesh=None):
         """
@@ -62,8 +76,7 @@ class GeometryTable:
         :return: symmetry table
         :rtype: dict
         """
-        # TODO : symmetry table should only contain half of the points at the
-        #  end, based on the direction of the symmetry
+        # TODO : simplify this method
         if base_mesh:
             path = dag_path.create_MDagPath(base_mesh)
             points_table = get_selected_mesh_points(path)
@@ -91,14 +104,24 @@ class GeometryTable:
                 round(MItVtx.position()[1], threshold_nb),
                 round(MItVtx.position()[2], threshold_nb),
             )
-            check_table[position] = MItVtx.index()
+            idx = MItVtx.index()
+            check_table[position] = idx
             position_to_check = list(position)
             position_to_check[axis_idx] = -position_to_check[axis_idx]
             position_to_check = tuple(position_to_check)
 
-            if position_to_check in check_table:
-                symmetry_table[MItVtx.index()] = check_table[position_to_check]
-                symmetry_table[check_table[position_to_check]] = MItVtx.index()
+            if self.positive:
+                if position_to_check in check_table:
+                    if position[axis_idx] < position_to_check[axis_idx]:
+                        symmetry_table[idx] = check_table[position_to_check]
+                    else:
+                        symmetry_table[check_table[position_to_check]] = idx
+            else:
+                if position_to_check in check_table:
+                    if position[axis_idx] < position_to_check[axis_idx]:
+                        symmetry_table[check_table[position_to_check]] = idx
+                    else:
+                        symmetry_table[idx] = check_table[position_to_check]
 
             MItVtx.next()
 
@@ -112,8 +135,9 @@ class GeometryTable:
 
         MItVtx = om2.MItMeshVertex(self.dag_path)
         while not MItVtx.isDone():
-            if MItVtx.index() not in symmetry_table:
-                non_mirrored_table.append(MItVtx.index())
+            idx = MItVtx.index()
+            if idx not in symmetry_table and idx not in symmetry_table.values():
+                non_mirrored_table.append(idx)
 
             MItVtx.next()
 
