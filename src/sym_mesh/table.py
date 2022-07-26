@@ -67,23 +67,23 @@ class GeometryTable:
         else:
             self._direction = "negative"
     
-    def build_symmetry_table(self, base_mesh=None):
+    def build_symmetry_table(self, base_mesh=""):
         """
         Create symmetry table base on symmetry self._axis and self._threshold
 
         :param base_mesh: optional. Name of the mesh to use to build the symmetry table.
+        :type base_mesh: str
 
         :return: symmetry table
         :rtype: dict
         """
         # TODO : simplify this method
         if base_mesh:
-            path = dag_path.create_MDagPath(base_mesh)
-            points_table = get_selected_mesh_points(path)
+            path = base_mesh
+            points_table = get_selected_mesh_points(dag_path.create_MDagPath(base_mesh))
         else:
             path = self.dag_path
             points_table = self._points_table
-        base_points = points_table
         axis_idcs = {"x": 0, "y": 1, "z": 2}
         axis_idx = axis_idcs[self._axis]
 
@@ -97,14 +97,12 @@ class GeometryTable:
 
         check_table = dict()
 
-        MItVtx = om2.MItMeshVertex(path)
-        while not MItVtx.isDone():
+        for idx, item in enumerate(points_table):
             position = (
-                round(MItVtx.position()[0], threshold_nb),
-                round(MItVtx.position()[1], threshold_nb),
-                round(MItVtx.position()[2], threshold_nb),
+                round(item[0], threshold_nb),
+                round(item[1], threshold_nb),
+                round(item[2], threshold_nb),
             )
-            idx = MItVtx.index()
             check_table[position] = idx
             position_to_check = list(position)
             position_to_check[axis_idx] = -position_to_check[axis_idx]
@@ -123,17 +121,9 @@ class GeometryTable:
                     else:
                         symmetry_table[idx] = check_table[position_to_check]
 
-            MItVtx.next()
-
-        if len(symmetry_table) < base_points.__len__():
-            log.info(
-                "Not all vertices are symmetrical,"
-                " mirroring might not work as expected"
-            )
-        else:
-            log.info("Model is symmetrical")
-
         MItVtx = om2.MItMeshVertex(self.dag_path)
+
+        # todo : compare if this would be faster with a range instead of an iterator
         while not MItVtx.isDone():
             idx = MItVtx.index()
             if idx not in symmetry_table and idx not in symmetry_table.values():
@@ -143,5 +133,14 @@ class GeometryTable:
 
         log.debug(len(symmetry_table))
         log.debug(symmetry_table)
+
+        # todo : test that this prints the right message.
+        if non_mirrored_table:
+            log.info(
+                "Not all vertices are symmetrical,"
+                " mirroring might not work as expected."
+            )
+        else:
+            log.info("Model %s is symmetrical.", path)
 
         self._symmetry_table = symmetry_table, non_mirrored_table
