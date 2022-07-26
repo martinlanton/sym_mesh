@@ -10,18 +10,18 @@ log.setLevel(logging.INFO)
 
 
 class GeometryTable:
-    def __init__(self, mesh, axis="x", threshold=0.001):
+    def __init__(self, mesh_dag_path, axis="x", threshold=0.001):
         """Initialize the symmetry table using the specified mesh.
 
-        :param mesh: name of the maya mesh to use to build the symmetry table.
-        :type mesh: str
+        :param mesh_dag_path: name of the maya mesh to use to build the symmetry table.
+        :type mesh_dag_path: str
 
         """
         self._axis = axis
         self._threshold = threshold
 
-        self._dag_path = dag_path.create_MDagPath(mesh)
-        self._points_table = get_selected_mesh_points(self._dag_path)
+        self._dag_path = mesh_dag_path
+        self._points_table = get_selected_mesh_points(self.dag_path)
         self._symmetry_table = None
         self.build_symmetry_table()
 
@@ -47,7 +47,7 @@ class GeometryTable:
 
     @property
     def dag_path(self):
-        return self._dag_path
+        return dag_path.create_MDagPath(self._dag_path)
 
     @property
     def point_array(self):
@@ -68,7 +68,7 @@ class GeometryTable:
             path = dag_path.create_MDagPath(base_mesh)
             points_table = get_selected_mesh_points(path)
         else:
-            path = self._dag_path
+            path = self.dag_path
             points_table = self._points_table
         base_points = points_table
         axis_idcs = {"x": 0, "y": 1, "z": 2}
@@ -110,7 +110,7 @@ class GeometryTable:
         else:
             log.info("Model is symmetrical")
 
-        MItVtx = om2.MItMeshVertex(self._dag_path)
+        MItVtx = om2.MItMeshVertex(self.dag_path)
         while not MItVtx.isDone():
             if MItVtx.index() not in symmetry_table:
                 non_mirrored_table.append(MItVtx.index())
