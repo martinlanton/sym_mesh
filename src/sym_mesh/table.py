@@ -111,15 +111,15 @@ class GeometryTable:
             if self.positive:
                 if position_to_check in check_table:
                     if position[axis_idx] < position_to_check[axis_idx]:
-                        symmetry_table[idx] = check_table[position_to_check]
-                    else:
                         symmetry_table[check_table[position_to_check]] = idx
+                    else:
+                        symmetry_table[idx] = check_table[position_to_check]
             else:
                 if position_to_check in check_table:
                     if position[axis_idx] < position_to_check[axis_idx]:
-                        symmetry_table[check_table[position_to_check]] = idx
-                    else:
                         symmetry_table[idx] = check_table[position_to_check]
+                    else:
+                        symmetry_table[check_table[position_to_check]] = idx
 
         MItVtx = om2.MItMeshVertex(self.dag_path)
 

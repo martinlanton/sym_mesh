@@ -550,25 +550,25 @@ class MeshModifier(object):
         dag_path = current_table.dag_path
         current_point_array = current_table.point_array
         base_point_array = base_table.point_array
-        symmetry_table = base_table.symmetry_table
+        symmetry_table = base_table.symmetry_table[0]
+        log.info("Symmetry table is : %s",  symmetry_table)
 
         # Init MFnMesh
         tgt_mesh = om2.MFnMesh(dag_path)
 
         # Loop in MPointArray
-        for i in range(symmetry_table.__len__()):
+        for i in range(base_point_array.__len__()):
             # If the current point is also in selection
-            if i in sel_vtcs_idcs or sel_vtcs_idcs.__len__() == 0:
+            current_position = symmetry_position = current_point_array[i]
+            if (i in sel_vtcs_idcs or sel_vtcs_idcs.__len__() == 0) and i in symmetry_table:
                 # Modify new position
-                symmetry_position = current_point_array[i]
+                source_index = symmetry_table[i]
+                symmetry_position = current_point_array[source_index]
                 symmetry_position[axis_idx] = -symmetry_position[axis_idx]
-                destination_point_array.append(
-                    base_point_array[i] + ((symmetry_position - base_point_array[i]) * (percentage / 100.00))
-                )
-            # If the current point is not selected
-            else:
-                # Do nothing
-                destination_point_array.append(current_point_array[i])
+                symmetry_position = base_point_array[i] + ((symmetry_position - base_point_array[i]) * (percentage / 100.00))
+
+            log.info("Modifying position from %s to %s", current_position, symmetry_position)
+            destination_point_array.append(symmetry_position)
 
         # Modify points position using the new coordinates
         tgt_mesh.setPoints(destination_point_array, space)
