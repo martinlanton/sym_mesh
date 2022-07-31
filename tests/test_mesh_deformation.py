@@ -10,7 +10,7 @@ from sym_mesh import mesh_modification
 log = logging.getLogger(__name__)
 
 
-class TestMeshDeformation(common.BaseTest):
+class TestRevertToBase(common.BaseTest):
     def test_revert_to_current(self):
         """Test that reverting to base with a value of 100% doesn't revert anything."""
         geo_table = table.GeometryTable(self.asym_cube)
@@ -55,6 +55,8 @@ class TestMeshDeformation(common.BaseTest):
 
         self.assertEqual(expected, result)
 
+
+class TestSymmetry(common.BaseTest):
     def test_symmetrization_x_positive(self):
         """Test that reverting to base with a value of 0% reverts to base."""
         geo_table = table.GeometryTable(self.asym_cube)
@@ -143,3 +145,6 @@ class TestMeshDeformation(common.BaseTest):
         self.assertEqual(expected, result)
 
 
+class TestBakeDeltas(common.BaseTest):
+    def test_nothing(self):
+        pass
