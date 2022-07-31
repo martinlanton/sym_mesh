@@ -552,7 +552,7 @@ class MeshModifier(object):
         current_point_array = current_table.point_array
         base_point_array = base_table.point_array
         symmetry_table = base_table.symmetry_table[0]
-        log.info("Symmetry table is : %s",  symmetry_table)
+        log.info("Symmetry table is : %s", symmetry_table)
 
         # Init MFnMesh
         tgt_mesh = om2.MFnMesh(dag_path)
@@ -561,15 +561,29 @@ class MeshModifier(object):
         for i in range(base_point_array.__len__()):
             # If the current point is also in selection
             current_position = symmetry_position = current_point_array[i]
-            if (i in sel_vtcs_idcs or sel_vtcs_idcs.__len__() == 0) and i in symmetry_table:
+            if (
+                i in sel_vtcs_idcs or sel_vtcs_idcs.__len__() == 0
+            ) and i in symmetry_table:
                 # Modify new position
                 source_index = symmetry_table[i]
-                log.info("Mirroring position from vtx %s to vtx %s", source_index, i)
                 symmetry_position = current_point_array[source_index]
                 symmetry_position[axis_idx] = -symmetry_position[axis_idx]
-                symmetry_position = current_position + ((symmetry_position - current_position) * (percentage / 100.00))
+                log.info(
+                    "Mirroring position of vtx %s from vtx %s. Current position : %s, target position : %s",
+                    i,
+                    source_index,
+                    current_position,
+                    symmetry_position,
+                )
+                symmetry_position = current_position + (
+                    (symmetry_position - current_position) * (percentage / 100.00)
+                )
+            else:
+                log.info("Not mirroring the position of vtx %s", i)
 
-            log.info("Modifying position from %s to %s", current_position, symmetry_position)
+            log.info(
+                "Modifying position from %s to %s", current_position, symmetry_position
+            )
             destination_point_array.append(symmetry_position)
 
         # Modify points position using the new coordinates
