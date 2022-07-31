@@ -137,8 +137,8 @@ class GeometryTable:
         # todo : test that this prints the right message.
         if non_mirrored_table:
             log.info(
-                "Not all vertices are symmetrical,"
-                " mirroring might not work as expected."
+                "Model %s is NOT symmetrical,"
+                " mirroring might not work as expected.", path
             )
         else:
             log.info("Model %s is symmetrical.", path)

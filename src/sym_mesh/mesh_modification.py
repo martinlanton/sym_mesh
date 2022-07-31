@@ -455,7 +455,7 @@ class MeshModifier(object):
         base_table,
         current_table,
         sel_vtcs_idcs=(),
-        percentage=0,
+        percentage=100,
         space=om2.MSpace.kObject,
     ):
         """
@@ -471,8 +471,8 @@ class MeshModifier(object):
         :type sel_vtcs_idcs: MIntArray
 
         :param percentage: percentage used for the revert to base function. This
-        is a value from 0 to 100, a value of 0 means we're reverting the
-        position of the base, a value of 100 means we're staying at the current
+        is a value from 0 to 100, a value of 100 means we're reverting the
+        position of the base, a value of 0 means we're staying at the current
         position.
         :type percentage: int
 
@@ -498,9 +498,10 @@ class MeshModifier(object):
             # If the current point is also in selection
             if i in sel_vtcs_idcs or sel_vtcs_idcs.__len__() == 0:
                 # Modify new position
-                new_position = base_point_array[i] + (
-                    (current_point_array[i] - base_point_array[i])
-                    * (percentage / 100.00)
+                base_position = base_point_array[i]
+                new_position = base_position + (
+                    (current_point_array[i] - base_position)
+                    * ((100 - percentage) / 100.00)
                 )
                 log.info("New position : %s", new_position)
                 destination_table.append(new_position)
@@ -518,7 +519,7 @@ class MeshModifier(object):
         base_table,
         current_table,
         sel_vtcs_idcs=(),
-        percentage=0,
+        percentage=100,
         space=om2.MSpace.kObject,
     ):
         """
@@ -563,9 +564,10 @@ class MeshModifier(object):
             if (i in sel_vtcs_idcs or sel_vtcs_idcs.__len__() == 0) and i in symmetry_table:
                 # Modify new position
                 source_index = symmetry_table[i]
+                log.info("Mirroring position from vtx %s to vtx %s", source_index, i)
                 symmetry_position = current_point_array[source_index]
                 symmetry_position[axis_idx] = -symmetry_position[axis_idx]
-                symmetry_position = base_point_array[i] + ((symmetry_position - base_point_array[i]) * (percentage / 100.00))
+                symmetry_position = current_position + ((symmetry_position - current_position) * (percentage / 100.00))
 
             log.info("Modifying position from %s to %s", current_position, symmetry_position)
             destination_point_array.append(symmetry_position)
