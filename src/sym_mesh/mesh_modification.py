@@ -543,8 +543,8 @@ class MeshModifier(object):
         :return:
         """
         axis = base_table.axis
-        axis_idcs = {"x": 0, "y": 1, "z": 2}
-        axis_idx = axis_idcs[axis]
+        axis_indices = {"x": 0, "y": 1, "z": 2}
+        axis_index = axis_indices[axis]
         # Create new table for destination position
         destination_point_array = om2.MPointArray()
 
@@ -566,8 +566,11 @@ class MeshModifier(object):
             ) and i in symmetry_table:
                 # Modify new position
                 source_index = symmetry_table[i]
-                symmetry_position = current_point_array[source_index]
-                symmetry_position[axis_idx] = -symmetry_position[axis_idx]
+                target_vertex_position = current_point_array[source_index]
+                print(type(target_vertex_position))
+                symmetry_position = list(target_vertex_position)
+                symmetry_position[axis_index] = -target_vertex_position[axis_index]
+                symmetry_position = om2.MPoint(symmetry_position)
                 log.info(
                     "Mirroring position of vtx %s from vtx %s. Current position : %s, target position : %s",
                     i,
