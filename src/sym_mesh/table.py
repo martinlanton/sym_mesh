@@ -66,7 +66,7 @@ class GeometryTable:
             self._direction = "positive"
         else:
             self._direction = "negative"
-    
+
     def build_symmetry_table(self, base_mesh=""):
         """
         Create symmetry table base on symmetry self._axis and self._threshold
@@ -137,8 +137,8 @@ class GeometryTable:
         # todo : test that this prints the right message.
         if non_mirrored_table:
             log.info(
-                "Model %s is NOT symmetrical,"
-                " mirroring might not work as expected.", path
+                "Model %s is NOT symmetrical," " mirroring might not work as expected.",
+                path,
             )
         else:
             log.info("Model %s is symmetrical.", path)
