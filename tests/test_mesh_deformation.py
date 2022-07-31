@@ -112,3 +112,34 @@ class TestMeshDeformation(common.BaseTest):
         log.info("Expected : %s", expected)
         log.info("Result : %s", result)
         self.assertEqual(expected, result)
+
+    def test_symmetrization_y_negative(self):
+        """Test that reverting to base with a value of 0% reverts to base."""
+        geo_table = table.GeometryTable(self.asym_cube)
+        sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="negative")
+        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier.symmetrize(base_table=sym_table, current_table=geo_table)
+
+        vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
+
+        expected = [
+            [-0.5, -0.5, 0.5],
+            [0.5, -1.5, 0.5],
+            [-0.5, 0.5, 0.5],
+            [0.5, 1.5, 0.5],
+            [-0.5, 0.5, -0.5],
+            [0.5, 1.5, -0.5],
+            [-0.5, -0.5, -0.5],
+            [0.5, -1.5, -0.5],
+        ]
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(vtx_number)
+        ]
+
+        log.info("Symmetry table : %s", sym_table.symmetry_table)
+        log.info("Expected : %s", expected)
+        log.info("Result : %s", result)
+        self.assertEqual(expected, result)
+
+
