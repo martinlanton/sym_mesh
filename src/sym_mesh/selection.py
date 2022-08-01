@@ -1,6 +1,8 @@
+import logging
+
 from maya.api import OpenMaya as om2
 
-from sym_mesh.mesh_modification import log
+log = logging.getLogger(__name__)
 
 
 def get_selected_mesh_points(obj_dag_path=None):
