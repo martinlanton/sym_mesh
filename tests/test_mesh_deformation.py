@@ -13,6 +13,12 @@ log = logging.getLogger(__name__)
 class TestRevertToBase(common.BaseTest):
     def test_revert_to_current(self):
         """Test that reverting to base with a value of 100% doesn't revert anything."""
+        vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
+        expected = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(vtx_number)
+        ]
+
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
@@ -20,17 +26,10 @@ class TestRevertToBase(common.BaseTest):
             base_table=sym_table, current_table=geo_table, percentage=0
         )
 
-        vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
-
-        expected = [
-            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
-            for vtx in range(vtx_number)
-        ]
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
             for vtx in range(vtx_number)
         ]
-
         self.assertEqual(expected, result)
 
     def test_revert_to_base(self):
@@ -52,7 +51,6 @@ class TestRevertToBase(common.BaseTest):
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
             for vtx in range(vtx_number)
         ]
-
         self.assertEqual(expected, result)
 
 
@@ -144,7 +142,25 @@ class TestSymmetry(common.BaseTest):
         log.info("Result : %s", result)
         self.assertEqual(expected, result)
 
+    # TODO : add test for symmetrization with 0% value
+
 
 class TestBakeDeltas(common.BaseTest):
-    def test_nothing(self):
-        pass
+    def test_bake_delta(self):
+        """Test that baking delta functions properly on one geometry."""
+        vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
+        expected = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(vtx_number)
+        ]
+
+        geo_table = table.GeometryTable(self.asym_cube)
+        sym_table = table.GeometryTable(self.sym_cube)
+        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier.bake_difference(sym_table, geo_table, target_dag_path=self.other_cube)
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
+            for vtx in range(vtx_number)
+        ]
+        self.assertEqual(expected, result)

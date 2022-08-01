@@ -16,8 +16,9 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         mc.file(newFile=True, force=True)
         self.sphere = mc.polySphere(name="This_is_a_test_sphere")
-        self.sym_cube = mc.polyCube(name="symmetrical_cube", constructionHistory=False)[0]
-        self.asym_cube = mc.polyCube(name="asymmetrical_cube", constructionHistory=False)[0]
+        self.sym_cube = mc.polyCube(name="sym_cube", constructionHistory=False)[0]
+        self.other_cube = mc.polyCube(name="other_cube", constructionHistory=False)[0]
+        self.asym_cube = mc.polyCube(name="asym_cube", constructionHistory=False)[0]
         for vtx in [1, 3, 5, 7]:
             vtx_name = "{}.vtx[{}]".format(self.asym_cube, vtx)
             mc.xform(vtx_name, relative=True, translation=[0, 1, 0])
@@ -50,6 +51,7 @@ def setup_environment():
     if path not in sys.path:
         sys.path.append(path)
     from pprint import pprint
+
     pprint(sys.path)
 
 

@@ -55,6 +55,10 @@ class TestSymmetryTable(common.BaseTest):
         expected = (expected_sym_table, expected_non_mirrored_vertices_indices)
         self.assertEqual(geo_table.symmetry_table, expected)
 
+    # TODO : add test to create a new table from the difference of 2 tables,
+    #  this can then be used to bake the difference on other meshes and have a
+    #  more streamlined method signature
+
 
 # base_cube_positions = [
 #     (-0.5, -0.5, 0.5),
