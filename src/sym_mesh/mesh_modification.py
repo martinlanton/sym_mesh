@@ -276,29 +276,6 @@ class MeshModifier(object):
             om2.MGlobal.setActiveSelectionList(vtcs_to_select)
 
     @staticmethod
-    def get_selected_mesh_points(obj_dag_path=None):
-        """
-        Get the position of every point of the selected mesh.
-
-        :return: dag dir_path of the object, position of the points
-        :rtype: MDagPath, MPointArray
-        """
-        if not obj_dag_path:
-            # Get current selection
-            selection_list = om2.MGlobal.getActiveSelectionList()
-
-            # Get the dag dir_path of the first item in the selection list
-            obj_dag_path = selection_list.getDagPath(0)
-
-        # Query vertex position
-        # create a Mesh functionSet from our dag object
-        mfn_object = om2.MFnMesh(obj_dag_path)
-
-        points = mfn_object.getPoints(space=om2.MSpace.kObject)
-
-        return {"objs_path": obj_dag_path, "points_pos": points}
-
-    @staticmethod
     def revert_to_base(
         base_table,
         current_table,
@@ -313,10 +290,10 @@ class MeshModifier(object):
         :type base_table: sym_mesh.table.GeometryTable
 
         :param current_table: positions of the points of the current mesh
-        :type current_table: MPointArray
+        :type current_table: maya.api.OpenMaya.MPointArray
 
         :param sel_vtcs_idcs: indices of the selected points on the target mesh
-        :type sel_vtcs_idcs: MIntArray
+        :type sel_vtcs_idcs: maya.api.OpenMaya.MIntArray
 
         :param percentage: percentage used for the revert to base function. This
         is a value from 0 to 100, a value of 100 means we're reverting the
@@ -379,7 +356,7 @@ class MeshModifier(object):
         :type current_table: sym_mesh.table.GeometryTable
 
         :param sel_vtcs_idcs: indices of the selected points on the target mesh
-        :type sel_vtcs_idcs: MIntArray
+        :type sel_vtcs_idcs: maya.api.OpenMaya.MIntArray
 
         :param percentage: percentage used for the revert to base function
         :type percentage: int
@@ -450,10 +427,10 @@ class MeshModifier(object):
         :type tgt_tbl: sym_mesh.table.GeometryTable
 
         :param sel_vtcs_idcs: indices of the selected points on the target mesh
-        :type sel_vtcs_idcs: MIntArray
+        :type sel_vtcs_idcs: maya.api.OpenMaya.MIntArray
 
         :param target_dag_path: MDagPath of the target
-        :type target_dag_path: MDagPath or str
+        :type target_dag_path: maya.api.OpenMaya.MDagPath or str
 
         :param space: space in which operate the deformation (object or world)
         :type space: constant

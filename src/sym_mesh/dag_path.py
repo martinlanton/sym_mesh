@@ -8,7 +8,7 @@ def create_MDagPath(path_to_dag_object):
     :type path_to_dag_object: str
 
     :return: MDagPath of the object at the specified path or None.
-    :rtype: MDagPath
+    :rtype: maya.api.OpenMaya.MDagPath
     """
     selection_list = om2.MSelectionList()
     try:

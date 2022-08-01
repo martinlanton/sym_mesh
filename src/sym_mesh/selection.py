@@ -9,8 +9,11 @@ def get_selected_mesh_points(obj_dag_path=None):
     """
     Get the position of every point of the selected mesh.
 
+    :param obj_dag_path: dag path object of the geometry for which we want the points position
+    :type obj_dag_path: maya.api.OpenMaya.MDagPath
+
     :return: dag dir_path of the object, position of the points
-    :rtype: MDagPath, MPointArray
+    :rtype: maya.api.OpenMaya.MDagPath, maya.api.OpenMaya.MPointArray
     """
     if not obj_dag_path:
         # Get current selection
@@ -33,7 +36,7 @@ def get_sel_vtces_idcs():
     Get the indices of the selected vertices.
 
     :return: DagPath of the current mesh, indices of the selected vertices
-    :rtype: MDagPathArray, MIntArray
+    :rtype: maya.api.OpenMaya.MDagPathArray, maya.api.OpenMaya.MIntArray
     """
     # Get current selection
     selection_list = om2.MGlobal.getActiveSelectionList()
