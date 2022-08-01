@@ -70,22 +70,44 @@ class MeshModifier(object):
                 self.are_vertices_stored = False
 
     def undo(self):
-        """
-        Undo the last move stored.
-
-        """
+        """Undo the last move stored in the undo queue."""
         if len(self.undo_queue) > 0:
             last_action = self.undo_queue.pop(-1)
         else:
-            log.error("No last_action action to last_action.")
+            log.error("No action action to undo.")
             return
 
         dag_path = create_MDagPath(last_action["objs_path"])
+        current_point_array = get_selected_mesh_points(dag_path)
 
         tgt_mesh = om2.MFnMesh(dag_path)
-
         tgt_mesh.setPoints(last_action["points_pos"], om2.MSpace.kObject)
-        self.redo_queue.append(last_action)
+
+        redo_action = {
+            "objs_path": dag_path.getPath(),
+            "points_pos": current_point_array,
+        }
+        self.redo_queue.append(redo_action)
+
+    def redo(self):
+        """Redo the last move stored in the redo queue."""
+        if len(self.redo_queue) > 0:
+            last_action = self.redo_queue.pop(-1)
+        else:
+            log.error("No action action to redo.")
+            return
+
+        dag_path = create_MDagPath(last_action["objs_path"])
+        current_point_array = get_selected_mesh_points(dag_path)
+
+        tgt_mesh = om2.MFnMesh(dag_path)
+        tgt_mesh.setPoints(last_action["points_pos"], om2.MSpace.kObject)
+
+        undo_action = {
+            "objs_path": dag_path.getPath(),
+            "points_pos": current_point_array,
+        }
+        self.undo_queue.append(undo_action)
 
     # def revert_selected_to_base(self, revert_value=None):
     #     """
@@ -394,7 +416,6 @@ class MeshModifier(object):
                 # Modify new position
                 source_index = symmetry_table[i]
                 target_vertex_position = current_point_array[source_index]
-                print(type(target_vertex_position))
                 symmetry_position = list(target_vertex_position)
                 symmetry_position[axis_index] = -target_vertex_position[axis_index]
                 symmetry_position = om2.MPoint(symmetry_position)
