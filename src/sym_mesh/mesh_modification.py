@@ -452,7 +452,7 @@ class MeshModifier(object):
         :param space: space in which operate the deformation (object or world)
         :type space: constant
         """
-        if isinstance(target_dag_path, str):
+        if not isinstance(target_dag_path, om2.MDagPath):
             target_dag_path = create_MDagPath(target_dag_path)
 
         # Create new table for destination position
