@@ -58,15 +58,3 @@ class TestSymmetryTable(common.BaseTest):
     # TODO : add test to create a new table from the difference of 2 tables,
     #  this can then be used to bake the difference on other meshes and have a
     #  more streamlined method signature
-
-
-# base_cube_positions = [
-#     (-0.5, -0.5, 0.5),
-#     (0.5, -0.5, 0.5),
-#     (-0.5, 0.5, 0.5),
-#     (0.5, 0.5, 0.5),
-#     (-0.5, 0.5, -0.5),
-#     (0.5, 0.5, -0.5),
-#     (-0.5, -0.5, -0.5),
-#     (0.5, -0.5, -0.5),
-# ]
