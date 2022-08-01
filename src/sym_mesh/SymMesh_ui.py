@@ -287,4 +287,4 @@ class SymMeshUI(dockable, QtWidgets.QDialog):
         self.sym_mesh.revert_selected_to_base_live()
 
     def undo(self):
-        self.sym_mesh.undo_last_action()
+        self.sym_mesh.undo()

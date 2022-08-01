@@ -39,8 +39,8 @@ class MeshModifier(object):
         self._revert_value = 100
         self.space = om2.MSpace.kObject
         # UNDO LIST
-        self.undo = list()
-        self.undo_table = dict()
+        self.undo_queue = list()
+        self.redo_queue = list()
 
     @property
     def revert_value(self):
@@ -69,22 +69,23 @@ class MeshModifier(object):
             else:
                 self.are_vertices_stored = False
 
-    def undo_last_action(self):
+    def undo(self):
         """
         Undo the last move stored.
 
         """
-        if len(self.undo) > 0:
-            undo = self.undo.pop(-1)
+        if len(self.undo_queue) > 0:
+            last_action = self.undo_queue.pop(-1)
         else:
-            log.error("No undo action to undo.")
+            log.error("No last_action action to last_action.")
             return
 
-        dag_path = create_MDagPath(undo["objs_path"])
+        dag_path = create_MDagPath(last_action["objs_path"])
 
         tgt_mesh = om2.MFnMesh(dag_path)
 
-        tgt_mesh.setPoints(undo["points_pos"], om2.MSpace.kObject)
+        tgt_mesh.setPoints(last_action["points_pos"], om2.MSpace.kObject)
+        self.redo_queue.append(last_action)
 
     # def revert_selected_to_base(self, revert_value=None):
     #     """
@@ -246,37 +247,37 @@ class MeshModifier(object):
     #                 dag_path,
     #                 self.space,
     #             )
+    #
+    # def select_stored_vertices(self):
+    #     if len(self.vtcs_selection["indices"]) == 0:
+    #         log.warning("No vertex selection stored")
+    #     else:
+    #         vtcs_to_select = om2.MSelectionList()
+    #         MItVtx = om2.MItMeshVertex(self.vtcs_selection["objs_path"][0])
+    #         while not MItVtx.isDone():
+    #             if MItVtx.index() in self.vtcs_selection["indices"]:
+    #                 vtcs_to_select.add(
+    #                     (self.vtcs_selection["objs_path"][0], MItVtx.currentItem())
+    #                 )
+    #             MItVtx.next()
+    #         om2.MGlobal.setActiveSelectionList(vtcs_to_select)
+    #
+    # def select_non_mirrored_vertices(self):
+    #     if len(self.non_mirrored_vtcs) == 0:
+    #         log.info("Model is symmetrical, no vertices to select")
+    #     else:
+    #         vtcs_to_select = om2.MSelectionList()
+    #         MItVtx = om2.MItMeshVertex(self.base_table["objs_path"])
+    #         while not MItVtx.isDone():
+    #             if MItVtx.index() in self.non_mirrored_vtcs:
+    #                 vtcs_to_select.add(
+    #                     (self.base_table["objs_path"], MItVtx.currentItem())
+    #                 )
+    #             MItVtx.next()
+    #         om2.MGlobal.setActiveSelectionList(vtcs_to_select)
 
-    def select_stored_vertices(self):
-        if len(self.vtcs_selection["indices"]) == 0:
-            log.warning("No vertex selection stored")
-        else:
-            vtcs_to_select = om2.MSelectionList()
-            MItVtx = om2.MItMeshVertex(self.vtcs_selection["objs_path"][0])
-            while not MItVtx.isDone():
-                if MItVtx.index() in self.vtcs_selection["indices"]:
-                    vtcs_to_select.add(
-                        (self.vtcs_selection["objs_path"][0], MItVtx.currentItem())
-                    )
-                MItVtx.next()
-            om2.MGlobal.setActiveSelectionList(vtcs_to_select)
-
-    def select_non_mirrored_vertices(self):
-        if len(self.non_mirrored_vtcs) == 0:
-            log.info("Model is symmetrical, no vertices to select")
-        else:
-            vtcs_to_select = om2.MSelectionList()
-            MItVtx = om2.MItMeshVertex(self.base_table["objs_path"])
-            while not MItVtx.isDone():
-                if MItVtx.index() in self.non_mirrored_vtcs:
-                    vtcs_to_select.add(
-                        (self.base_table["objs_path"], MItVtx.currentItem())
-                    )
-                MItVtx.next()
-            om2.MGlobal.setActiveSelectionList(vtcs_to_select)
-
-    @staticmethod
     def revert_to_base(
+        self,
         base_table,
         current_table,
         sel_vtcs_idcs=(),
@@ -290,7 +291,7 @@ class MeshModifier(object):
         :type base_table: sym_mesh.table.GeometryTable
 
         :param current_table: positions of the points of the current mesh
-        :type current_table: maya.api.OpenMaya.MPointArray
+        :type current_table: sym_mesh.table.GeometryTable
 
         :param sel_vtcs_idcs: indices of the selected points on the target mesh
         :type sel_vtcs_idcs: maya.api.OpenMaya.MIntArray
@@ -336,10 +337,14 @@ class MeshModifier(object):
 
         # Modify points position using the new coordinates
         tgt_mesh_functionset.setPoints(destination_table, space)
+        last_action = {
+            "objs_path": current_table.dag_path.getPath(),
+            "points_pos": current_point_array,
+        }
+        self.undo_queue.append(last_action)
 
-    # TODO : this needs to be tested
-    @staticmethod
     def symmetrize(
+        self,
         base_table,
         current_table,
         sel_vtcs_idcs=(),
@@ -414,8 +419,20 @@ class MeshModifier(object):
         # Modify points position using the new coordinates
         tgt_mesh.setPoints(destination_point_array, space)
 
-    @staticmethod
-    def bake_difference(base_tbl, tgt_tbl, sel_vtcs_idcs=(), target_dag_path=None, space=om2.MSpace.kObject):
+        last_action = {
+            "objs_path": current_table.dag_path.getPath(),
+            "points_pos": current_point_array,
+        }
+        self.undo_queue.append(last_action)
+
+    def bake_difference(
+        self,
+        base_tbl,
+        tgt_tbl,
+        sel_vtcs_idcs=(),
+        target_dag_path=None,
+        space=om2.MSpace.kObject,
+    ):
         """
         Bake the difference between 2 mesh on a list of vertices on a selection
         of meshes.
@@ -440,7 +457,7 @@ class MeshModifier(object):
 
         # Create new table for destination position
         destination_table = om2.MPointArray()
-        current_tbl = get_selected_mesh_points(target_dag_path)
+        current_point_array = get_selected_mesh_points(target_dag_path)
         target_point_array = tgt_tbl.point_array
         base_point_array = base_tbl.point_array
 
@@ -452,12 +469,20 @@ class MeshModifier(object):
             # If the current point is also in selection
             if i in sel_vtcs_idcs or sel_vtcs_idcs.__len__() == 0:
                 # Modify new position
-                destination_table.append(current_tbl[i] + (target_point_array[i] - base_point_array[i]))
+                destination_table.append(
+                    current_point_array[i]
+                    + (target_point_array[i] - base_point_array[i])
+                )
             # If the current point is not selected
             else:
                 # Do nothing
-                destination_table.append(current_tbl[i])
+                destination_table.append(current_point_array[i])
 
         # Modify points position using the new coordinates
         tgt_mesh.setPoints(destination_table, space)
 
+        last_action = {
+            "objs_path": target_dag_path.getPath(),
+            "points_pos": current_point_array,
+        }
+        self.undo_queue.append(last_action)
