@@ -302,7 +302,7 @@ class MeshModifier(object):
         self,
         base_table,
         current_table,
-        sel_vtcs_idcs=(),
+        selected_vertices_indices=(),
         percentage=100,
         space=om2.MSpace.kObject,
     ):
@@ -315,8 +315,8 @@ class MeshModifier(object):
         :param current_table: positions of the points of the current mesh
         :type current_table: sym_mesh.table.GeometryTable
 
-        :param sel_vtcs_idcs: indices of the selected points on the target mesh
-        :type sel_vtcs_idcs: maya.api.OpenMaya.MIntArray
+        :param selected_vertices_indices: indices of the selected points on the target mesh
+        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
 
         :param percentage: percentage used for the revert to base function. This
         is a value from 0 to 100, a value of 100 means we're reverting the
@@ -343,7 +343,7 @@ class MeshModifier(object):
         for i in range(base_point_array.__len__()):
             log.info(i)
             # If the current point is also in selection
-            if i in sel_vtcs_idcs or sel_vtcs_idcs.__len__() == 0:
+            if i in selected_vertices_indices or selected_vertices_indices.__len__() == 0:
                 # Modify new position
                 base_position = base_point_array[i]
                 new_position = base_position + (
@@ -369,7 +369,7 @@ class MeshModifier(object):
         self,
         base_table,
         current_table,
-        sel_vtcs_idcs=(),
+        selected_vertices_indices=(),
         percentage=100,
         space=om2.MSpace.kObject,
     ):
@@ -382,8 +382,8 @@ class MeshModifier(object):
         :param current_table: positions of the points of the current mesh
         :type current_table: sym_mesh.table.GeometryTable
 
-        :param sel_vtcs_idcs: indices of the selected points on the target mesh
-        :type sel_vtcs_idcs: maya.api.OpenMaya.MIntArray
+        :param selected_vertices_indices: indices of the selected points on the target mesh
+        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
 
         :param percentage: percentage used for the revert to base function
         :type percentage: int
@@ -411,7 +411,7 @@ class MeshModifier(object):
             # If the current point is also in selection
             current_position = symmetry_position = current_point_array[i]
             if (
-                i in sel_vtcs_idcs or sel_vtcs_idcs.__len__() == 0
+                    i in selected_vertices_indices or selected_vertices_indices.__len__() == 0
             ) and i in symmetry_table:
                 # Modify new position
                 source_index = symmetry_table[i]
@@ -448,9 +448,9 @@ class MeshModifier(object):
 
     def bake_difference(
         self,
-        base_tbl,
-        tgt_tbl,
-        sel_vtcs_idcs=(),
+        base_table,
+        target_table,
+        selected_vertices_indices=(),
         target_dag_path=None,
         space=om2.MSpace.kObject,
     ):
@@ -458,14 +458,14 @@ class MeshModifier(object):
         Bake the difference between 2 mesh on a list of vertices on a selection
         of meshes.
 
-        :param base_tbl: GeometryTable of the base geometry
-        :type base_tbl: sym_mesh.table.GeometryTable
+        :param base_table: GeometryTable of the base geometry
+        :type base_table: sym_mesh.table.GeometryTable
 
-        :param tgt_tbl: GeometryTable of the target geometry
-        :type tgt_tbl: sym_mesh.table.GeometryTable
+        :param target_table: GeometryTable of the target geometry
+        :type target_table: sym_mesh.table.GeometryTable
 
-        :param sel_vtcs_idcs: indices of the selected points on the target mesh
-        :type sel_vtcs_idcs: maya.api.OpenMaya.MIntArray
+        :param selected_vertices_indices: indices of the selected points on the target mesh
+        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
 
         :param target_dag_path: MDagPath of the target
         :type target_dag_path: maya.api.OpenMaya.MDagPath or str
@@ -479,8 +479,8 @@ class MeshModifier(object):
         # Create new table for destination position
         destination_table = om2.MPointArray()
         current_point_array = get_selected_mesh_points(target_dag_path)
-        target_point_array = tgt_tbl.point_array
-        base_point_array = base_tbl.point_array
+        target_point_array = target_table.point_array
+        base_point_array = base_table.point_array
 
         # Init MFnMesh
         tgt_mesh_functionset = om2.MFnMesh(target_dag_path)
@@ -488,7 +488,7 @@ class MeshModifier(object):
         # Loop in MPointArray
         for i in range(len(base_point_array)):
             # If the current point is also in selection
-            if i in sel_vtcs_idcs or sel_vtcs_idcs.__len__() == 0:
+            if i in selected_vertices_indices or selected_vertices_indices.__len__() == 0:
                 # Modify new position
                 destination_table.append(
                     current_point_array[i]
@@ -524,11 +524,12 @@ class MeshModifier(object):
         target_name = target_table.dag_path.fullPathName().split("|")[-1]
 
         x_dag_path = self.duplicate_mesh(base_dag_path, target_name, suffix="x")
-        y_dag_path = self.duplicate_mesh(base_dag_path, target_name, suffix="y")
-        z_dag_path = self.duplicate_mesh(base_dag_path, target_name, suffix="z")
-
         x_path = x_dag_path.fullPathName()
+
+        y_dag_path = self.duplicate_mesh(base_dag_path, target_name, suffix="y")
         y_path = y_dag_path.fullPathName()
+
+        z_dag_path = self.duplicate_mesh(base_dag_path, target_name, suffix="z")
         z_path = z_dag_path.fullPathName()
 
         return x_path, y_path, z_path
