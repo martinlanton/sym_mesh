@@ -166,6 +166,25 @@ class TestBakeDeltas(common.BaseTest):
         self.assertEqual(expected, result)
 
 
+class TestExtractAxes(common.BaseTest):
+    def test_extract_axes_creates_geometry(self):
+        target_table = table.GeometryTable(self.asym_cube)
+        base_table = table.GeometryTable(self.sym_cube)
+        mesh_modifier = mesh_modification.MeshModifier()
+        extracted_shapes = mesh_modifier.extract_axes(base_table=base_table, target_table=target_table)
+
+        self.assertTrue(mc.objExists(extracted_shapes[0]))
+        self.assertTrue(mc.objExists(extracted_shapes[1]))
+        self.assertTrue(mc.objExists(extracted_shapes[2]))
+        self.assertEqual(3, len(extracted_shapes))
+        self.assertIsInstance(extracted_shapes[0], str)
+        self.assertIsInstance(extracted_shapes[1], str)
+        self.assertIsInstance(extracted_shapes[2], str)
+        self.assertEqual("|{}_x".format(self.asym_cube), extracted_shapes[0])
+        self.assertEqual("|{}_y".format(self.asym_cube), extracted_shapes[1])
+        self.assertEqual("|{}_z".format(self.asym_cube), extracted_shapes[2])
+
+
 class TestUndo(common.BaseTest):
     def test_undo_revert_to_base(self):
         """Test that undo after revert to base works properly."""

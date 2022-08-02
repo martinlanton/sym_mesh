@@ -483,7 +483,7 @@ class MeshModifier(object):
         base_point_array = base_tbl.point_array
 
         # Init MFnMesh
-        tgt_mesh = om2.MFnMesh(target_dag_path)
+        tgt_mesh_functionset = om2.MFnMesh(target_dag_path)
 
         # Loop in MPointArray
         for i in range(len(base_point_array)):
@@ -500,10 +500,63 @@ class MeshModifier(object):
                 destination_table.append(current_point_array[i])
 
         # Modify points position using the new coordinates
-        tgt_mesh.setPoints(destination_table, space)
+        tgt_mesh_functionset.setPoints(destination_table, space)
 
         last_action = {
             "objs_path": target_dag_path.getPath(),
             "points_pos": current_point_array,
         }
         self.undo_queue.append(last_action)
+
+    def extract_axes(self, base_table, target_table):
+        """Extract deltas between target table and base table on a new geometry.
+
+        :param base_table:
+        :type base_table: sym_mesh.table.GeometryTable
+
+        :param target_table:
+        :type target_table: sym_mesh.table.GeometryTable
+
+        :return: names of the newly created geometries
+        :rtype: str, str, str
+        """
+        base_dag_path = base_table.dag_path
+        target_name = target_table.dag_path.fullPathName().split("|")[-1]
+
+        base_mesh_functionset = om2.MFnMesh(base_dag_path)
+        x_mesh = base_mesh_functionset.duplicate()
+        y_mesh = base_mesh_functionset.duplicate()
+        z_mesh = base_mesh_functionset.duplicate()
+
+        x_functionset = om2.MFnDagNode(x_mesh)
+        y_functionset = om2.MFnDagNode(y_mesh)
+        z_functionset = om2.MFnDagNode(z_mesh)
+
+        x_dag_path = x_functionset.getPath()
+        y_dag_path = y_functionset.getPath()
+        z_dag_path = z_functionset.getPath()
+
+        new_x_path = self.get_new_name(target_name, x_dag_path, suffix="x")
+        new_y_path = self.get_new_name(target_name, y_dag_path, suffix="y")
+        new_z_path = self.get_new_name(target_name, z_dag_path, suffix="z")
+
+        dag_modifier = om2.MDagModifier()
+        dag_modifier.renameNode(x_mesh, new_x_path)
+        dag_modifier.renameNode(y_mesh, new_y_path)
+        dag_modifier.renameNode(z_mesh, new_z_path)
+        dag_modifier.doIt()
+
+        x_path = x_dag_path.fullPathName()
+        y_path = y_dag_path.fullPathName()
+        z_path = z_dag_path.fullPathName()
+
+        return x_path, y_path, z_path
+
+    def get_new_name(self, target_name, dag_path, suffix=""):
+        path = dag_path.fullPathName()
+        new_path = path.split("|")[:-1]
+        new_path.append("{}_{}".format(target_name, suffix))
+        new_path = "|".join(new_path)
+        return new_path
+
+
