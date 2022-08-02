@@ -157,7 +157,9 @@ class TestBakeDeltas(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.bake_difference(sym_table, geo_table, target_dag_path=self.other_cube)
+        mesh_modifier.bake_difference(
+            sym_table, geo_table, target_dag_path=self.other_cube
+        )
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
@@ -171,7 +173,9 @@ class TestExtractAxes(common.BaseTest):
         target_table = table.GeometryTable(self.asym_cube)
         base_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
-        extracted_shapes = mesh_modifier.extract_axes(base_table=base_table, target_table=target_table)
+        extracted_shapes = mesh_modifier.extract_axes(
+            base_table=base_table, target_table=target_table
+        )
 
         self.assertTrue(mc.objExists(extracted_shapes[0]))
         self.assertTrue(mc.objExists(extracted_shapes[1]))
@@ -242,7 +246,9 @@ class TestUndo(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.bake_difference(sym_table, geo_table, target_dag_path=self.other_cube)
+        mesh_modifier.bake_difference(
+            sym_table, geo_table, target_dag_path=self.other_cube
+        )
         mesh_modifier.undo()
 
         result = [
@@ -347,7 +353,9 @@ class TestRedo(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.bake_difference(sym_table, geo_table, target_dag_path=self.other_cube)
+        mesh_modifier.bake_difference(
+            sym_table, geo_table, target_dag_path=self.other_cube
+        )
         mesh_modifier.undo()
         mesh_modifier.redo()
 

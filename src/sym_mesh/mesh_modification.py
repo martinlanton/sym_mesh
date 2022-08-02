@@ -343,7 +343,10 @@ class MeshModifier(object):
         for i in range(base_point_array.__len__()):
             log.info(i)
             # If the current point is also in selection
-            if i in selected_vertices_indices or selected_vertices_indices.__len__() == 0:
+            if (
+                i in selected_vertices_indices
+                or selected_vertices_indices.__len__() == 0
+            ):
                 # Modify new position
                 base_position = base_point_array[i]
                 new_position = base_position + (
@@ -411,7 +414,8 @@ class MeshModifier(object):
             # If the current point is also in selection
             current_position = symmetry_position = current_point_array[i]
             if (
-                    i in selected_vertices_indices or selected_vertices_indices.__len__() == 0
+                i in selected_vertices_indices
+                or selected_vertices_indices.__len__() == 0
             ) and i in symmetry_table:
                 # Modify new position
                 source_index = symmetry_table[i]
@@ -488,7 +492,10 @@ class MeshModifier(object):
         # Loop in MPointArray
         for i in range(len(base_point_array)):
             # If the current point is also in selection
-            if i in selected_vertices_indices or selected_vertices_indices.__len__() == 0:
+            if (
+                i in selected_vertices_indices
+                or selected_vertices_indices.__len__() == 0
+            ):
                 # Modify new position
                 destination_table.append(
                     current_point_array[i]
@@ -580,5 +587,3 @@ class MeshModifier(object):
         new_path.append("{}_{}".format(target_name, suffix))
         new_path = "|".join(new_path)
         return new_path
-
-
