@@ -22,6 +22,10 @@ class BaseTest(unittest.TestCase):
         for vtx in [1, 3, 5, 7]:
             vtx_name = "{}.vtx[{}]".format(self.asym_cube, vtx)
             mc.xform(vtx_name, relative=True, translation=[0, 1, 0])
+        self.test_extract_axes_cube = mc.polyCube(name="axes_cube", constructionHistory=False)[0]
+        for vtx in range(8):
+            vtx_name = "{}.vtx[{}]".format(self.test_extract_axes_cube, vtx)
+            mc.xform(vtx_name, relative=True, translation=[1, 1, 1])
 
 
 def get_src_folder_path():

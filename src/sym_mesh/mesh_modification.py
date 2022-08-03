@@ -529,17 +529,32 @@ class MeshModifier(object):
         """
         base_dag_path = base_table.dag_path
         target_name = target_table.dag_path.fullPathName().split("|")[-1]
+        base_point_array = base_table.point_array
+        target_point_array = target_table.point_array
 
-        x_dag_path = self.duplicate_mesh(base_dag_path, target_name, suffix="x")
-        x_path = x_dag_path.fullPathName()
+        pathes = list()
 
-        y_dag_path = self.duplicate_mesh(base_dag_path, target_name, suffix="y")
-        y_path = y_dag_path.fullPathName()
+        for i, axis in enumerate(["x", "y", "z"]):
+            dag_path = self.duplicate_mesh(base_dag_path, target_name, suffix=axis)
+            path = dag_path.fullPathName()
+            pathes.append(path)
 
-        z_dag_path = self.duplicate_mesh(base_dag_path, target_name, suffix="z")
-        z_path = z_dag_path.fullPathName()
+            # # Init MFnMesh
+            # destination_table = om2.MPointArray()
+            # tgt_mesh_functionset = om2.MFnMesh(dag_path)
+            #
+            # # Loop in MPointArray
+            # for j in range(len(base_point_array)):
+            #     base_point = base_point_array[j]
+            #     target_point = target_point_array[j]
+            #     new_point = list(base_point)
+            #     new_point[i] = target_point[i]
+            #     destination_table.append(new_point)
+            #
+            # # Modify points position using the new coordinates
+            # tgt_mesh_functionset.setPoints(destination_table, om2.MSpace.kObject)
 
-        return x_path, y_path, z_path
+        return pathes
 
     def duplicate_mesh(self, dag_path, name, suffix=""):
         """Duplicate the mesh at the selected dag path and rename it with the specified name.

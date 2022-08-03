@@ -170,7 +170,7 @@ class TestBakeDeltas(common.BaseTest):
 
 class TestExtractAxes(common.BaseTest):
     def test_extract_axes_creates_geometry(self):
-        target_table = table.GeometryTable(self.asym_cube)
+        target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
         extracted_shapes = mesh_modifier.extract_axes(
@@ -181,9 +181,13 @@ class TestExtractAxes(common.BaseTest):
         self.assertTrue(mc.objExists(extracted_shapes[1]))
         self.assertTrue(mc.objExists(extracted_shapes[2]))
         self.assertEqual(3, len(extracted_shapes))
-        self.assertEqual("|{}_x".format(self.asym_cube), extracted_shapes[0])
-        self.assertEqual("|{}_y".format(self.asym_cube), extracted_shapes[1])
-        self.assertEqual("|{}_z".format(self.asym_cube), extracted_shapes[2])
+        self.assertEqual("|{}_x".format(self.test_extract_axes_cube), extracted_shapes[0])
+        self.assertEqual("|{}_y".format(self.test_extract_axes_cube), extracted_shapes[1])
+        self.assertEqual("|{}_z".format(self.test_extract_axes_cube), extracted_shapes[2])
+
+    def test_extract_axes_geometries_point_positions(self):
+        # TODO : create this test
+        pass
 
 
 class TestUndo(common.BaseTest):
