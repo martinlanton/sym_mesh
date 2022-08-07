@@ -539,20 +539,20 @@ class MeshModifier(object):
             path = dag_path.fullPathName()
             pathes.append(path)
 
-            # # Init MFnMesh
-            # destination_table = om2.MPointArray()
-            # tgt_mesh_functionset = om2.MFnMesh(dag_path)
-            #
-            # # Loop in MPointArray
-            # for j in range(len(base_point_array)):
-            #     base_point = base_point_array[j]
-            #     target_point = target_point_array[j]
-            #     new_point = list(base_point)
-            #     new_point[i] = target_point[i]
-            #     destination_table.append(new_point)
-            #
-            # # Modify points position using the new coordinates
-            # tgt_mesh_functionset.setPoints(destination_table, om2.MSpace.kObject)
+            # Init MFnMesh
+            destination_table = om2.MPointArray()
+            tgt_mesh_functionset = om2.MFnMesh(dag_path)
+
+            # Loop in MPointArray
+            for j in range(len(base_point_array)):
+                base_point = base_point_array[j]
+                target_point = target_point_array[j]
+                new_point = list(base_point)
+                new_point[i] = target_point[i]
+                destination_table.append(new_point)
+
+            # Modify points position using the new coordinates
+            tgt_mesh_functionset.setPoints(destination_table, om2.MSpace.kObject)
 
         return pathes
 

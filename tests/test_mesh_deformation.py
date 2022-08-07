@@ -193,6 +193,14 @@ class TestExtractAxes(common.BaseTest):
 
     def test_extract_axes_geometries_point_positions(self):
         # TODO : create this test
+        vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
+        
+        target_table = table.GeometryTable(self.test_extract_axes_cube)
+        base_table = table.GeometryTable(self.sym_cube)
+        mesh_modifier = mesh_modification.MeshModifier()
+        extracted_shapes = mesh_modifier.extract_axes(
+            base_table=base_table, target_table=target_table
+        )
         expected_x = [
             [0.5, -0.5, 0.5],
             [1.5, -0.5, 0.5],
@@ -224,6 +232,23 @@ class TestExtractAxes(common.BaseTest):
             [0.5, -0.5, 0.5],
         ]
 
+        result_x = [
+            mc.pointPosition("{}.vtx[{}]".format(extracted_shapes[0], vtx), world=True)
+            for vtx in range(vtx_number)
+        ]
+        result_y = [
+            mc.pointPosition("{}.vtx[{}]".format(extracted_shapes[1], vtx), world=True)
+            for vtx in range(vtx_number)
+        ]
+        result_z = [
+            mc.pointPosition("{}.vtx[{}]".format(extracted_shapes[2], vtx), world=True)
+            for vtx in range(vtx_number)
+        ]
+
+        self.assertEqual(expected_x, result_x)
+        self.assertEqual(expected_y, result_y)
+        self.assertEqual(expected_z, result_z)
+
     base = [
         (-0.5, -0.5, 0.5),
         (0.5, -0.5, 0.5),
@@ -234,8 +259,6 @@ class TestExtractAxes(common.BaseTest):
         (-0.5, -0.5, -0.5),
         (0.5, -0.5, -0.5),
     ]
-
-
 
 
 class TestUndo(common.BaseTest):
