@@ -341,7 +341,6 @@ class MeshModifier(object):
 
         # Loop in MPointArray
         for i in range(base_point_array.__len__()):
-            log.info(i)
             # If the current point is also in selection
             if (
                 i in selected_vertices_indices
@@ -353,7 +352,7 @@ class MeshModifier(object):
                     (current_point_array[i] - base_position)
                     * ((100 - percentage) / 100.00)
                 )
-                log.info("New position : %s", new_position)
+                log.debug("New position : %s", new_position)
                 destination_table.append(new_position)
             # If the current point is not selected
             else:
@@ -423,7 +422,7 @@ class MeshModifier(object):
                 symmetry_position = list(target_vertex_position)
                 symmetry_position[axis_index] = -target_vertex_position[axis_index]
                 symmetry_position = om2.MPoint(symmetry_position)
-                log.info(
+                log.debug(
                     "Mirroring position of vtx %s from vtx %s. Current position : %s, target position : %s",
                     i,
                     source_index,
@@ -434,9 +433,9 @@ class MeshModifier(object):
                     (symmetry_position - current_position) * (percentage / 100.00)
                 )
             else:
-                log.info("Not mirroring the position of vtx %s", i)
+                log.debug("Not mirroring the position of vtx %s", i)
 
-            log.info(
+            log.debug(
                 "Modifying position from %s to %s", current_position, symmetry_position
             )
             destination_point_array.append(symmetry_position)
