@@ -111,18 +111,6 @@ class BakeDifferenceCommand(object):
         target_dag_path=None,
         space=om2.MSpace.kObject,
     ):
-        self.result = self.bake_difference(
-            base_table, target_table, selected_vertices_indices, target_dag_path, space
-        )
-
-    def bake_difference(
-        self,
-        base_table,
-        target_table,
-        selected_vertices_indices=(),
-        target_dag_path=None,
-        space=om2.MSpace.kObject,
-    ):
         """
         Bake the difference between 2 mesh on a list of vertices on a selection
         of meshes.
@@ -142,12 +130,43 @@ class BakeDifferenceCommand(object):
         :param space: space in which operate the deformation (object or world)
         :type space: constant
         """
+        self.space = space
+        self.path = target_dag_path
+        self.current_point_array = get_selected_mesh_points(create_MDagPath(target_dag_path))
+        self.undo_action = self.current_point_array
+        self.result = self.bake_difference(
+            base_table, target_table, selected_vertices_indices, target_dag_path
+        )
+        self.redo_action = self.result
+
+    def bake_difference(
+        self,
+        base_table,
+        target_table,
+        selected_vertices_indices=(),
+        target_dag_path=None,
+    ):
+        """
+        Bake the difference between 2 mesh on a list of vertices on a selection
+        of meshes.
+
+        :param base_table: GeometryTable of the base geometry
+        :type base_table: sym_mesh.table.GeometryTable
+
+        :param target_table: GeometryTable of the target geometry
+        :type target_table: sym_mesh.table.GeometryTable
+
+        :param selected_vertices_indices: indices of the selected points on the target mesh
+        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
+
+        :param target_dag_path: MDagPath of the target
+        :type target_dag_path: maya.api.OpenMaya.MDagPath or str
+        """
         if not isinstance(target_dag_path, om2.MDagPath):
             target_dag_path = create_MDagPath(target_dag_path)
 
         # Create new table for destination position
         destination_table = om2.MPointArray()
-        current_point_array = get_selected_mesh_points(target_dag_path)
         target_point_array = target_table.point_array
         base_point_array = base_table.point_array
 
@@ -163,38 +182,32 @@ class BakeDifferenceCommand(object):
             ):
                 # Modify new position
                 destination_table.append(
-                    current_point_array[i]
+                    self.current_point_array[i]
                     + (target_point_array[i] - base_point_array[i])
                 )
             # If the current point is not selected
             else:
                 # Do nothing
-                destination_table.append(current_point_array[i])
+                destination_table.append(self.current_point_array[i])
 
         # Modify points position using the new coordinates
-        tgt_mesh_functionset.setPoints(destination_table, space)
+        tgt_mesh_functionset.setPoints(destination_table, self.space)
 
-        last_action = {
-            "objs_path": target_dag_path.getPath(),
-            "points_pos": current_point_array,
-        }
-        return last_action
+        return destination_table
+
+    def undo(self):
+        path = create_MDagPath(self.path)
+        tgt_mesh_functionset = om2.MFnMesh(path)
+        tgt_mesh_functionset.setPoints(self.undo_action, self.space)
+
+    def redo(self):
+        path = create_MDagPath(self.path)
+        tgt_mesh_functionset = om2.MFnMesh(path)
+        tgt_mesh_functionset.setPoints(self.redo_action, self.space)
 
 
 class SymmetrizeCommand(object):
     def __init__(
-        self,
-        base_table,
-        current_table,
-        selected_vertices_indices=(),
-        percentage=100,
-        space=om2.MSpace.kObject,
-    ):
-        self.result = self.symmetrize(
-            base_table, current_table, selected_vertices_indices, percentage, space
-        )
-
-    def symmetrize(
         self,
         base_table,
         current_table,
@@ -220,9 +233,40 @@ class SymmetrizeCommand(object):
         :param space: space in which operate the deformation (object or world)
         :type space: constant
         """
+        self.space = space
+        self.path = current_table.dag_path.getPath()
+        self.undo_action = current_table.point_array
+        self.result = self.symmetrize(
+            base_table, current_table, selected_vertices_indices, percentage
+        )
+        self.redo_action = self.result
+
+    def symmetrize(
+        self,
+        base_table,
+        current_table,
+        selected_vertices_indices=(),
+        percentage=100,
+    ):
+        """
+        Symmetrize selected vertices on the target mesh.
+
+        :param base_table: positions of the points of the base mesh
+        :type base_table: sym_mesh.table.GeometryTable
+
+        :param current_table: positions of the points of the current mesh
+        :type current_table: sym_mesh.table.GeometryTable
+
+        :param selected_vertices_indices: indices of the selected points on the target mesh
+        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
+
+        :param percentage: percentage used for the revert to base function
+        :type percentage: int
+        """
         axis = base_table.axis
         axis_indices = {"x": 0, "y": 1, "z": 2}
         axis_index = axis_indices[axis]
+
         # Create new table for destination position
         destination_point_array = om2.MPointArray()
 
@@ -230,7 +274,7 @@ class SymmetrizeCommand(object):
         current_point_array = current_table.point_array
         base_point_array = base_table.point_array
         symmetry_table = base_table.symmetry_table[0]
-        log.info("Symmetry table is : %s", symmetry_table)
+        log.debug("Symmetry table is : %s", symmetry_table)
 
         # Init MFnMesh
         tgt_mesh = om2.MFnMesh(dag_path)
@@ -268,29 +312,23 @@ class SymmetrizeCommand(object):
             destination_point_array.append(symmetry_position)
 
         # Modify points position using the new coordinates
-        tgt_mesh.setPoints(destination_point_array, space)
+        tgt_mesh.setPoints(destination_point_array, self.space)
 
-        last_action = {
-            "objs_path": current_table.dag_path.getPath(),
-            "points_pos": current_point_array,
-        }
-        return last_action
+        return destination_point_array
+
+    def undo(self):
+        path = create_MDagPath(self.path)
+        tgt_mesh_functionset = om2.MFnMesh(path)
+        tgt_mesh_functionset.setPoints(self.undo_action, self.space)
+
+    def redo(self):
+        path = create_MDagPath(self.path)
+        tgt_mesh_functionset = om2.MFnMesh(path)
+        tgt_mesh_functionset.setPoints(self.redo_action, self.space)
 
 
 class RevertToBaseCommand(object):
     def __init__(
-        self,
-        base_table,
-        current_table,
-        selected_vertices_indices=(),
-        percentage=100,
-        space=om2.MSpace.kObject,
-    ):
-        self.result = self.revert_to_base(
-            base_table, current_table, selected_vertices_indices, percentage, space
-        )
-
-    def revert_to_base(
         self,
         base_table,
         current_table,
@@ -319,10 +357,43 @@ class RevertToBaseCommand(object):
         :param space: space in which operate the deformation (object or world)
         :type space: constant
         """
+        self.space = space
+        self.path = current_table.dag_path.getPath()
+        self.undo_action = current_table.point_array
+        self.result = self.revert_to_base(
+            base_table, current_table, selected_vertices_indices, percentage
+        )
+        self.redo_action = self.result
+
+    def revert_to_base(
+        self,
+        base_table,
+        current_table,
+        selected_vertices_indices=(),
+        percentage=100,
+    ):
+        """
+        Revert selected vertices on the target mesh to the base position.
+
+        :param base_table: positions of the points of the base mesh
+        :type base_table: sym_mesh.table.GeometryTable
+
+        :param current_table: positions of the points of the current mesh
+        :type current_table: sym_mesh.table.GeometryTable
+
+        :param selected_vertices_indices: indices of the selected points on the target mesh
+        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
+
+        :param percentage: percentage used for the revert to base function. This
+        is a value from 0 to 100, a value of 100 means we're reverting the
+        position of the base, a value of 0 means we're staying at the current
+        position.
+        :type percentage: int
+        """
         base_point_array = base_table.point_array
-        log.info("base_point_array :\n%s", pformat(base_point_array))
+        log.debug("base_point_array :\n%s", pformat(base_point_array))
         current_point_array = current_table.point_array
-        log.info("current_point_array :\n%s", pformat(current_point_array))
+        log.debug("current_point_array :\n%s", pformat(current_point_array))
         dag_path = current_table.dag_path
 
         # Create new table for destination position
@@ -352,9 +423,16 @@ class RevertToBaseCommand(object):
                 destination_table.append(current_point_array[i])
 
         # Modify points position using the new coordinates
-        tgt_mesh_functionset.setPoints(destination_table, space)
-        last_action = {
-            "objs_path": current_table.dag_path.getPath(),
-            "points_pos": current_point_array,
-        }
-        return last_action
+        tgt_mesh_functionset.setPoints(destination_table, self.space)
+
+        return destination_table
+
+    def undo(self):
+        path = create_MDagPath(self.path)
+        tgt_mesh_functionset = om2.MFnMesh(path)
+        tgt_mesh_functionset.setPoints(self.undo_action, self.space)
+
+    def redo(self):
+        path = create_MDagPath(self.path)
+        tgt_mesh_functionset = om2.MFnMesh(path)
+        tgt_mesh_functionset.setPoints(self.redo_action, self.space)

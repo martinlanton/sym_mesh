@@ -78,17 +78,8 @@ class MeshModifier(object):
             log.error("No action action to undo.")
             return
 
-        dag_path = create_MDagPath(last_action["objs_path"])
-        current_point_array = get_selected_mesh_points(dag_path)
-
-        tgt_mesh = om2.MFnMesh(dag_path)
-        tgt_mesh.setPoints(last_action["points_pos"], om2.MSpace.kObject)
-
-        redo_action = {
-            "objs_path": dag_path.getPath(),
-            "points_pos": current_point_array,
-        }
-        self.redo_queue.append(redo_action)
+        last_action.undo()
+        self.redo_queue.append(last_action)
 
     def redo(self):
         """Redo the last move stored in the redo queue."""
@@ -98,17 +89,8 @@ class MeshModifier(object):
             log.error("No action action to redo.")
             return
 
-        dag_path = create_MDagPath(last_action["objs_path"])
-        current_point_array = get_selected_mesh_points(dag_path)
-
-        tgt_mesh = om2.MFnMesh(dag_path)
-        tgt_mesh.setPoints(last_action["points_pos"], om2.MSpace.kObject)
-
-        undo_action = {
-            "objs_path": dag_path.getPath(),
-            "points_pos": current_point_array,
-        }
-        self.undo_queue.append(undo_action)
+        last_action.redo()
+        self.undo_queue.append(last_action)
 
     # def revert_selected_to_base(self, revert_value=None):
     #     """
@@ -331,8 +313,7 @@ class MeshModifier(object):
         cmd = commands.RevertToBaseCommand(
             base_table, current_table, selected_vertices_indices, percentage, space
         )
-        last_action = cmd.result
-        self.undo_queue.append(last_action)
+        self.undo_queue.append(cmd)
 
     def symmetrize(
         self,
@@ -363,8 +344,7 @@ class MeshModifier(object):
         cmd = commands.SymmetrizeCommand(
             base_table, current_table, selected_vertices_indices, percentage, space
         )
-        last_action = cmd.result
-        self.undo_queue.append(last_action)
+        self.undo_queue.append(cmd)
 
     def bake_difference(
         self,
@@ -396,8 +376,7 @@ class MeshModifier(object):
         cmd = commands.BakeDifferenceCommand(
             base_table, target_table, selected_vertices_indices, target_dag_path, space
         )
-        last_action = cmd.result
-        self.undo_queue.append(last_action)
+        self.undo_queue.append(cmd)
 
     def extract_axes(self, base_table, target_table):
         """Extract deltas between target table and base table on a new geometry.
