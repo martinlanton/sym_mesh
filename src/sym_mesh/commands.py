@@ -52,6 +52,9 @@ class ExtractAxesCommand(object):
             # Modify points position using the new coordinates
             tgt_mesh_functionset.setPoints(destination_table, om2.MSpace.kObject)
 
+        dag_path = self.duplicate_mesh(base_dag_path, target_name, suffix="extracted")
+        pathes.append(dag_path.fullPathName())
+
         return pathes
 
     def duplicate_mesh(self, dag_path, name, suffix=""):

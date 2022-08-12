@@ -180,7 +180,7 @@ class TestExtractAxes(common.BaseTest):
         self.assertTrue(mc.objExists(extracted_shapes[0]))
         self.assertTrue(mc.objExists(extracted_shapes[1]))
         self.assertTrue(mc.objExists(extracted_shapes[2]))
-        self.assertEqual(3, len(extracted_shapes))
+        self.assertEqual(4, len(extracted_shapes))
         self.assertEqual(
             "|{}_x".format(self.test_extract_axes_cube), extracted_shapes[0]
         )
@@ -190,6 +190,7 @@ class TestExtractAxes(common.BaseTest):
         self.assertEqual(
             "|{}_z".format(self.test_extract_axes_cube), extracted_shapes[2]
         )
+        self.assertEqual("|{}_extracted".format(self.test_extract_axes_cube), extracted_shapes[3])
 
     def test_extract_axes_geometries_point_positions(self):
         # TODO : create this test
