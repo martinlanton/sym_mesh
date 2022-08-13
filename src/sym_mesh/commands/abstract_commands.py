@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 
 @six.add_metaclass(abc.ABCMeta)
-class AbstractDeformationCommand(metaclass=abc.ABCMeta):
+class AbstractDeformationCommand():
     def __init__(
         self,
         base_table,
