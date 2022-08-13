@@ -1,6 +1,7 @@
-from abc import ABCMeta
+import abc
 import logging
 from pprint import pformat
+import six
 
 from maya.api import OpenMaya as om2
 
@@ -9,7 +10,8 @@ from sym_mesh.selection import get_selected_mesh_points
 log = logging.getLogger(__name__)
 
 
-class AbstractDeformationCommand(metaclass=ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class AbstractDeformationCommand(metaclass=abc.ABCMeta):
     def __init__(
         self,
         base_table,
@@ -79,5 +81,6 @@ class AbstractDeformationCommand(metaclass=ABCMeta):
         tgt_mesh_functionset = om2.MFnMesh(self.target_dag_path)
         tgt_mesh_functionset.setPoints(self.redo_action, self.space)
 
+    @abc.abstractmethod
     def compute_point_position(self, base_point_array, target_point_array):
         raise NotImplementedError
