@@ -23,7 +23,7 @@ class TestRevertToBase(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
         mesh_modifier.revert_to_base(
-            base_table=sym_table, current_table=geo_table, percentage=0
+            base_table=sym_table, target_table=geo_table, percentage=0
         )
 
         result = [
@@ -38,7 +38,7 @@ class TestRevertToBase(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
         mesh_modifier.revert_to_base(
-            base_table=sym_table, current_table=geo_table, percentage=100
+            base_table=sym_table, target_table=geo_table, percentage=100
         )
 
         vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
@@ -60,7 +60,7 @@ class TestSymmetry(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, current_table=geo_table)
+        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table)
 
         vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
 
@@ -89,7 +89,7 @@ class TestSymmetry(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="negative")
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, current_table=geo_table)
+        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table)
 
         vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
 
@@ -118,7 +118,7 @@ class TestSymmetry(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="negative")
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, current_table=geo_table)
+        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table)
 
         vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
 
@@ -296,7 +296,7 @@ class TestUndo(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
         mesh_modifier.revert_to_base(
-            base_table=sym_table, current_table=asym_table, percentage=100
+            base_table=sym_table, target_table=asym_table, percentage=100
         )
         mesh_modifier.undo()
 
@@ -320,7 +320,7 @@ class TestUndo(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, current_table=geo_table)
+        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table)
         mesh_modifier.undo()
 
         result = [
@@ -368,7 +368,7 @@ class TestRedo(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
         mesh_modifier.revert_to_base(
-            base_table=sym_table, current_table=asym_table, percentage=100
+            base_table=sym_table, target_table=asym_table, percentage=100
         )
         mesh_modifier.undo()
         mesh_modifier.redo()
@@ -394,7 +394,7 @@ class TestRedo(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
         mesh_modifier.revert_to_base(
-            base_table=sym_table, current_table=asym_table, percentage=100
+            base_table=sym_table, target_table=asym_table, percentage=100
         )
         mesh_modifier.undo()
         mesh_modifier.redo()
@@ -426,7 +426,7 @@ class TestRedo(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, current_table=geo_table)
+        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table)
         mesh_modifier.undo()
         mesh_modifier.redo()
 

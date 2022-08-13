@@ -1,10 +1,9 @@
 import maya.api.OpenMaya as om2
 import logging
-from pprint import pformat
 
-from sym_mesh.dag_path import create_MDagPath
-from sym_mesh.selection import get_selected_mesh_points, get_sel_vtces_idcs
+from sym_mesh.selection import get_sel_vtces_idcs
 from sym_mesh import commands
+
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
@@ -281,76 +280,12 @@ class MeshModifier(object):
     #             MItVtx.next()
     #         om2.MGlobal.setActiveSelectionList(vtcs_to_select)
 
-    def revert_to_base(
-        self,
-        base_table,
-        current_table,
-        selected_vertices_indices=(),
-        percentage=100,
-        space=om2.MSpace.kObject,
-    ):
-        """
-        Revert selected vertices on the target mesh to the base position.
-
-        :param base_table: positions of the points of the base mesh
-        :type base_table: sym_mesh.table.GeometryTable
-
-        :param current_table: positions of the points of the current mesh
-        :type current_table: sym_mesh.table.GeometryTable
-
-        :param selected_vertices_indices: indices of the selected points on the target mesh
-        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
-
-        :param percentage: percentage used for the revert to base function. This
-        is a value from 0 to 100, a value of 100 means we're reverting the
-        position of the base, a value of 0 means we're staying at the current
-        position.
-        :type percentage: int
-
-        :param space: space in which operate the deformation (object or world)
-        :type space: constant
-        """
-        cmd = commands.RevertToBaseCommand(
-            base_table, current_table, selected_vertices_indices, percentage, space
-        )
-        self.undo_queue.append(cmd)
-
-    def symmetrize(
-        self,
-        base_table,
-        current_table,
-        selected_vertices_indices=(),
-        percentage=100,
-        space=om2.MSpace.kObject,
-    ):
-        """
-        Symmetrize selected vertices on the target mesh.
-
-        :param base_table: positions of the points of the base mesh
-        :type base_table: sym_mesh.table.GeometryTable
-
-        :param current_table: positions of the points of the current mesh
-        :type current_table: sym_mesh.table.GeometryTable
-
-        :param selected_vertices_indices: indices of the selected points on the target mesh
-        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
-
-        :param percentage: percentage used for the revert to base function
-        :type percentage: int
-
-        :param space: space in which operate the deformation (object or world)
-        :type space: constant
-        """
-        cmd = commands.SymmetrizeCommand(
-            base_table, current_table, selected_vertices_indices, percentage, space
-        )
-        self.undo_queue.append(cmd)
-
     def bake_difference(
         self,
         base_table,
         target_table,
         selected_vertices_indices=(),
+        percentage=100,
         target_dag_path=None,
         space=om2.MSpace.kObject,
     ):
@@ -367,6 +302,12 @@ class MeshModifier(object):
         :param selected_vertices_indices: indices of the selected points on the target mesh
         :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
 
+        :param percentage: percentage used for the bake delta function. This
+        is a value from 0 to 100, a value of 100 means we're adding the full
+        delta between base and target to the destination meshes, a value of 0
+        means we're staying at the current position.
+        :type percentage: int
+
         :param target_dag_path: MDagPath of the target
         :type target_dag_path: maya.api.OpenMaya.MDagPath or str
 
@@ -374,7 +315,87 @@ class MeshModifier(object):
         :type space: constant
         """
         cmd = commands.BakeDifferenceCommand(
-            base_table, target_table, selected_vertices_indices, target_dag_path, space
+            base_table,
+            target_table,
+            selected_vertices_indices,
+            percentage,
+            target_dag_path,
+            space,
+        )
+        self.undo_queue.append(cmd)
+
+    def revert_to_base(
+        self,
+        base_table,
+        target_table,
+        selected_vertices_indices=(),
+        percentage=100,
+        space=om2.MSpace.kObject,
+    ):
+        """
+        Revert selected vertices on the target mesh to the base position.
+
+        :param base_table: positions of the points of the base mesh
+        :type base_table: sym_mesh.table.GeometryTable
+
+        :param target_table: positions of the points of the current mesh
+        :type target_table: sym_mesh.table.GeometryTable
+
+        :param selected_vertices_indices: indices of the selected points on the target mesh
+        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
+
+        :param percentage: percentage used for the revert to base function. This
+        is a value from 0 to 100, a value of 100 means we're reverting the
+        position of the base, a value of 0 means we're staying at the current
+        position.
+        :type percentage: int
+
+        :param space: space in which operate the deformation (object or world)
+        :type space: constant
+        """
+        cmd = commands.RevertToBaseCommand(
+            base_table,
+            target_table,
+            selected_vertices_indices,
+            percentage,
+            target_table.dag_path.getPath(),
+            space,
+        )
+        self.undo_queue.append(cmd)
+
+    def symmetrize(
+        self,
+        base_table,
+        target_table,
+        selected_vertices_indices=(),
+        percentage=100,
+        space=om2.MSpace.kObject,
+    ):
+        """
+        Symmetrize selected vertices on the target mesh.
+
+        :param base_table: positions of the points of the base mesh
+        :type base_table: sym_mesh.table.GeometryTable
+
+        :param target_table: positions of the points of the current mesh
+        :type target_table: sym_mesh.table.GeometryTable
+
+        :param selected_vertices_indices: indices of the selected points on the target mesh
+        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
+
+        :param percentage: percentage used for the revert to base function
+        :type percentage: int
+
+        :param space: space in which operate the deformation (object or world)
+        :type space: constant
+        """
+        cmd = commands.SymmetrizeCommand(
+            base_table,
+            target_table,
+            selected_vertices_indices,
+            percentage,
+            target_table.dag_path.getPath(),
+            space,
         )
         self.undo_queue.append(cmd)
 
