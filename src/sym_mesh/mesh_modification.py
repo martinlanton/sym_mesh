@@ -1,8 +1,9 @@
 import maya.api.OpenMaya as om2
 import logging
 
-from sym_mesh.selection import get_sel_vtces_idcs
 from sym_mesh import commands
+from sym_mesh.dag_path import create_MDagPath
+from sym_mesh.selection import get_sel_vtces_idcs
 
 
 log = logging.getLogger(__name__)
@@ -314,6 +315,9 @@ class MeshModifier(object):
         :param space: space in which operate the deformation (object or world)
         :type space: constant
         """
+        if not isinstance(target_dag_path, om2.MDagPath):
+            target_dag_path = create_MDagPath(target_dag_path)
+
         cmd = commands.BakeDifferenceCommand(
             base_table,
             target_table,

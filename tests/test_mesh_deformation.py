@@ -167,6 +167,8 @@ class TestBakeDeltas(common.BaseTest):
         ]
         self.assertEqual(expected, result)
 
+    # TODO : add test for baking deltas with a different percentage
+
 
 class TestExtractAxes(common.BaseTest):
     def test_extract_axes_creates_geometry(self):
