@@ -34,7 +34,6 @@ class TestExtractAxes(common.BaseTest):
         self.assertEqual("|{}_extracted".format(self.test_extract_axes_cube), extracted_shapes[3])
 
     def test_extract_axes_geometries_point_positions(self):
-        # TODO : create this test
         vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
 
         target_table = table.GeometryTable(self.test_extract_axes_cube)

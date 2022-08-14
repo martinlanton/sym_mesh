@@ -416,4 +416,6 @@ class MeshModifier(object):
         :rtype: str, str, str
         """
         cmd = commands.ExtractAxesCommand(base_table, target_table)
+
+        self.undo_queue.append(cmd)
         return cmd.result

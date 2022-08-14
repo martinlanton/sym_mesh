@@ -1,12 +1,14 @@
 import logging
 
 from maya.api import OpenMaya as om2
+from sym_mesh.dag_path import create_MDagPath
 
 log = logging.getLogger(__name__)
 
 
 class ExtractAxesCommand(object):
     def __init__(self, base_table, target_table):
+        self.point_arrays = list()
         self.result = self.extract_axes(base_table, target_table)
 
     def extract_axes(self, base_table, target_table):
@@ -21,7 +23,7 @@ class ExtractAxesCommand(object):
         :return: names of the newly created geometries
         :rtype: str, str, str
         """
-        base_dag_path = base_table.dag_path
+        self.base_dag_path = base_table.dag_path
         target_name = target_table.dag_path.fullPathName().split("|")[-1]
         base_point_array = base_table.point_array
         target_point_array = target_table.point_array
@@ -29,13 +31,12 @@ class ExtractAxesCommand(object):
         pathes = list()
 
         for i, axis in enumerate(["x", "y", "z"]):
-            dag_path = self.duplicate_mesh(base_dag_path, target_name, suffix=axis)
+            dag_path = self.duplicate_mesh(self.base_dag_path, target_name, suffix=axis)
             path = dag_path.fullPathName()
             pathes.append(path)
 
             # Init MFnMesh
             destination_table = om2.MPointArray()
-            tgt_mesh_functionset = om2.MFnMesh(dag_path)
 
             # Loop in MPointArray
             for j in range(len(base_point_array)):
@@ -44,11 +45,16 @@ class ExtractAxesCommand(object):
                 new_point = list(base_point)
                 new_point[i] = target_point[i]
                 destination_table.append(new_point)
+            self.point_arrays.append(destination_table)
 
             # Modify points position using the new coordinates
+            tgt_mesh_functionset = om2.MFnMesh(dag_path)
             tgt_mesh_functionset.setPoints(destination_table, om2.MSpace.kObject)
 
-        dag_path = self.duplicate_mesh(base_dag_path, target_name, suffix="extracted")
+        # Adding base point array to point arrays list for redo purposes
+        self.point_arrays.append(base_point_array)
+
+        dag_path = self.duplicate_mesh(self.base_dag_path, target_name, suffix="extracted")
         pathes.append(dag_path.fullPathName())
 
         return pathes
@@ -95,7 +101,25 @@ class ExtractAxesCommand(object):
         :rtype: str
         """
         path = dag_path.fullPathName()
-        new_path = path.split("|")[:-1]
-        new_path.append("{}_{}".format(target_name, suffix))
+        new_path = path.rsplit("|", 1)[:-1]
+        if suffix:
+            target_name = "{}_{}".format(target_name, suffix)
+        new_path.append(target_name)
         new_path = "|".join(new_path)
         return new_path
+
+    def undo(self):
+        for path in self.result:
+            node = create_MDagPath(path).node()
+            dag_modifier = om2.MDagModifier()
+            dag_modifier.deleteNode(node)
+            dag_modifier.doIt()
+
+    def redo(self):
+        for i, path in enumerate(self.result):
+            name = path.split("|")[-1]
+            dag_path = self.duplicate_mesh(self.base_dag_path, name)
+
+            # Modify points position using the new coordinates
+            tgt_mesh_functionset = om2.MFnMesh(dag_path)
+            tgt_mesh_functionset.setPoints(self.point_arrays[i], om2.MSpace.kObject)
