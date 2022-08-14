@@ -167,7 +167,26 @@ class TestBakeDeltas(common.BaseTest):
         ]
         self.assertEqual(expected, result)
 
-    # TODO : add test for baking deltas with a different percentage
+    def test_bake_delta_zero_precent(self):
+        """Test that baking delta functions properly on one geometry."""
+        vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
+        expected = [
+            mc.pointPosition("{}.vtx[{}]".format(self.sym_cube, vtx), world=True)
+            for vtx in range(vtx_number)
+        ]
+
+        geo_table = table.GeometryTable(self.asym_cube)
+        sym_table = table.GeometryTable(self.sym_cube)
+        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier.bake_difference(
+            sym_table, geo_table, percentage=0, target_dag_path=self.other_cube
+        )
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
+            for vtx in range(vtx_number)
+        ]
+        self.assertEqual(expected, result)
 
 
 class TestExtractAxes(common.BaseTest):
