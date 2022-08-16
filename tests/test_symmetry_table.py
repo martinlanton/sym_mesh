@@ -1,6 +1,11 @@
+import logging
+
 from tests.fixtures import common
 
 from sym_mesh import table
+
+
+log = logging.getLogger(__name__)
 
 
 class TestSymmetryTable(common.BaseTest):
@@ -58,3 +63,13 @@ class TestSymmetryTable(common.BaseTest):
     # TODO : add test to create a new table from the difference of 2 tables,
     #  this can then be used to bake the difference on other meshes and have a
     #  more streamlined method signature
+
+    def test_timing_symmetry_table(self):
+        import time
+        from maya import cmds as mc
+        cube1 = mc.polyCube(sx=20, sy=20, sz=20, ch=False)[0]
+        before = time.time()
+        for i in range(1000):
+            base_table = table.GeometryTable(cube1)
+        after = time.time()
+        log.critical("It took %s seconds", (after-before))

@@ -1,12 +1,10 @@
 import logging
 
-import maya.api.OpenMaya as om2
-
 from sym_mesh import dag_path
 from sym_mesh.selection import get_selected_mesh_points
 
 log = logging.getLogger(__name__)
-log.setLevel(logging.INFO)
+log.setLevel(logging.CRITICAL)
 
 
 class GeometryTable:
@@ -68,14 +66,14 @@ class GeometryTable:
             self._direction = "negative"
 
     def build_symmetry_table(self, base_mesh=""):
-        """
-        Create symmetry table base on symmetry self._axis and self._threshold
+        """Create symmetry table base on symmetry self._axis and self._threshold
 
         :param base_mesh: optional. Name of the mesh to use to build the symmetry table.
         :type base_mesh: str
 
         :return: symmetry table
         :rtype: dict
+
         """
         # TODO : simplify this method
         if base_mesh:
@@ -121,15 +119,9 @@ class GeometryTable:
                     else:
                         symmetry_table[check_table[position_to_check]] = idx
 
-        MItVtx = om2.MItMeshVertex(self.dag_path)
-
-        # todo : compare if this would be faster with a range instead of an iterator
-        while not MItVtx.isDone():
-            idx = MItVtx.index()
+        for idx in range(len(points_table)):
             if idx not in symmetry_table and idx not in symmetry_table.values():
                 non_mirrored_table.append(idx)
-
-            MItVtx.next()
 
         log.debug(len(symmetry_table))
         log.debug(symmetry_table)

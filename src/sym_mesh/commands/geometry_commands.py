@@ -9,6 +9,7 @@ log = logging.getLogger(__name__)
 class ExtractAxesCommand(object):
     def __init__(self, base_table, target_table):
         self.point_arrays = list()
+        self.base_dag_path = base_table.dag_path
         self.result = self.extract_axes(base_table, target_table)
 
     def extract_axes(self, base_table, target_table):
@@ -23,13 +24,11 @@ class ExtractAxesCommand(object):
         :return: names of the newly created geometries
         :rtype: str, str, str
         """
-        self.base_dag_path = base_table.dag_path
         target_name = target_table.dag_path.fullPathName().split("|")[-1]
         base_point_array = base_table.point_array
         target_point_array = target_table.point_array
 
         pathes = list()
-
         for i, axis in enumerate(["x", "y", "z"]):
             dag_path = self.duplicate_mesh(self.base_dag_path, target_name, suffix=axis)
             path = dag_path.fullPathName()
@@ -50,6 +49,11 @@ class ExtractAxesCommand(object):
             # Modify points position using the new coordinates
             tgt_mesh_functionset = om2.MFnMesh(dag_path)
             tgt_mesh_functionset.setPoints(destination_table, om2.MSpace.kObject)
+
+        # TODO : add duplicated meshes as blendshapes to the last duplicated one
+        # TODO : move the last duplicated mesh up from the position of the target
+        # TODO : add an option to automatically delete the x, y, z shapes
+        # TODO : add an option to reassign the shader or assign the default lambert????
 
         # Adding base point array to point arrays list for redo purposes
         self.point_arrays.append(base_point_array)
