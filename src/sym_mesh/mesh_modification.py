@@ -419,3 +419,38 @@ class MeshModifier(object):
 
         self.undo_queue.append(cmd)
         return cmd.result
+
+    def flip(
+        self,
+        base_table,
+        target_table,
+        selected_vertices_indices=(),
+        percentage=100,
+        space=om2.MSpace.kObject,
+    ):
+        """Flip selected vertices on the target mesh.
+
+        :param base_table: positions of the points of the base mesh
+        :type base_table: sym_mesh.table.GeometryTable
+
+        :param target_table: positions of the points of the current mesh
+        :type target_table: sym_mesh.table.GeometryTable
+
+        :param selected_vertices_indices: indices of the selected points on the target mesh
+        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
+
+        :param percentage: percentage used for the revert to base function
+        :type percentage: int
+
+        :param space: space in which operate the deformation (object or world)
+        :type space: constant
+        """
+        cmd = commands.FlipCommand(
+            base_table,
+            target_table,
+            selected_vertices_indices,
+            percentage,
+            target_table.dag_path.getPath(),
+            space,
+        )
+        self.undo_queue.append(cmd)

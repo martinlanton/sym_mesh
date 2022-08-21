@@ -72,8 +72,8 @@ class SymmetrizeCommand(AbstractDeformationCommand):
         destination_point_array = om2.MPointArray()
         # Loop in MPointArray
         for i in range(len(base_point_array)):
-            # If the current point is also in selection
             current_position = symmetry_position = target_point_array[i]
+            # If the current point is also in selection
             if (
                 i in self.selected_vertices_indices
                 or self.selected_vertices_indices.__len__() == 0
@@ -101,4 +101,53 @@ class SymmetrizeCommand(AbstractDeformationCommand):
                 "Modifying position from %s to %s", current_position, symmetry_position
             )
             destination_point_array.append(symmetry_position)
+        return destination_point_array
+
+
+class FlipCommand(AbstractDeformationCommand):
+    """Flip selected vertices on the target mesh."""
+
+    def compute_point_position(self, base_point_array, target_point_array):
+        axis = self.base_table.axis
+        axis_indices = {"x": 0, "y": 1, "z": 2}
+        axis_index = axis_indices[axis]
+
+        symmetry_table = self.base_table.symmetry_table[0]
+        log.debug("Symmetry table is : %s", symmetry_table)
+
+        destination_point_array = om2.MPointArray([(0.0, 0.0, 0.0)]*len(base_point_array))
+
+        # Loop in MPointArray
+        for target_index in symmetry_table:
+            source_index = symmetry_table[target_index]
+            source_vertex_position = target_point_array[source_index]
+            target_vertex_position = target_point_array[target_index]
+            # If the current point is also in selection
+            if (
+                    target_index in self.selected_vertices_indices
+                    or source_index in self.selected_vertices_indices
+                    or self.selected_vertices_indices.__len__() == 0
+            ):
+                # Modify new position
+                new_target_position = list(source_vertex_position)
+                new_target_position[axis_index] = -new_target_position[axis_index]
+                new_target_position = om2.MPoint(new_target_position)
+                new_target_position = target_vertex_position + (
+                        (new_target_position - target_vertex_position) * (self.percentage / 100.0)
+                )
+
+                new_source_position = list(target_vertex_position)
+                new_source_position[axis_index] = -new_source_position[axis_index]
+                new_source_position = om2.MPoint(new_source_position)
+                new_source_position = source_vertex_position + (
+                        (new_source_position - source_vertex_position) * (self.percentage / 100.0)
+                )
+
+                destination_point_array[source_index] = new_source_position
+                destination_point_array[target_index] = new_target_position
+            else:
+                log.debug("Not mirroring the position of vertices %s and %s", source_index, target_index)
+                destination_point_array[source_index] = source_vertex_position
+                destination_point_array[target_index] = target_vertex_position
+
         return destination_point_array

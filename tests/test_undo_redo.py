@@ -95,6 +95,8 @@ class TestUndo(common.BaseTest):
         self.assertFalse(mc.objExists(extracted_shapes[2]))
         self.assertFalse(mc.objExists(extracted_shapes[3]))
 
+    # TODO : add test undo flip
+
 
 class TestRedo(common.BaseTest):
     def test_redo_revert_to_base(self):
@@ -263,3 +265,5 @@ class TestRedo(common.BaseTest):
         self.assertEqual(expected_x, result_x)
         self.assertEqual(expected_y, result_y)
         self.assertEqual(expected_z, result_z)
+
+    # TODO : add test redo flip
