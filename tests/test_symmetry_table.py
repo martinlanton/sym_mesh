@@ -2,8 +2,7 @@ import logging
 
 from tests.fixtures import common
 
-from sym_mesh import table
-
+from sym_mesh.domain import table
 
 log = logging.getLogger(__name__)
 

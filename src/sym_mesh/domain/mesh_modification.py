@@ -1,9 +1,9 @@
 import maya.api.OpenMaya as om2
 import logging
 
-from sym_mesh import commands
-from sym_mesh.dag_path import create_MDagPath
-from sym_mesh.selection import get_sel_vtces_idcs
+from sym_mesh.domain import commands
+from sym_mesh.domain.dag_path import create_MDagPath
+from sym_mesh.domain.selection import get_sel_vtces_idcs
 
 
 log = logging.getLogger(__name__)

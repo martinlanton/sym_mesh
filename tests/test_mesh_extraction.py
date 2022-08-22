@@ -2,7 +2,7 @@ import logging
 
 from maya import cmds as mc
 
-from sym_mesh import table, mesh_modification
+from sym_mesh.domain import table, mesh_modification
 from tests.fixtures import common
 
 

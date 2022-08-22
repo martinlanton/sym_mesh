@@ -5,7 +5,7 @@ import six
 
 from maya.api import OpenMaya as om2
 
-from sym_mesh.selection import get_selected_mesh_points
+from sym_mesh.domain.selection import get_selected_mesh_points
 
 log = logging.getLogger(__name__)
 

@@ -1,11 +1,10 @@
-from Qt import QtWidgets, QtCore, QtGui
+from Qt import QtWidgets, QtCore
 import logging
 
 from MultiPipe.file_utils import Multi_import_utils as import_utils
 from MultiPipe.general_utils import Multi_ui_utils as ui_utils
 from MultiPipe.general_utils import logger as mla_logger
-import mesh_modification as mla_MM
-
+from sym_mesh.domain import mesh_modification as mla_MM
 
 log = mla_logger.get_logger("SymUI", shell=True)
 log.setLevel(logging.INFO)
