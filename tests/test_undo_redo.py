@@ -95,7 +95,28 @@ class TestUndo(common.BaseTest):
         self.assertFalse(mc.objExists(extracted_shapes[2]))
         self.assertFalse(mc.objExists(extracted_shapes[3]))
 
-    # TODO : add test undo flip
+    def test_undo_flip(self):
+        """Test that undo after symmetrization works properly."""
+        vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
+        expected = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(vtx_number)
+        ]
+
+        geo_table = table.GeometryTable(self.asym_cube)
+        sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
+        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier.flip(base_table=sym_table, target_table=geo_table)
+        mesh_modifier.undo()
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(vtx_number)
+        ]
+        log.info("Symmetry table : %s", sym_table.symmetry_table)
+        log.info("Expected : %s", expected)
+        log.info("Result : %s", result)
+        self.assertEqual(expected, result)
 
 
 class TestRedo(common.BaseTest):
@@ -266,4 +287,32 @@ class TestRedo(common.BaseTest):
         self.assertEqual(expected_y, result_y)
         self.assertEqual(expected_z, result_z)
 
-    # TODO : add test redo flip
+    def test_redo_flip(self):
+        """Test that undo after symmetrization works properly."""
+        vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
+        expected = [
+            [-0.5, -0.5, 0.5],
+            [0.5, -1.5, 0.5],
+            [-0.5, 0.5, 0.5],
+            [0.5, -0.5, 0.5],
+            [-0.5, 0.5, -0.5],
+            [0.5, -0.5, -0.5],
+            [-0.5, -0.5, -0.5],
+            [0.5, -1.5, -0.5],
+        ]
+
+        geo_table = table.GeometryTable(self.asym_cube)
+        sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="positive")
+        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier.flip(base_table=sym_table, target_table=geo_table)
+        mesh_modifier.undo()
+        mesh_modifier.redo()
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(vtx_number)
+        ]
+        log.info("Symmetry table : %s", sym_table.symmetry_table)
+        log.info("Expected : %s", expected)
+        log.info("Result : %s", result)
+        self.assertEqual(expected, result)
