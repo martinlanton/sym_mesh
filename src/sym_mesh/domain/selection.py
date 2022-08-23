@@ -5,7 +5,7 @@ from maya.api import OpenMaya as om2
 log = logging.getLogger(__name__)
 
 
-def get_selected_mesh_points(obj_dag_path=None):
+def get_points_positions(obj_dag_path=None):
     """
     Get the position of every point of the selected mesh.
 

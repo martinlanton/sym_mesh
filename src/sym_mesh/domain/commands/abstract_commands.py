@@ -5,7 +5,7 @@ import six
 
 from maya.api import OpenMaya as om2
 
-from sym_mesh.domain.selection import get_selected_mesh_points
+from sym_mesh.domain.selection import get_points_positions
 
 log = logging.getLogger(__name__)
 
@@ -50,7 +50,7 @@ class AbstractDeformationCommand():
         self.percentage = percentage
         self.target_dag_path = target_dag_path
         self.space = space
-        self.current_point_array = get_selected_mesh_points(target_dag_path)
+        self.current_point_array = get_points_positions(target_dag_path)
         self.undo_action = self.current_point_array
         self.result = self.deform()
         self.redo_action = self.result

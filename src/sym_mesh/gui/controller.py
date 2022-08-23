@@ -70,7 +70,7 @@ class Controller(object):
 
         for dag_path in self.sel_vtces_idcs["objs_path"]:
             # Update current mesh table
-            self.current_table = selection.get_selected_mesh_points(dag_path)
+            self.current_table = selection.get_points_positions(dag_path)
 
             log.debug(self.current_table["objs_path"].fullPathName())
 
@@ -126,8 +126,8 @@ class Controller(object):
 
         for dag_path in self.sel_vtces_idcs["objs_path"]:
             # Update current mesh table
-            self.current_table = selection.get_selected_mesh_points(dag_path)
-            self.temp_base_table = selection.get_selected_mesh_points(
+            self.current_table = selection.get_points_positions(dag_path)
+            self.temp_base_table = selection.get_points_positions(
                 self.base_table["objs_path"]
             )
 
@@ -175,7 +175,7 @@ class Controller(object):
 
         for dag_path in self.sel_vtces_idcs["objs_path"]:
             # Update current mesh table
-            self.current_table = selection.get_selected_mesh_points(dag_path)
+            self.current_table = selection.get_points_positions(dag_path)
 
             log.debug(self.current_table["objs_path"].fullPathName())
 

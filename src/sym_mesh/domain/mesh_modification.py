@@ -10,20 +10,8 @@ log.setLevel(logging.INFO)
 
 class MeshModifier(object):
     def __init__(self):
-        # Attributes
-        self._revert_value = 100
-        self.space = om2.MSpace.kObject
-        # UNDO LIST
         self.undo_queue = list()
         self.redo_queue = list()
-
-    @property
-    def revert_value(self):
-        return self._revert_value
-
-    @revert_value.setter
-    def revert_value(self, value):
-        self._revert_value = value
 
     def undo(self):
         """Undo the last move stored in the undo queue."""

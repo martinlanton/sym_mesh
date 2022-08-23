@@ -237,3 +237,5 @@ class TestFlip(common.BaseTest):
         log.info("Expected : %s", expected)
         log.info("Result : %s", result)
         self.assertEqual(expected, result)
+
+# TODO : add tests with active vertices selection

@@ -1,7 +1,7 @@
 import logging
 
 from sym_mesh.domain import dag_path
-from sym_mesh.domain.selection import get_selected_mesh_points
+from sym_mesh.domain.selection import get_points_positions
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.CRITICAL)
@@ -20,7 +20,7 @@ class GeometryTable:
         self._threshold = threshold
 
         self._dag_path = mesh_dag_path
-        self._points_table = get_selected_mesh_points(self.dag_path)
+        self._points_table = get_points_positions(self.dag_path)
         self._symmetry_table = None
         self.build_symmetry_table()
 
@@ -78,7 +78,7 @@ class GeometryTable:
         # TODO : simplify this method
         if base_mesh:
             path = base_mesh
-            points_table = get_selected_mesh_points(dag_path.create_MDagPath(base_mesh))
+            points_table = get_points_positions(dag_path.create_MDagPath(base_mesh))
         else:
             path = self.dag_path
             points_table = self._points_table
