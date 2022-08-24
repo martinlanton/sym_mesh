@@ -1,16 +1,11 @@
-from Qt import QtWidgets, QtCore
 import logging
+from maya.app.general.mayaMixin import MayaQWidgetDockableMixin as dockable
+from Qt import QtWidgets, QtCore
 
-from MultiPipe.file_utils import Multi_import_utils as import_utils
-from MultiPipe.general_utils import Multi_ui_utils as ui_utils
-from MultiPipe.general_utils import logger as mla_logger
-from sym_mesh.domain import mesh_modification as mla_MM
+from sym_mesh.gui import controller
 
-log = mla_logger.get_logger("SymUI", shell=True)
+log = logging.getLogger("SymUI")
 log.setLevel(logging.INFO)
-
-application = import_utils.get_application()
-dockable = ui_utils.get_dockable_widget(application)
 
 
 class SymMeshUI(dockable, QtWidgets.QDialog):
@@ -20,9 +15,9 @@ class SymMeshUI(dockable, QtWidgets.QDialog):
         self.setWindowTitle("SymMesh UI")
         # UI
         self.buildUI()
-        self.sym_mesh = mla_MM.MeshModifier()
+        self.controller = controller.Controller()
 
-        self.sym_mesh._revert_value = 100
+        self.controller.percentage = 100
 
         self.revert_value_slider.valueChanged.connect(self.get_spinBox_value)
         self.revert_value_sB.valueChanged.connect(self.get_slider_value)
@@ -233,7 +228,7 @@ class SymMeshUI(dockable, QtWidgets.QDialog):
         """Get spinBox value and set slider value"""
         value = self.revert_value_slider.value()
 
-        self.sym_mesh._revert_value = value
+        self.controller._revert_value = value
 
         self.revert_value_sB.setValue(value)
 
@@ -241,25 +236,25 @@ class SymMeshUI(dockable, QtWidgets.QDialog):
         """Get slider value and set spinBox value"""
         value = self.revert_value_sB.value()
 
-        self.sym_mesh._revert_value = value
+        self.controller._revert_value = value
 
         self.revert_value_slider.setValue(value)
 
     def get_base(self):
-        self.sym_mesh.get_base()
-        self.base_lE.setText(self.sym_mesh.base)
+        self.controller.get_base()
+        self.base_lE.setText(self.controller.base)
 
     def get_target(self):
-        self.sym_mesh.get_target()
-        self.target_lE.setText(self.sym_mesh.target)
+        self.controller.get_target()
+        self.target_lE.setText(self.controller.target)
 
     def get_selected_vertices(self):
-        if not self.sym_mesh.are_vertices_stored:
-            self.sym_mesh.get_vtcs_selection()
+        if not self.controller.are_vertices_stored:
+            self.controller.get_vtcs_selection()
         else:
-            self.sym_mesh.get_vtcs_selection(True)
+            self.controller.get_vtcs_selection(True)
 
-        if self.sym_mesh.are_vertices_stored:
+        if self.controller.are_vertices_stored:
             self.vertices_stored = True
             self.get_selected_vtcs_pB.setStyleSheet(
                 "QPushButton {background-color: red;}"
@@ -271,19 +266,19 @@ class SymMeshUI(dockable, QtWidgets.QDialog):
             )
 
     def select_stored_vertices(self):
-        self.sym_mesh.select_stored_vertices()
+        self.controller.select_stored_vertices()
 
     def select_non_mirrored_vertices(self):
-        self.sym_mesh.select_non_mirrored_vertices()
+        self.controller.select_non_mirrored_vertices()
 
     def bake_difference(self):
-        self.sym_mesh.bake_difference_on_selected()
+        self.controller.bake_difference_on_selected()
 
     def revert_to_base(self):
-        self.sym_mesh.revert_selected_to_base()
+        self.controller.revert_selected_to_base()
 
     def revert_to_base_live(self):
-        self.sym_mesh.revert_selected_to_base_live()
+        self.controller.revert_selected_to_base_live()
 
     def undo(self):
-        self.sym_mesh.undo()
+        self.controller.undo()

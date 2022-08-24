@@ -1,8 +1,10 @@
 import maya.api.OpenMaya as om2
+from maya import cmds as mc
 import logging
 
 from sym_mesh.domain import mesh_modification
 from sym_mesh.domain import selection
+from sym_mesh.domain import table
 
 
 log = logging.getLogger(__name__)
@@ -25,8 +27,39 @@ class Controller(object):
         self.mesh_modifier = mesh_modification.MeshModifier()
 
         self.are_vertices_stored = False
-        self._revert_value = 100
+        self._percentage = 100
         self.space = om2.MSpace.kObject
+        self.base_table = None
+        self.target_table = None
+
+    @property
+    def percentage(self):
+        return self._percentage
+
+    @percentage.setter
+    def percentage(self, value):
+        """
+        :param value: percentage to use for deforming actions.
+        """
+        self._percentage = value
+
+    def get_base(self):
+        """
+        Get base data and set its name in the corresponding lineEdit.
+        :return:
+        """
+        mesh = mc.ls(sl=True)[0]
+        self.base_table = table.GeometryTable(mesh)
+
+        self.select_non_mirrored_vertices()
+
+    def get_target(self):
+        """
+        Get target data and set its name in the corresponding lineEdit.
+        :return:
+        """
+        mesh = mc.ls(sl=True)[0]
+        self.target_table = table.GeometryTable(mesh)
 
     def get_vtcs_selection(self, reset=False):
         """Get the current selection of vertices and set it.
