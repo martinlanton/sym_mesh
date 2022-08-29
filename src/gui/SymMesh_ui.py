@@ -2,7 +2,7 @@ import logging
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin as dockable
 from Qt import QtWidgets, QtCore
 
-from sym_mesh.gui import controller
+from gui import controller
 
 log = logging.getLogger("SymUI")
 log.setLevel(logging.INFO)

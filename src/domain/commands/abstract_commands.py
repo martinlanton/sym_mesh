@@ -5,7 +5,7 @@ import six
 
 from maya.api import OpenMaya as om2
 
-from sym_mesh.domain.selection import get_points_positions
+from domain.selection import get_points_positions
 
 log = logging.getLogger(__name__)
 

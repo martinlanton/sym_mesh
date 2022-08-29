@@ -3,7 +3,8 @@ import logging
 import maya.cmds as mc
 from tests.fixtures import common
 
-from sym_mesh.domain import table, mesh_modification
+from domain import table
+from domain import mesh_modification
 
 log = logging.getLogger(__name__)
 

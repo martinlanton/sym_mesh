@@ -1,7 +1,7 @@
 import logging
 
-from sym_mesh.domain import dag_path
-from sym_mesh.domain.selection import get_points_positions
+from domain import dag_path
+from domain.selection import get_points_positions
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.CRITICAL)

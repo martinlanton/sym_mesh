@@ -2,9 +2,8 @@ import maya.api.OpenMaya as om2
 from maya import cmds as mc
 import logging
 
-from sym_mesh.domain import mesh_modification
-from sym_mesh.domain import selection
-from sym_mesh.domain import table
+from domain import selection, mesh_modification
+from domain import table
 
 
 log = logging.getLogger(__name__)
