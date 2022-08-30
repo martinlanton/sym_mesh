@@ -55,7 +55,8 @@ class TestRevertToBase(common.BaseTest):
 
 class TestSymmetry(common.BaseTest):
     def test_symmetrization_x_positive(self):
-        """Test that reverting to base with a value of 0% reverts to base."""
+        """Test that symmetrizing on the X axis in the negative direction (-X towards +X)
+        symmetrizes properly."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         mesh_modifier = mesh_modification.MeshModifier()
@@ -84,7 +85,9 @@ class TestSymmetry(common.BaseTest):
         self.assertEqual(expected, result)
 
     def test_symmetrization_x_negative(self):
-        """Test that reverting to base with a value of 0% reverts to base."""
+        """Test that symmetrizing on the X axis in the negative direction (+X towards -X)
+        symmetrizes properly.
+        """
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="negative")
         mesh_modifier = mesh_modification.MeshModifier()
@@ -113,7 +116,9 @@ class TestSymmetry(common.BaseTest):
         self.assertEqual(expected, result)
 
     def test_symmetrization_y_negative(self):
-        """Test that reverting to base with a value of 0% reverts to base."""
+        """Test that symmetrizing on the Y axis in the negative direction (+Y towards -Y)
+        symmetrizes properly.
+        """
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="negative")
         mesh_modifier = mesh_modification.MeshModifier()
@@ -142,18 +147,18 @@ class TestSymmetry(common.BaseTest):
         self.assertEqual(expected, result)
 
     def test_symmetrization_x_positive_zero_percent(self):
-        """Test that reverting to base with a value of 0% reverts to base."""
-        geo_table = table.GeometryTable(self.asym_cube)
-        sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
-        mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table)
-
+        """Test that symmetrizing with a value of 0% doesn't do anything."""
         vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
-
         expected = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
             for vtx in range(vtx_number)
         ]
+
+        geo_table = table.GeometryTable(self.asym_cube)
+        sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
+        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table, percentage=0)
+
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
             for vtx in range(vtx_number)
