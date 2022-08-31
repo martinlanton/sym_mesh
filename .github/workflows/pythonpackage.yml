@@ -17,7 +17,7 @@ jobs:
       matrix:
         include:
           - maya: "2020"
-            pip: "get-pip.py"
+            pip: "2.7/get-pip.py"
           - maya: "2022"
             pip: "get-pip.py"
 
