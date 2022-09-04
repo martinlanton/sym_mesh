@@ -1,21 +1,18 @@
 import logging
-from maya.app.general.mayaMixin import MayaQWidgetDockableMixin as dockable
 from Qt import QtWidgets, QtCore
-
-from gui import controller
 
 log = logging.getLogger("SymUI")
 log.setLevel(logging.INFO)
 
 
-class SymMeshUI(dockable, QtWidgets.QDialog):
-    def __init__(self, parent=None):
+class SymMeshUI(QtWidgets.QWidget):
+    def __init__(self, parent=None, controller=None):
         super(SymMeshUI, self).__init__(parent=parent)
 
         self.setWindowTitle("SymMesh UI")
         # UI
         self.buildUI()
-        self.controller = controller.Controller()
+        self.controller = controller
 
         self.controller.percentage = 100
 
