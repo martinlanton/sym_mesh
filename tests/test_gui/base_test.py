@@ -7,11 +7,20 @@ from gui.controller import Controller
 
 
 class GUITest(common.BaseTest):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.app = QtWidgets.QApplication(sys.argv)
+        cls.state = common.startup_maya_session()
+
     def setUp(self):
         super(GUITest, self).setUp()
-        app = QtWidgets.QApplication(sys.argv)
-        dialog = QtWidgets.QDialog()
+        self.dialog = QtWidgets.QDialog()
         self.controller = Controller()
-        self.gui = SymMeshUI(dialog, self.controller)
-        dialog.show()
-        sys.exit(app.exec_())
+        self.gui = SymMeshUI(self.dialog, self.controller)
+        self.dialog.show()
+
+    def tearDown(self):
+        self.dialog.close()
+        # sys.exit()
+

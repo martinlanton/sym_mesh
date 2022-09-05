@@ -38,6 +38,7 @@ class SymMeshUI(QtWidgets.QWidget):
         log.info("Building UI")
         self.layout = QtWidgets.QVBoxLayout(self)
 
+        # Base
         self.get_base_pB = QtWidgets.QPushButton("Get Base")
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
@@ -59,6 +60,7 @@ class SymMeshUI(QtWidgets.QWidget):
         self.base_lE.setObjectName("base_lE")
         self.layout.addWidget(self.base_lE)
 
+        # Target
         self.get_target_pB = QtWidgets.QPushButton("Get Target")
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
@@ -82,6 +84,7 @@ class SymMeshUI(QtWidgets.QWidget):
         self.target_lE.setObjectName("target_lE")
         self.layout.addWidget(self.target_lE)
 
+        # Store vertices selection
         self.get_selected_vtcs_pB = QtWidgets.QPushButton("Get Vtx Selection")
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
@@ -94,6 +97,7 @@ class SymMeshUI(QtWidgets.QWidget):
         self.get_selected_vtcs_pB.setObjectName("get_selected_vtcs_pB")
         self.layout.addWidget(self.get_selected_vtcs_pB)
 
+        # Select non symmetrical vertices
         self.select_non_symmetrical_vtcs_pB = QtWidgets.QPushButton(
             "Select Non Symmetrical Vtcs"
         )
@@ -110,6 +114,7 @@ class SymMeshUI(QtWidgets.QWidget):
         )
         self.layout.addWidget(self.select_non_symmetrical_vtcs_pB)
 
+        # Selected stored vertex selection
         self.select_stored_vtcs_pB = QtWidgets.QPushButton("Select stored Vtcs")
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
@@ -122,6 +127,7 @@ class SymMeshUI(QtWidgets.QWidget):
         self.select_stored_vtcs_pB.setObjectName("select_stored_vtcs_pB")
         self.layout.addWidget(self.select_stored_vtcs_pB)
 
+        # Bake difference
         self.bake_diff_pB = QtWidgets.QPushButton("Bake Difference")
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
@@ -132,6 +138,18 @@ class SymMeshUI(QtWidgets.QWidget):
         self.bake_diff_pB.setObjectName("bake_diff_pB")
         self.layout.addWidget(self.bake_diff_pB)
 
+        # Symmetry
+        self.symmetry_push_button = QtWidgets.QPushButton("Symmetry")
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHeightForWidth(self.symmetry_push_button.sizePolicy().hasHeightForWidth())
+        self.symmetry_push_button.setSizePolicy(sizePolicy)
+        self.symmetry_push_button.setMinimumSize(QtCore.QSize(0, 25))
+        self.symmetry_push_button.setObjectName("symmetry_pB")
+        self.layout.addWidget(self.symmetry_push_button)
+
+        # Revert value
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.layout.addLayout(self.horizontalLayout)
@@ -148,7 +166,7 @@ class SymMeshUI(QtWidgets.QWidget):
         self.revert_value_slider.setMaximum(100)
         self.revert_value_slider.setProperty("value", 100)
         self.revert_value_slider.setOrientation(QtCore.Qt.Horizontal)
-        self.revert_value_slider.setObjectName("revert_value_slider")
+        self.revert_value_slider.setObjectName("percentage_slider")
         self.horizontalLayout.addWidget(self.revert_value_slider)
 
         self.revert_value_sB = QtWidgets.QSpinBox()
@@ -162,9 +180,10 @@ class SymMeshUI(QtWidgets.QWidget):
         self.revert_value_sB.setMinimumSize(QtCore.QSize(0, 25))
         self.revert_value_sB.setMaximum(100)
         self.revert_value_sB.setProperty("value", 100)
-        self.revert_value_sB.setObjectName("revert_value_sB")
+        self.revert_value_sB.setObjectName("percentage_sB")
         self.horizontalLayout.addWidget(self.revert_value_sB)
 
+        # Revert to base
         self.revert_to_base_pB = QtWidgets.QPushButton("Revert sel to base (target)")
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
@@ -177,6 +196,7 @@ class SymMeshUI(QtWidgets.QWidget):
         self.revert_to_base_pB.setObjectName("revert_to_base_pB")
         self.layout.addWidget(self.revert_to_base_pB)
 
+        # Revert to base on selection
         self.revert_to_base_live_pB = QtWidgets.QPushButton("Revert sel to base (live)")
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
@@ -189,6 +209,7 @@ class SymMeshUI(QtWidgets.QWidget):
         self.revert_to_base_live_pB.setObjectName("revert_to_base_live_pB")
         self.layout.addWidget(self.revert_to_base_live_pB)
 
+        # Undo
         self.undo_pB = QtWidgets.QPushButton("Undo")
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
@@ -199,6 +220,7 @@ class SymMeshUI(QtWidgets.QWidget):
         self.undo_pB.setObjectName("undo_pB")
         self.layout.addWidget(self.undo_pB)
 
+        # Tooltips
         self.revert_to_base_pB.setToolTip(
             QtWidgets.QApplication.translate(
                 "MainWindow",
