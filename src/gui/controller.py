@@ -2,6 +2,7 @@ import maya.api.OpenMaya as om2
 from maya import cmds as mc
 import logging
 
+import domain.table
 from domain import selection, mesh_modification
 from domain import table
 
@@ -13,8 +14,6 @@ log.setLevel(logging.INFO)
 class Controller(object):
     def __init__(self):
         # Attributes
-        self.base = None
-        self.target = None
         self.get_vtcs_selection(reset=True)
 
         self.sel_vtces_idcs = {"objs_path": om2.MDagPath(), "indices": om2.MIntArray()}
@@ -28,8 +27,8 @@ class Controller(object):
         self.are_vertices_stored = False
         self._percentage = 100
         self.space = om2.MSpace.kObject
-        self.base_table = None
-        self.target_table = None
+        self.base_table: domain.table.GeometryTable = None
+        self.target_table: domain.table.GeometryTable = None
 
     @property
     def percentage(self):
@@ -42,6 +41,18 @@ class Controller(object):
         """
         self._percentage = value
 
+    def symmetrize(self):
+        target = mc.ls(sl=True)[0]
+        if not target:
+            log.error("Unable to symmetrize, no target selected.")
+            return
+        base_table = self.base_table
+        if not base_table:
+            log.error("Unable to symmetrize, no base defined.")
+            return
+        target_table = table.GeometryTable(target)
+        self.mesh_modifier.symmetrize(base_table, target_table, percentage=self._percentage)
+
     def get_base(self):
         """
         Get base data and set its name in the corresponding lineEdit.
@@ -49,8 +60,6 @@ class Controller(object):
         """
         mesh = mc.ls(sl=True)[0]
         self.base_table = table.GeometryTable(mesh)
-
-        self.select_non_mirrored_vertices()
 
     def get_target(self):
         """

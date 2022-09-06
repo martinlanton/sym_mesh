@@ -7,6 +7,12 @@ log.setLevel(logging.INFO)
 
 class SymMeshUI(QtWidgets.QWidget):
     def __init__(self, parent=None, controller=None):
+        """
+
+        :param parent:
+        :param controller:
+        :type controller:  gui.controller.Controller
+        """
         super(SymMeshUI, self).__init__(parent=parent)
 
         self.setWindowTitle("SymMesh UI")
@@ -24,6 +30,7 @@ class SymMeshUI(QtWidgets.QWidget):
         # Connexion
         self.get_base_pB.clicked.connect(self.get_base)
         self.get_target_pB.clicked.connect(self.get_target)
+        self.symmetry_push_button.clicked.connect(self.controller.symmetrize)
         self.get_selected_vtcs_pB.clicked.connect(self.get_selected_vertices)
         self.select_stored_vtcs_pB.clicked.connect(self.select_stored_vertices)
         self.select_non_symmetrical_vtcs_pB.clicked.connect(
@@ -261,11 +268,11 @@ class SymMeshUI(QtWidgets.QWidget):
 
     def get_base(self):
         self.controller.get_base()
-        self.base_lE.setText(self.controller.base)
+        self.base_lE.setText(str(self.controller.base_table))
 
     def get_target(self):
         self.controller.get_target()
-        self.target_lE.setText(self.controller.target)
+        self.target_lE.setText(str(self.controller.target_table))
 
     def get_selected_vertices(self):
         if not self.controller.are_vertices_stored:

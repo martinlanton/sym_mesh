@@ -4,7 +4,7 @@ from domain import dag_path
 from domain.selection import get_points_positions
 
 log = logging.getLogger(__name__)
-log.setLevel(logging.CRITICAL)
+log.setLevel(logging.DEBUG)
 
 
 class GeometryTable:
@@ -13,6 +13,16 @@ class GeometryTable:
 
         :param mesh_dag_path: name of the maya mesh to use to build the symmetry table.
         :type mesh_dag_path: str
+
+        :param axis: axis to use to build the symmetry table
+        :type axis: str
+
+        :param threshold: threshold to use to identify symmetrical vertices
+        :type threshold: flat
+
+        :param direction: direction to use to build the symmetry table. Accepted
+        directions are "positive" and "negative".
+        :type direction: str
 
         """
         self._axis = axis
@@ -23,6 +33,9 @@ class GeometryTable:
         self._points_table = get_points_positions(self.dag_path)
         self._symmetry_table = None
         self.build_symmetry_table()
+
+    def __str__(self):
+        return self._dag_path
 
     @property
     def symmetry_table(self):
