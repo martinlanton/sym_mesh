@@ -27,6 +27,10 @@ class SymMeshUI(QtWidgets.QWidget):
 
         self.vertices_stored = False
 
+        # TODO : remove connexions from here and add it to a startup function
+        #  that connects GUI and controller so that each can be used
+        #  independently, this will allow visual testing of the GUI without
+        #  having to open Maya.
         # Connexion
         self.get_base_pB.clicked.connect(self.get_base)
         self.get_target_pB.clicked.connect(self.get_target)
