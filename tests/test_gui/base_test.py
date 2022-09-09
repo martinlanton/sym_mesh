@@ -2,8 +2,7 @@ import sys
 from Qt import QtWidgets
 
 from tests.fixtures import common
-from gui.SymMesh_ui import SymMeshUI
-from gui.controller import Controller
+from gui import connector
 
 
 class GUITest(common.BaseTest):
@@ -16,11 +15,9 @@ class GUITest(common.BaseTest):
     def setUp(self):
         super(GUITest, self).setUp()
         self.dialog = QtWidgets.QDialog()
-        self.controller = Controller()
-        self.gui = SymMeshUI(self.dialog, self.controller)
+        self.connector = connector.Connector(self.dialog)
+        self.gui = self.connector.gui
         self.dialog.show()
 
     def tearDown(self):
         self.dialog.close()
-        # sys.exit()
-

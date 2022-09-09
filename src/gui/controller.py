@@ -13,6 +13,7 @@ log.setLevel(logging.INFO)
 
 class Controller(object):
     def __init__(self):
+        log.info("Initializing controller")
         # Attributes
         self.get_vtcs_selection(reset=True)
 
