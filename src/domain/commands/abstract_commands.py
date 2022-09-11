@@ -8,10 +8,11 @@ from maya.api import OpenMaya as om2
 from domain.selection import get_points_positions
 
 log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
 
 
 @six.add_metaclass(abc.ABCMeta)
-class AbstractDeformationCommand():
+class AbstractDeformationCommand(object):
     def __init__(
         self,
         base_table,
@@ -44,6 +45,12 @@ class AbstractDeformationCommand():
         :param space: space in which operate the deformation (object or world)
         :type space: constant
         """
+        log.debug("base_table : %s", base_table)
+        log.debug("target_table : %s", target_table)
+        log.debug("selected_vertices_indices : %s", selected_vertices_indices)
+        log.debug("percentage : %s", percentage)
+        log.debug("target_dag_path : %s", target_dag_path)
+        log.debug("space : %s", space)
         self.base_table = base_table
         self.target_table = target_table
         self.selected_vertices_indices = selected_vertices_indices

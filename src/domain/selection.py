@@ -72,4 +72,4 @@ def get_sel_vtces_idcs():
         # Create an MIntArray with the vertex indices
         selected_vertices_indices = fn_components.getElements()
 
-    return {"objs_path": dag_path_list, "indices": selected_vertices_indices}
+    return dag_path_list, selected_vertices_indices

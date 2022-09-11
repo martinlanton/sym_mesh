@@ -51,8 +51,14 @@ class Controller(object):
         if not base_table:
             log.error("Unable to symmetrize, no base defined.")
             return
+        sel_vtces_idcs = selection.get_sel_vtces_idcs()
         target_table = table.GeometryTable(target)
-        self.mesh_modifier.symmetrize(base_table, target_table, percentage=self._percentage)
+        self.mesh_modifier.symmetrize(
+            base_table,
+            target_table,
+            selected_vertices_indices=sel_vtces_idcs[1],
+            percentage=self._percentage,
+        )
 
     def get_base(self):
         """
