@@ -275,3 +275,12 @@ class SymMeshUI(QtWidgets.QWidget):
     #         self.get_selected_vtcs_pB.setStyleSheet(
     #             "QPushButton {background-color: dark gray;}"
     #         )
+
+
+if __name__ == '__main__':
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    dialog = QtWidgets.QDialog()
+    widget = SymMeshUI(dialog)
+    dialog.show()
+    sys.exit(app.exec_())
