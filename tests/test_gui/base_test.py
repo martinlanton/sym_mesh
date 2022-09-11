@@ -6,7 +6,6 @@ from gui import connector
 
 
 class GUITest(common.BaseTest):
-
     @classmethod
     def setUpClass(cls):
         cls.app = QtWidgets.QApplication(sys.argv)
