@@ -8,10 +8,7 @@ from gui import connector
 class BaseGUITest(common.BaseTest):
     @classmethod
     def setUpClass(cls):
-        if not QtWidgets.QApplication.instance():
-            cls.app = QtWidgets.QApplication(sys.argv)
-        else:
-            cls.app = QtWidgets.QApplication.instance()
+        cls.app = QtWidgets.QApplication(sys.argv)
         cls.state = common.startup_maya_session()
 
     def setUp(self):
