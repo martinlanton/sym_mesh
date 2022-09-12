@@ -7,7 +7,7 @@ from tests.test_gui import base_test
 log = logging.getLogger(__name__)
 
 
-class TestSymmetry(base_test.GUITest):
+class TestGUI(base_test.BaseGUITest):
     def test_symmetry_no_base(self):
         mc.select(self.asym_cube)
         QtTest.QTest.mousePress(self.gui.symmetry_push_button, QtCore.Qt.LeftButton)
@@ -62,9 +62,7 @@ class TestSymmetry(base_test.GUITest):
 
         self.assertEqual(expected, result)
 
-
-class TestFlip(base_test.GUITest):
-    def test_symmetry_no_base(self):
+    def test_flip_no_base(self):
         mc.select(self.asym_cube)
         QtTest.QTest.mousePress(self.gui.flip_push_button, QtCore.Qt.LeftButton)
         QtTest.QTest.mouseRelease(self.gui.flip_push_button, QtCore.Qt.LeftButton)

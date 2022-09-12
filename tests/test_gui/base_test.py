@@ -5,7 +5,7 @@ from tests.fixtures import common
 from gui import connector
 
 
-class GUITest(common.BaseTest):
+class BaseGUITest(common.BaseTest):
     @classmethod
     def setUpClass(cls):
         if not QtWidgets.QApplication.instance():
@@ -15,7 +15,7 @@ class GUITest(common.BaseTest):
         cls.state = common.startup_maya_session()
 
     def setUp(self):
-        super(GUITest, self).setUp()
+        super(BaseGUITest, self).setUp()
         self.dialog = QtWidgets.QDialog()
         self.connector = connector.Connector(self.dialog)
         self.gui = self.connector.gui
