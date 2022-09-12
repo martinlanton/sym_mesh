@@ -169,7 +169,7 @@ class TestBakeDeltas(common.BaseTest):
 
 
 class TestFlip(common.BaseTest):
-    def test_symmetrization_x_positive(self):
+    def test_flip_y_positive(self):
         """Test that reverting to base with a value of 0% reverts to base."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="positive")

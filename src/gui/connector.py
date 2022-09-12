@@ -10,6 +10,7 @@ class Connector(object):
         self.gui.get_base_pB.clicked.connect(self.ctrl.get_base)
         # gui.get_target_pB.clicked.connect(ctrl.get_target)
         self.gui.symmetry_push_button.clicked.connect(self.ctrl.symmetrize)
+        self.gui.flip_push_button.clicked.connect(self.ctrl.flip)
         # gui.get_selected_vtcs_pB.clicked.connect(ctrl.get_vtcs_selection)
         # gui.select_stored_vtcs_pB.clicked.connect(ctrl.select_stored_vertices)
         # gui.select_non_symmetrical_vtcs_pB.clicked.connect(

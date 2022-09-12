@@ -138,6 +138,17 @@ class SymMeshUI(QtWidgets.QWidget):
         self.symmetry_push_button.setObjectName("symmetry_pB")
         self.layout.addWidget(self.symmetry_push_button)
 
+        # Flip
+        self.flip_push_button = QtWidgets.QPushButton("Flip")
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHeightForWidth(self.flip_push_button.sizePolicy().hasHeightForWidth())
+        self.flip_push_button.setSizePolicy(sizePolicy)
+        self.flip_push_button.setMinimumSize(QtCore.QSize(0, 25))
+        self.flip_push_button.setObjectName("flip_pB")
+        self.layout.addWidget(self.flip_push_button)
+
         # # Revert value
         # self.horizontalLayout = QtWidgets.QHBoxLayout()
         # self.horizontalLayout.setObjectName("horizontalLayout")

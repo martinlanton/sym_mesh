@@ -60,6 +60,24 @@ class Controller(object):
             percentage=self._percentage,
         )
 
+    def flip(self):
+        target = mc.ls(sl=True)[0]
+        if not target:
+            log.error("Unable to symmetrize, no target selected.")
+            return
+        base_table = self.base_table
+        if not base_table:
+            log.error("Unable to symmetrize, no base defined.")
+            return
+        sel_vtces_idcs = selection.get_sel_vtces_idcs()
+        target_table = table.GeometryTable(target)
+        self.mesh_modifier.flip(
+            base_table,
+            target_table,
+            selected_vertices_indices=sel_vtces_idcs[1],
+            percentage=self._percentage,
+        )
+
     def get_base(self):
         """
         Get base data and set its name in the corresponding lineEdit.
