@@ -23,8 +23,3 @@ class GUITest(common.BaseTest):
 
     def tearDown(self):
         self.dialog.close()
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        del cls.app
-        return super(GUITest, cls).tearDownClass()
