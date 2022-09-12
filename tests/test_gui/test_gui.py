@@ -8,6 +8,13 @@ log = logging.getLogger(__name__)
 
 
 class TestGUI(base_test.BaseGUITest):
+    """All the gui tests must be in the same class.
+    This is because the github maya docker container doesn't seem to support the
+    recuperation of the QApplication instance with an if statement without crashing.
+    The QApplication being a singleton, it cannot be re-instantiated and must be
+    deleted before creating a new one.
+
+    """
     def test_symmetry_no_base(self):
         mc.select(self.asym_cube)
         QtTest.QTest.mousePress(self.gui.symmetry_push_button, QtCore.Qt.LeftButton)
