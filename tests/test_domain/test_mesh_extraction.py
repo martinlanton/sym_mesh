@@ -32,7 +32,9 @@ class TestExtractAxes(common.BaseTest):
         self.assertEqual(
             "|{}_z".format(self.test_extract_axes_cube), extracted_shapes[2]
         )
-        self.assertEqual("|{}_extracted".format(self.test_extract_axes_cube), extracted_shapes[3])
+        self.assertEqual(
+            "|{}_extracted".format(self.test_extract_axes_cube), extracted_shapes[3]
+        )
 
     def test_extract_axes_geometries_point_positions(self):
         vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))

@@ -123,7 +123,9 @@ class TestSymmetry(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table, percentage=0)
+        mesh_modifier.symmetrize(
+            base_table=sym_table, target_table=geo_table, percentage=0
+        )
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -195,5 +197,6 @@ class TestFlip(common.BaseTest):
         log.info("Expected : %s", expected)
         log.info("Result : %s", result)
         self.assertEqual(expected, result)
+
 
 # TODO : add tests with active vertices selection

@@ -15,6 +15,7 @@ class TestGUI(base_test.BaseGUITest):
     deleted before creating a new one.
 
     """
+
     def test_symmetry_no_base(self):
         mc.select(self.asym_cube)
         QtTest.QTest.mousePress(self.gui.symmetry_push_button, QtCore.Qt.LeftButton)
@@ -137,8 +138,12 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_revert_to_base_no_base(self):
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mousePress(
+            self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton
+        )
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -153,8 +158,12 @@ class TestGUI(base_test.BaseGUITest):
         QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mousePress(
+            self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton
+        )
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -169,8 +178,12 @@ class TestGUI(base_test.BaseGUITest):
         QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
 
         mc.select("{}.vtx[1]".format(self.asym_cube))
-        QtTest.QTest.mousePress(self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mousePress(
+            self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton
+        )
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)

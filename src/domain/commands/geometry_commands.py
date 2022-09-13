@@ -58,7 +58,9 @@ class ExtractAxesCommand(object):
         # Adding base point array to point arrays list for redo purposes
         self.point_arrays.append(base_point_array)
 
-        dag_path = self.duplicate_mesh(self.base_dag_path, target_name, suffix="extracted")
+        dag_path = self.duplicate_mesh(
+            self.base_dag_path, target_name, suffix="extracted"
+        )
         pathes.append(dag_path.fullPathName())
 
         return pathes

@@ -132,7 +132,9 @@ class SymMeshUI(QtWidgets.QWidget):
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
-        sizePolicy.setHeightForWidth(self.symmetry_push_button.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.symmetry_push_button.sizePolicy().hasHeightForWidth()
+        )
         self.symmetry_push_button.setSizePolicy(sizePolicy)
         self.symmetry_push_button.setMinimumSize(QtCore.QSize(0, 25))
         self.symmetry_push_button.setObjectName("symmetry_pB")
@@ -143,7 +145,9 @@ class SymMeshUI(QtWidgets.QWidget):
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
-        sizePolicy.setHeightForWidth(self.flip_push_button.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.flip_push_button.sizePolicy().hasHeightForWidth()
+        )
         self.flip_push_button.setSizePolicy(sizePolicy)
         self.flip_push_button.setMinimumSize(QtCore.QSize(0, 25))
         self.flip_push_button.setObjectName("flip_pB")
@@ -197,7 +201,9 @@ class SymMeshUI(QtWidgets.QWidget):
         # self.layout.addWidget(self.revert_to_base_pB)
         #
         # Revert to base on selection
-        self.revert_to_base_push_button = QtWidgets.QPushButton("Revert sel to base (live)")
+        self.revert_to_base_push_button = QtWidgets.QPushButton(
+            "Revert sel to base (live)"
+        )
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
         )
@@ -244,52 +250,54 @@ class SymMeshUI(QtWidgets.QWidget):
         # )
         log.info("Done Building UI")
 
+
 # TODO : all getter methods should trigger a signal, and the signal should be
 #  connected to the relevant logic in the controller
-    # def get_spinBox_value(self):
-    #     """Get spinBox value and set slider value"""
-    #     value = self.revert_value_slider.value()
-    #
-    #     self.controller._revert_value = value
-    #
-    #     self.revert_value_sB.setValue(value)
-    #
-    # def get_slider_value(self):
-    #     """Get slider value and set spinBox value"""
-    #     value = self.revert_value_sB.value()
-    #
-    #     self.controller._revert_value = value
-    #
-    #     self.revert_value_slider.setValue(value)
-    #
-    # def get_base(self):
-    #     self.controller.get_base()
-    #     self.base_lE.setText(str(self.controller.base_table))
-    #
-    # def get_target(self):
-    #     self.controller.get_target()
-    #     self.target_lE.setText(str(self.controller.target_table))
-    #
-    # def get_selected_vertices(self):
-    #     if not self.controller.are_vertices_stored:
-    #         self.controller.get_vtcs_selection()
-    #     else:
-    #         self.controller.get_vtcs_selection(True)
-    #
-    #     if self.controller.are_vertices_stored:
-    #         self.vertices_stored = True
-    #         self.get_selected_vtcs_pB.setStyleSheet(
-    #             "QPushButton {background-color: red;}"
-    #         )
-    #     else:
-    #         self.vertices_stored = False
-    #         self.get_selected_vtcs_pB.setStyleSheet(
-    #             "QPushButton {background-color: dark gray;}"
-    #         )
+# def get_spinBox_value(self):
+#     """Get spinBox value and set slider value"""
+#     value = self.revert_value_slider.value()
+#
+#     self.controller._revert_value = value
+#
+#     self.revert_value_sB.setValue(value)
+#
+# def get_slider_value(self):
+#     """Get slider value and set spinBox value"""
+#     value = self.revert_value_sB.value()
+#
+#     self.controller._revert_value = value
+#
+#     self.revert_value_slider.setValue(value)
+#
+# def get_base(self):
+#     self.controller.get_base()
+#     self.base_lE.setText(str(self.controller.base_table))
+#
+# def get_target(self):
+#     self.controller.get_target()
+#     self.target_lE.setText(str(self.controller.target_table))
+#
+# def get_selected_vertices(self):
+#     if not self.controller.are_vertices_stored:
+#         self.controller.get_vtcs_selection()
+#     else:
+#         self.controller.get_vtcs_selection(True)
+#
+#     if self.controller.are_vertices_stored:
+#         self.vertices_stored = True
+#         self.get_selected_vtcs_pB.setStyleSheet(
+#             "QPushButton {background-color: red;}"
+#         )
+#     else:
+#         self.vertices_stored = False
+#         self.get_selected_vtcs_pB.setStyleSheet(
+#             "QPushButton {background-color: dark gray;}"
+#         )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     dialog = QtWidgets.QDialog()
     widget = SymMeshUI(dialog)
