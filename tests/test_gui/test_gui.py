@@ -108,6 +108,33 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(expected, result)
 
+    def test_flip_with_base_and_vertex_selection(self):
+        mc.select(self.sym_cube)
+        QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+
+        mc.select("{}.vtx[1]".format(self.asym_cube))
+        QtTest.QTest.mousePress(self.gui.flip_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.flip_push_button, QtCore.Qt.LeftButton)
+
+        expected = [
+            [-0.5, 0.5, 0.5],
+            [0.5, -0.5, 0.5],
+            [-0.5, 0.5, 0.5],
+            [0.5, 1.5, 0.5],
+            [-0.5, 0.5, -0.5],
+            [0.5, 1.5, -0.5],
+            [-0.5, -0.5, -0.5],
+            [0.5, 0.5, -0.5],
+        ]
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+
+        self.assertEqual(expected, result)
+
 
 if __name__ == "__main__":
     unittest.main()
