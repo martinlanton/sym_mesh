@@ -196,19 +196,19 @@ class SymMeshUI(QtWidgets.QWidget):
         # self.revert_to_base_pB.setObjectName("revert_to_base_pB")
         # self.layout.addWidget(self.revert_to_base_pB)
         #
-        # # Revert to base on selection
-        # self.revert_to_base_live_pB = QtWidgets.QPushButton("Revert sel to base (live)")
-        # sizePolicy = QtWidgets.QSizePolicy(
-        #     QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
-        # )
-        # sizePolicy.setHeightForWidth(
-        #     self.revert_to_base_live_pB.sizePolicy().hasHeightForWidth()
-        # )
-        # self.revert_to_base_live_pB.setSizePolicy(sizePolicy)
-        # self.revert_to_base_live_pB.setMinimumSize(QtCore.QSize(0, 25))
-        # self.revert_to_base_live_pB.setObjectName("revert_to_base_live_pB")
-        # self.layout.addWidget(self.revert_to_base_live_pB)
-        #
+        # Revert to base on selection
+        self.revert_to_base_push_button = QtWidgets.QPushButton("Revert sel to base (live)")
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHeightForWidth(
+            self.revert_to_base_push_button.sizePolicy().hasHeightForWidth()
+        )
+        self.revert_to_base_push_button.setSizePolicy(sizePolicy)
+        self.revert_to_base_push_button.setMinimumSize(QtCore.QSize(0, 25))
+        self.revert_to_base_push_button.setObjectName("revert_to_base_live_pB")
+        self.layout.addWidget(self.revert_to_base_push_button)
+
         # # Undo
         # self.undo_pB = QtWidgets.QPushButton("Undo")
         # sizePolicy = QtWidgets.QSizePolicy(

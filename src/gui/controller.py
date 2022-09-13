@@ -170,58 +170,29 @@ class Controller(object):
                     self.space,
                 )
 
-    def revert_selected_to_base_live(self, revert_value=None):
+    def revert_to_base(self):
         """
         Revert selected mesh or vertices to base from the current value, using
         vertices selection (if one has been stored or is active) or on the whole
         mesh.
 
         """
-        # Get selected vertices indices
-        self.sel_vtces_idcs = selection.get_sel_vtces_idcs()
-        # If no vertices are currently selected
-        if self.sel_vtces_idcs["indices"].__len__() == 0:
-            # If a selection is stored
-            if self.vtcs_selection["indices"].__len__() > 0:
-                # Replace indices using stored selection
-                self.sel_vtces_idcs["indices"] = self.vtcs_selection["indices"]
-
-        # Update revert value
-        if revert_value is not None:
-            self._revert_value = revert_value
-
-        for dag_path in self.sel_vtces_idcs["objs_path"]:
-            # Update current mesh table
-            self.current_table = selection.get_points_positions(dag_path)
-            self.temp_base_table = selection.get_points_positions(
-                self.base_table["objs_path"]
-            )
-
-            self.undo_table = {
-                "objs_path": self.current_table["objs_path"].fullPathName(),
-                "points_pos": self.current_table["points_pos"],
-            }
-
-            self.undo.append(self.undo_table)
-
-            # Check if base is registered
-            if not self.temp_base_table["points_pos"]:
-                log.info("No base selected")
-                return
-            # Check if something is selected
-            elif not self.sel_vtces_idcs["objs_path"]:
-                log.info("Nothing is selected")
-                return
-            # Revert to base
-            else:
-                self.revert_to_base(
-                    self.temp_base_table["points_pos"],
-                    self.current_table["points_pos"],
-                    self.sel_vtces_idcs["indices"],
-                    self._revert_value,
-                    dag_path,
-                    self.space,
-                )
+        target = mc.ls(sl=True)[0]
+        if not target:
+            log.error("Unable to symmetrize, no target selected.")
+            return
+        base_table = self.base_table
+        if not base_table:
+            log.error("Unable to symmetrize, no base defined.")
+            return
+        sel_vtces_idcs = selection.get_sel_vtces_idcs()
+        target_table = table.GeometryTable(target)
+        self.mesh_modifier.revert_to_base(
+            base_table,
+            target_table,
+            selected_vertices_indices=sel_vtces_idcs[1],
+            percentage=self._percentage,
+        )
 
     def bake_difference_on_selected(self):
         """
