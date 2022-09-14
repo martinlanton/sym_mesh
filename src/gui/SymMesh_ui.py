@@ -215,17 +215,17 @@ class SymMeshUI(QtWidgets.QWidget):
         self.revert_to_base_push_button.setObjectName("revert_to_base_live_pB")
         self.layout.addWidget(self.revert_to_base_push_button)
 
-        # # Undo
-        # self.undo_pB = QtWidgets.QPushButton("Undo")
-        # sizePolicy = QtWidgets.QSizePolicy(
-        #     QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
-        # )
-        # sizePolicy.setHeightForWidth(self.undo_pB.sizePolicy().hasHeightForWidth())
-        # self.undo_pB.setSizePolicy(sizePolicy)
-        # self.undo_pB.setMinimumSize(QtCore.QSize(0, 25))
-        # self.undo_pB.setObjectName("undo_pB")
-        # self.layout.addWidget(self.undo_pB)
-        #
+        # Undo
+        self.undo_push_button = QtWidgets.QPushButton("Undo")
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHeightForWidth(self.undo_push_button.sizePolicy().hasHeightForWidth())
+        self.undo_push_button.setSizePolicy(sizePolicy)
+        self.undo_push_button.setMinimumSize(QtCore.QSize(0, 25))
+        self.undo_push_button.setObjectName("undo_pB")
+        self.layout.addWidget(self.undo_push_button)
+
         # # Tooltips
         # self.revert_to_base_pB.setToolTip(
         #     QtWidgets.QApplication.translate(
@@ -300,6 +300,10 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication(sys.argv)
     dialog = QtWidgets.QDialog()
+    sizePolicy = QtWidgets.QSizePolicy(
+        QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+    )
+    dialog.setSizePolicy(sizePolicy)
     widget = SymMeshUI(dialog)
     dialog.show()
     sys.exit(app.exec_())

@@ -19,4 +19,4 @@ class Connector(object):
         # gui.bake_diff_pB.clicked.connect(ctrl.bake_difference)
         # gui.revert_to_base_pB.clicked.connect(ctrl.revert_to_base)
         self.gui.revert_to_base_push_button.clicked.connect(self.ctrl.revert_to_base)
-        # gui.undo_pB.clicked.connect(ctrl.undo)
+        self.gui.undo_push_button.clicked.connect(self.ctrl.undo)

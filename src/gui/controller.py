@@ -49,6 +49,9 @@ class Controller(object):
         mesh = mc.ls(sl=True)[0]
         self.base_table = table.GeometryTable(mesh)
 
+    def undo(self):
+        self.mesh_modifier.undo()
+
     def get_target(self):
         """
         Get target data and set its name in the corresponding lineEdit.
