@@ -226,6 +226,17 @@ class SymMeshUI(QtWidgets.QWidget):
         self.undo_push_button.setObjectName("undo_pB")
         self.layout.addWidget(self.undo_push_button)
 
+        # Redo
+        self.redo_push_button = QtWidgets.QPushButton("Redo")
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHeightForWidth(self.redo_push_button.sizePolicy().hasHeightForWidth())
+        self.redo_push_button.setSizePolicy(sizePolicy)
+        self.redo_push_button.setMinimumSize(QtCore.QSize(0, 25))
+        self.redo_push_button.setObjectName("redo_push_button")
+        self.layout.addWidget(self.redo_push_button)
+
         # # Tooltips
         # self.revert_to_base_pB.setToolTip(
         #     QtWidgets.QApplication.translate(

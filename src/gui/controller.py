@@ -52,6 +52,9 @@ class Controller(object):
     def undo(self):
         self.mesh_modifier.undo()
 
+    def redo(self):
+        self.mesh_modifier.redo()
+
     def get_target(self):
         """
         Get target data and set its name in the corresponding lineEdit.

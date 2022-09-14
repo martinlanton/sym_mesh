@@ -20,3 +20,4 @@ class Connector(object):
         # gui.revert_to_base_pB.clicked.connect(ctrl.revert_to_base)
         self.gui.revert_to_base_push_button.clicked.connect(self.ctrl.revert_to_base)
         self.gui.undo_push_button.clicked.connect(self.ctrl.undo)
+        self.gui.redo_push_button.clicked.connect(self.ctrl.redo)
