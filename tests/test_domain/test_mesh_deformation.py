@@ -154,7 +154,7 @@ class TestBakeDeltas(common.BaseTest):
         ]
         self.assertEqual(self.expected_asym_position, result)
 
-    def test_bake_delta_zero_precent(self):
+    def test_bake_delta_zero_percent(self):
         """Test that baking delta functions properly on one geometry."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)

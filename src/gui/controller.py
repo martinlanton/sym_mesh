@@ -104,11 +104,11 @@ class Controller(object):
     def flip(self):
         target = mc.ls(sl=True)[0]
         if not target:
-            log.error("Unable to symmetrize, no target selected.")
+            log.error("Unable to flip, no target selected.")
             return
         base_table = self.base_table
         if not base_table:
-            log.error("Unable to symmetrize, no base defined.")
+            log.error("Unable to flip, no base defined.")
             return
         sel_vtces_idcs = selection.get_sel_vtces_idcs()
         target_table = table.GeometryTable(target)
@@ -128,11 +128,11 @@ class Controller(object):
         """
         target = mc.ls(sl=True)[0]
         if not target:
-            log.error("Unable to symmetrize, no target selected.")
+            log.error("Unable to revert to base, no target selected.")
             return
         base_table = self.base_table
         if not base_table:
-            log.error("Unable to symmetrize, no base defined.")
+            log.error("Unable to revert to base, no base defined.")
             return
         sel_vtces_idcs = selection.get_sel_vtces_idcs()
         target_table = table.GeometryTable(target)
@@ -142,6 +142,35 @@ class Controller(object):
             selected_vertices_indices=sel_vtces_idcs[1],
             percentage=self._percentage,
         )
+
+    def bake_deltas(self):
+        """
+        Revert selected mesh or vertices to base from the current value, using
+        vertices selection (if one has been stored or is active) or on the whole
+        mesh.
+
+        """
+        target_paths = mc.ls(sl=True)
+        if not target_paths:
+            log.error("Unable to bake deltas, no selected geometries to bake onto.")
+            return
+        target_table = self.target_table
+        if not target_table:
+            log.error("Unable to bake deltas, no target position defined.")
+            return
+        base_table = self.base_table
+        if not base_table:
+            log.error("Unable to bake deltas, no base position defined.")
+            return
+        sel_vtces_idcs = selection.get_sel_vtces_idcs()
+        for target_path in target_paths:
+            self.mesh_modifier.bake_difference(
+                base_table,
+                target_table,
+                selected_vertices_indices=sel_vtces_idcs[1],
+                percentage=self._percentage,
+                target_dag_path=target_path
+            )
 
     def select_stored_vertices(self):
         if len(self.vtcs_selection["indices"]) == 0:

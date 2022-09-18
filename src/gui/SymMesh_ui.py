@@ -49,18 +49,18 @@ class SymMeshUI(QtWidgets.QWidget):
         # self.base_lE.setObjectName("base_lE")
         # self.layout.addWidget(self.base_lE)
         #
-        # # Target
-        # self.get_target_pB = QtWidgets.QPushButton("Get Target")
-        # sizePolicy = QtWidgets.QSizePolicy(
-        #     QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
-        # )
-        # sizePolicy.setHeightForWidth(
-        #     self.get_target_pB.sizePolicy().hasHeightForWidth()
-        # )
-        # self.get_target_pB.setSizePolicy(sizePolicy)
-        # self.get_target_pB.setMinimumSize(QtCore.QSize(0, 25))
-        # self.get_target_pB.setObjectName("get_target_pB")
-        # self.layout.addWidget(self.get_target_pB)
+        # Target
+        self.get_target_pB = QtWidgets.QPushButton("Get Target")
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHeightForWidth(
+            self.get_target_pB.sizePolicy().hasHeightForWidth()
+        )
+        self.get_target_pB.setSizePolicy(sizePolicy)
+        self.get_target_pB.setMinimumSize(QtCore.QSize(0, 25))
+        self.get_target_pB.setObjectName("get_target_pB")
+        self.layout.addWidget(self.get_target_pB)
         #
         # self.target_lE = QtWidgets.QLineEdit("target_LE")
         # self.target_lE.setEnabled(False)
@@ -116,16 +116,16 @@ class SymMeshUI(QtWidgets.QWidget):
         # self.select_stored_vtcs_pB.setObjectName("select_stored_vtcs_pB")
         # self.layout.addWidget(self.select_stored_vtcs_pB)
         #
-        # # Bake difference
-        # self.bake_diff_pB = QtWidgets.QPushButton("Bake Difference")
-        # sizePolicy = QtWidgets.QSizePolicy(
-        #     QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
-        # )
-        # sizePolicy.setHeightForWidth(self.bake_diff_pB.sizePolicy().hasHeightForWidth())
-        # self.bake_diff_pB.setSizePolicy(sizePolicy)
-        # self.bake_diff_pB.setMinimumSize(QtCore.QSize(0, 25))
-        # self.bake_diff_pB.setObjectName("bake_diff_pB")
-        # self.layout.addWidget(self.bake_diff_pB)
+        # Bake deltas
+        self.bake_deltas_push_button = QtWidgets.QPushButton("Bake Deltas")
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHeightForWidth(self.bake_deltas_push_button.sizePolicy().hasHeightForWidth())
+        self.bake_deltas_push_button.setSizePolicy(sizePolicy)
+        self.bake_deltas_push_button.setMinimumSize(QtCore.QSize(0, 25))
+        self.bake_deltas_push_button.setObjectName("bake_deltas_pB")
+        self.layout.addWidget(self.bake_deltas_push_button)
 
         # Symmetry
         self.symmetry_push_button = QtWidgets.QPushButton("Symmetry")
@@ -187,7 +187,7 @@ class SymMeshUI(QtWidgets.QWidget):
         # self.revert_value_sB.setObjectName("percentage_sB")
         # self.horizontalLayout.addWidget(self.revert_value_sB)
         #
-        # # Revert to base
+        # # Revert to base from target
         # self.revert_to_base_pB = QtWidgets.QPushButton("Revert sel to base (target)")
         # sizePolicy = QtWidgets.QSizePolicy(
         #     QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
