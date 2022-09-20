@@ -310,14 +310,14 @@ class SymMeshUI(QtWidgets.QWidget):
 
 
 if __name__ == "__main__":
-    import sys
+    import sys                                                                  # pragma: no cover
 
-    app = QtWidgets.QApplication(sys.argv)
-    dialog = QtWidgets.QDialog()
-    sizePolicy = QtWidgets.QSizePolicy(
-        QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
-    )
-    dialog.setSizePolicy(sizePolicy)
-    widget = SymMeshUI(dialog)
-    dialog.show()
-    sys.exit(app.exec_())
+    app = QtWidgets.QApplication(sys.argv)                                      # pragma: no cover
+    dialog = QtWidgets.QDialog()                                                # pragma: no cover
+    sizePolicy = QtWidgets.QSizePolicy(                                         # pragma: no cover
+        QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding        # pragma: no cover
+    )                                                                           # pragma: no cover
+    dialog.setSizePolicy(sizePolicy)                                            # pragma: no cover
+    widget = SymMeshUI(dialog)                                                  # pragma: no cover
+    dialog.show()                                                               # pragma: no cover
+    sys.exit(app.exec_())                                                       # pragma: no cover
