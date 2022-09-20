@@ -3,7 +3,9 @@ from maya import cmds as mc
 import logging
 
 import domain.table
-from domain import selection, mesh_modification
+from domain import mesh_modification
+from domain import selection
+from gui import signal
 from domain import table
 
 
@@ -30,6 +32,9 @@ class Controller(object):
         self.base_table: domain.table.GeometryTable = None
         self.target_table: domain.table.GeometryTable = None
 
+        # Signals
+        self.set_base = signal.Signal()
+
     @property
     def percentage(self):
         return self._percentage
@@ -48,12 +53,7 @@ class Controller(object):
         """
         mesh = mc.ls(sl=True)[0]
         self.base_table = table.GeometryTable(mesh)
-
-    def undo(self):
-        self.mesh_modifier.undo()
-
-    def redo(self):
-        self.mesh_modifier.redo()
+        self.set_base.emit(mesh)
 
     def get_target(self):
         """
@@ -200,3 +200,10 @@ class Controller(object):
                     vtcs_to_select.add((dag_path, MItVtx.currentItem()))
                 MItVtx.next()
             om2.MGlobal.setActiveSelectionList(vtcs_to_select)
+
+    def undo(self):
+        self.mesh_modifier.undo()
+
+    def redo(self):
+        self.mesh_modifier.redo()
+

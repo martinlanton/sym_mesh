@@ -38,17 +38,17 @@ class SymMeshUI(QtWidgets.QWidget):
         self.get_base_pB.setObjectName("get_base_pB")
         self.layout.addWidget(self.get_base_pB)
 
-        # self.base_lE = QtWidgets.QLineEdit("base_LE")
-        # self.base_lE.setEnabled(False)
-        # sizePolicy = QtWidgets.QSizePolicy(
-        #     QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        # )
-        # sizePolicy.setHeightForWidth(self.base_lE.sizePolicy().hasHeightForWidth())
-        # self.base_lE.setSizePolicy(sizePolicy)
-        # self.base_lE.setMinimumSize(QtCore.QSize(0, 25))
-        # self.base_lE.setObjectName("base_lE")
-        # self.layout.addWidget(self.base_lE)
-        #
+        self.base_line_edit = QtWidgets.QLineEdit("base_line_edit")
+        self.base_line_edit.setEnabled(False)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHeightForWidth(self.base_line_edit.sizePolicy().hasHeightForWidth())
+        self.base_line_edit.setSizePolicy(sizePolicy)
+        self.base_line_edit.setMinimumSize(QtCore.QSize(0, 25))
+        self.base_line_edit.setObjectName("base_line_edit")
+        self.layout.addWidget(self.base_line_edit)
+
         # Target
         self.get_target_pB = QtWidgets.QPushButton("Get Target")
         sizePolicy = QtWidgets.QSizePolicy(
@@ -260,6 +260,9 @@ class SymMeshUI(QtWidgets.QWidget):
         #     )
         # )
         log.info("Done Building UI")
+
+    def set_line_edit(self, line_edit, arg):
+        line_edit.setText(arg)
 
 
 # TODO : all getter methods should trigger a signal, and the signal should be

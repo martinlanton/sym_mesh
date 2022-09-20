@@ -1,3 +1,5 @@
+from functools import partial
+
 from gui import controller
 from gui import SymMesh_ui
 
@@ -21,3 +23,6 @@ class Connector(object):
         self.gui.revert_to_base_push_button.clicked.connect(self.ctrl.revert_to_base)
         self.gui.undo_push_button.clicked.connect(self.ctrl.undo)
         self.gui.redo_push_button.clicked.connect(self.ctrl.redo)
+
+        set_base_line_edit = partial(self.gui.set_line_edit, self.gui.base_line_edit)
+        self.ctrl.set_base.connect(set_base_line_edit)
