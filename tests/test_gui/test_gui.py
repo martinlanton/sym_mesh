@@ -265,6 +265,15 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.sym_cube, result)
 
+    def test_target_line_edit(self):
+        mc.select(self.asym_cube)
+        QtTest.QTest.mousePress(self.gui.get_target_pB, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_target_pB, QtCore.Qt.LeftButton)
+
+        result = self.gui.target_line_edit.text()
+
+        self.assertEqual(self.asym_cube, result)
+
     def test_undo(self):
         mc.select(self.sym_cube)
         QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)

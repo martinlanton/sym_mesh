@@ -38,7 +38,7 @@ class SymMeshUI(QtWidgets.QWidget):
         self.get_base_pB.setObjectName("get_base_pB")
         self.layout.addWidget(self.get_base_pB)
 
-        self.base_line_edit = QtWidgets.QLineEdit("base_line_edit")
+        self.base_line_edit = QtWidgets.QLineEdit("base")
         self.base_line_edit.setEnabled(False)
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
@@ -61,18 +61,18 @@ class SymMeshUI(QtWidgets.QWidget):
         self.get_target_pB.setMinimumSize(QtCore.QSize(0, 25))
         self.get_target_pB.setObjectName("get_target_pB")
         self.layout.addWidget(self.get_target_pB)
-        #
-        # self.target_lE = QtWidgets.QLineEdit("target_LE")
-        # self.target_lE.setEnabled(False)
-        # sizePolicy = QtWidgets.QSizePolicy(
-        #     QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        # )
-        # sizePolicy.setHeightForWidth(self.target_lE.sizePolicy().hasHeightForWidth())
-        # self.target_lE.setSizePolicy(sizePolicy)
-        # self.target_lE.setMinimumSize(QtCore.QSize(0, 25))
-        # self.target_lE.setObjectName("target_lE")
-        # self.layout.addWidget(self.target_lE)
-        #
+
+        self.target_line_edit = QtWidgets.QLineEdit("target")
+        self.target_line_edit.setEnabled(False)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHeightForWidth(self.target_line_edit.sizePolicy().hasHeightForWidth())
+        self.target_line_edit.setSizePolicy(sizePolicy)
+        self.target_line_edit.setMinimumSize(QtCore.QSize(0, 25))
+        self.target_line_edit.setObjectName("target_line_edit")
+        self.layout.addWidget(self.target_line_edit)
+
         # # Store vertices selection
         # self.get_selected_vtcs_pB = QtWidgets.QPushButton("Get Vtx Selection")
         # sizePolicy = QtWidgets.QSizePolicy(

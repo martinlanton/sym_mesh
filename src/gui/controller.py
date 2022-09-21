@@ -34,6 +34,7 @@ class Controller(object):
 
         # Signals
         self.set_base = signal.Signal()
+        self.set_target = signal.Signal()
 
     @property
     def percentage(self):
@@ -62,6 +63,7 @@ class Controller(object):
         """
         mesh = mc.ls(sl=True)[0]
         self.target_table = table.GeometryTable(mesh)
+        self.set_target.emit(mesh)
 
     def get_vtcs_selection(self, reset=False):
         """Get the current selection of vertices and set it.

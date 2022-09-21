@@ -26,3 +26,5 @@ class Connector(object):
 
         set_base_line_edit = partial(self.gui.set_line_edit, self.gui.base_line_edit)
         self.ctrl.set_base.connect(set_base_line_edit)
+        set_target_line_edit = partial(self.gui.set_line_edit, self.gui.target_line_edit)
+        self.ctrl.set_target.connect(set_target_line_edit)
