@@ -27,7 +27,7 @@ class SymMeshUI(QtWidgets.QWidget):
         log.info("Building UI")
         self.layout = QtWidgets.QVBoxLayout(self)
 
-        # Base
+        # Get base
         self.get_base_pB = QtWidgets.QPushButton("Get Base")
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
@@ -49,7 +49,7 @@ class SymMeshUI(QtWidgets.QWidget):
         self.base_line_edit.setObjectName("base_line_edit")
         self.layout.addWidget(self.base_line_edit)
 
-        # Target
+        # Get target
         self.get_target_pB = QtWidgets.QPushButton("Get Target")
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
@@ -201,7 +201,7 @@ class SymMeshUI(QtWidgets.QWidget):
         # self.revert_to_base_pB.setMinimumSize(QtCore.QSize(0, 25))
         # self.revert_to_base_pB.setObjectName("revert_to_base_pB")
         # self.layout.addWidget(self.revert_to_base_pB)
-        #
+
         # Revert to base on selection
         self.revert_to_base_push_button = QtWidgets.QPushButton(
             "Revert sel to base (live)"
@@ -239,28 +239,28 @@ class SymMeshUI(QtWidgets.QWidget):
         self.redo_push_button.setObjectName("redo_push_button")
         self.layout.addWidget(self.redo_push_button)
 
-        # # Tooltips
-        # self.revert_to_base_pB.setToolTip(
-        #     QtWidgets.QApplication.translate(
-        #         "MainWindow",
-        #         "Revert selected mesh or vertices to base, from registered position.",
-        #         None,
-        #     )
-        # )
-        # self.revert_to_base_live_pB.setToolTip(
-        #     QtWidgets.QApplication.translate(
-        #         "MainWindow",
-        #         "Revert selected mesh or vertices to base, from current position.",
-        #         None,
-        #     )
-        # )
-        # self.undo_pB.setToolTip(
-        #     QtWidgets.QApplication.translate(
-        #         "MainWindow",
-        #         "Revert selected mesh or vertices to base, from current position.",
-        #         None,
-        #     )
-        # )
+        # Tooltips
+        self.revert_to_base_push_button.setToolTip(
+            QtWidgets.QApplication.translate(
+                "MainWindow",
+                "Revert selected mesh or vertices to base, from current position.",
+                None,
+            )
+        )
+        self.undo_push_button.setToolTip(
+            QtWidgets.QApplication.translate(
+                "MainWindow",
+                "Undo the last action.",
+                None,
+            )
+        )
+        self.redo_push_button.setToolTip(
+            QtWidgets.QApplication.translate(
+                "MainWindow",
+                "Redo the last undone action.",
+                None,
+            )
+        )
         log.info("Done Building UI")
 
     def set_line_edit(self, line_edit, arg):
@@ -268,6 +268,15 @@ class SymMeshUI(QtWidgets.QWidget):
 
     def store_selection(self):
         self.vertices_stored = not self.vertices_stored
+
+        if self.vertices_stored:
+            self.get_vertex_selection_push_button.setStyleSheet(
+                "QPushButton {background-color: red;}"
+            )
+        else:
+            self.get_vertex_selection_push_button.setStyleSheet(
+                "QPushButton {background-color: dark gray;}"
+            )
 
 
 # TODO : all getter methods should trigger a signal, and the signal should be
@@ -287,31 +296,6 @@ class SymMeshUI(QtWidgets.QWidget):
 #     self.controller._revert_value = value
 #
 #     self.revert_value_slider.setValue(value)
-#
-# def get_base(self):
-#     self.controller.get_base()
-#     self.base_lE.setText(str(self.controller.base_table))
-#
-# def get_target(self):
-#     self.controller.get_target()
-#     self.target_lE.setText(str(self.controller.target_table))
-#
-# def get_selected_vertices(self):
-#     if not self.controller.are_vertices_stored:
-#         self.controller.get_vtcs_selection()
-#     else:
-#         self.controller.get_vtcs_selection(True)
-#
-#     if self.controller.are_vertices_stored:
-#         self.vertices_stored = True
-#         self.get_selected_vtcs_pB.setStyleSheet(
-#             "QPushButton {background-color: red;}"
-#         )
-#     else:
-#         self.vertices_stored = False
-#         self.get_selected_vtcs_pB.setStyleSheet(
-#             "QPushButton {background-color: dark gray;}"
-#         )
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 import logging
 from maya import cmds as mc
-from PySide2 import QtTest, QtCore
+from PySide2 import QtTest, QtCore, QtGui
 import unittest
 from tests.test_gui import base_test
 
@@ -284,7 +284,10 @@ class TestGUI(base_test.BaseGUITest):
         QtTest.QTest.mouseRelease(self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton)
 
         result = mc.ls(selection=True)
+        color = self.gui.get_vertex_selection_push_button.palette().button().color()
+
         self.assertEqual(["{}.vtx[1]".format(self.sym_cube)], result)
+        self.assertEqual("red", color)
 
     def test_reset_vertex_selection(self):
         mc.select("{}.vtx[1]".format(self.sym_cube))
@@ -299,7 +302,10 @@ class TestGUI(base_test.BaseGUITest):
         QtTest.QTest.mouseRelease(self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton)
 
         result = mc.ls(selection=True)
+        color = self.gui.get_vertex_selection_push_button.palette().button().color()
+
         self.assertEqual([], result)
+        self.assertEqual(QtGui.QColor.fromRgbF(0.941176, 0.941176, 0.941176, 1.000000), color)
 
     def test_undo(self):
         mc.select(self.sym_cube)
