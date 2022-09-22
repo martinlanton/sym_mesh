@@ -73,20 +73,22 @@ class SymMeshUI(QtWidgets.QWidget):
         self.target_line_edit.setObjectName("target_line_edit")
         self.layout.addWidget(self.target_line_edit)
 
-        # # Store vertices selection
-        # self.get_selected_vtcs_pB = QtWidgets.QPushButton("Get Vtx Selection")
-        # sizePolicy = QtWidgets.QSizePolicy(
-        #     QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
-        # )
-        # sizePolicy.setHeightForWidth(
-        #     self.get_selected_vtcs_pB.sizePolicy().hasHeightForWidth()
-        # )
-        # self.get_selected_vtcs_pB.setSizePolicy(sizePolicy)
-        # self.get_selected_vtcs_pB.setMinimumSize(QtCore.QSize(0, 25))
-        # self.get_selected_vtcs_pB.setObjectName("get_selected_vtcs_pB")
-        # self.layout.addWidget(self.get_selected_vtcs_pB)
-        #
-        # # Select non symmetrical vertices
+        # Store vertices selection
+        self.get_vertex_selection_push_button = QtWidgets.QPushButton("Get Vtx Selection")
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHeightForWidth(
+            self.get_vertex_selection_push_button.sizePolicy().hasHeightForWidth()
+        )
+        self.get_vertex_selection_push_button.setSizePolicy(sizePolicy)
+        self.get_vertex_selection_push_button.setMinimumSize(QtCore.QSize(0, 25))
+        self.get_vertex_selection_push_button.setObjectName("get_vertex_selection_push_button")
+        self.layout.addWidget(self.get_vertex_selection_push_button)
+
+        self.get_vertex_selection_push_button.clicked.connect(self.store_selection)
+
+        # # Select non-symmetrical vertices
         # self.select_non_symmetrical_vtcs_pB = QtWidgets.QPushButton(
         #     "Select Non Symmetrical Vtcs"
         # )
@@ -102,20 +104,20 @@ class SymMeshUI(QtWidgets.QWidget):
         #     "select_non_symmetrical_vtcs_pB"
         # )
         # self.layout.addWidget(self.select_non_symmetrical_vtcs_pB)
-        #
-        # # Selected stored vertex selection
-        # self.select_stored_vtcs_pB = QtWidgets.QPushButton("Select stored Vtcs")
-        # sizePolicy = QtWidgets.QSizePolicy(
-        #     QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
-        # )
-        # sizePolicy.setHeightForWidth(
-        #     self.select_stored_vtcs_pB.sizePolicy().hasHeightForWidth()
-        # )
-        # self.select_stored_vtcs_pB.setSizePolicy(sizePolicy)
-        # self.select_stored_vtcs_pB.setMinimumSize(QtCore.QSize(0, 25))
-        # self.select_stored_vtcs_pB.setObjectName("select_stored_vtcs_pB")
-        # self.layout.addWidget(self.select_stored_vtcs_pB)
-        #
+
+        # Select stored vertex selection
+        self.select_vertex_selection_push_button = QtWidgets.QPushButton("Select stored Vtcs")
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHeightForWidth(
+            self.select_vertex_selection_push_button.sizePolicy().hasHeightForWidth()
+        )
+        self.select_vertex_selection_push_button.setSizePolicy(sizePolicy)
+        self.select_vertex_selection_push_button.setMinimumSize(QtCore.QSize(0, 25))
+        self.select_vertex_selection_push_button.setObjectName("select_stored_vtcs_pB")
+        self.layout.addWidget(self.select_vertex_selection_push_button)
+
         # Bake deltas
         self.bake_deltas_push_button = QtWidgets.QPushButton("Bake Deltas")
         sizePolicy = QtWidgets.QSizePolicy(
@@ -263,6 +265,9 @@ class SymMeshUI(QtWidgets.QWidget):
 
     def set_line_edit(self, line_edit, arg):
         line_edit.setText(arg)
+
+    def store_selection(self):
+        self.vertices_stored = not self.vertices_stored
 
 
 # TODO : all getter methods should trigger a signal, and the signal should be

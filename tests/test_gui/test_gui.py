@@ -274,6 +274,33 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.asym_cube, result)
 
+    def test_vertex_selection(self):
+        mc.select("{}.vtx[1]".format(self.sym_cube))
+        QtTest.QTest.mousePress(self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton)
+
+        mc.select(clear=True)
+        QtTest.QTest.mousePress(self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton)
+
+        result = mc.ls(selection=True)
+        self.assertEqual(["{}.vtx[1]".format(self.sym_cube)], result)
+
+    def test_reset_vertex_selection(self):
+        mc.select("{}.vtx[1]".format(self.sym_cube))
+        QtTest.QTest.mousePress(self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton)
+
+        mc.select(clear=True)
+        QtTest.QTest.mousePress(self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton)
+
+        QtTest.QTest.mousePress(self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton)
+
+        result = mc.ls(selection=True)
+        self.assertEqual([], result)
+
     def test_undo(self):
         mc.select(self.sym_cube)
         QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)

@@ -17,7 +17,7 @@ class Controller(object):
     def __init__(self):
         log.info("Initializing controller")
         # Attributes
-        self.get_vtcs_selection(reset=True)
+        self.get_vertex_selection(reset=True)
 
         # TODO : vertex selection should probably be extracted in its own object
         #  to make it easier to work with
@@ -65,7 +65,7 @@ class Controller(object):
         self.target_table = table.GeometryTable(mesh)
         self.set_target.emit(mesh)
 
-    def get_vtcs_selection(self, reset=False):
+    def get_vertex_selection(self, reset=False):
         """Get the current selection of vertices and set it.
 
         :param reset: Set whether the currently stored selection should be set
@@ -78,12 +78,31 @@ class Controller(object):
                 "indices": om2.MIntArray(),
             }
         else:
-            self.vtcs_selection = selection.get_sel_vtces_idcs()
+            sel = selection.get_sel_vtces_idcs()
+            log.info("Selection is %s", sel)
+            self.vtcs_selection = {
+                "objs_path": sel[0],
+                "indices": sel[1],
+            }
 
         if len(self.vtcs_selection["indices"]) > 0:
             self.are_vertices_stored = True
         else:
             self.are_vertices_stored = False
+
+    def select_stored_vertices(self):
+        if len(self.vtcs_selection["indices"]) == 0:
+            log.warning("No vertex selection stored")
+        else:
+            vtcs_to_select = om2.MSelectionList()
+            MItVtx = om2.MItMeshVertex(self.vtcs_selection["objs_path"][0])
+            while not MItVtx.isDone():
+                if MItVtx.index() in self.vtcs_selection["indices"]:
+                    vtcs_to_select.add(
+                        (self.vtcs_selection["objs_path"][0], MItVtx.currentItem())
+                    )
+                MItVtx.next()
+            om2.MGlobal.setActiveSelectionList(vtcs_to_select)
 
     def symmetrize(self):
         target = mc.ls(sl=True)[0]
@@ -173,20 +192,6 @@ class Controller(object):
                 percentage=self._percentage,
                 target_dag_path=target_path
             )
-
-    def select_stored_vertices(self):
-        if len(self.vtcs_selection["indices"]) == 0:
-            log.warning("No vertex selection stored")
-        else:
-            vtcs_to_select = om2.MSelectionList()
-            MItVtx = om2.MItMeshVertex(self.vtcs_selection["objs_path"][0])
-            while not MItVtx.isDone():
-                if MItVtx.index() in self.vtcs_selection["indices"]:
-                    vtcs_to_select.add(
-                        (self.vtcs_selection["objs_path"][0], MItVtx.currentItem())
-                    )
-                MItVtx.next()
-            om2.MGlobal.setActiveSelectionList(vtcs_to_select)
 
     def select_non_mirrored_vertices(self):
         dag_path = self.base_table.dag_path

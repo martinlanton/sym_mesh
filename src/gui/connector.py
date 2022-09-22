@@ -13,8 +13,15 @@ class Connector(object):
         self.gui.get_target_pB.clicked.connect(self.ctrl.get_target)
         self.gui.symmetry_push_button.clicked.connect(self.ctrl.symmetrize)
         self.gui.flip_push_button.clicked.connect(self.ctrl.flip)
-        # gui.get_selected_vtcs_pB.clicked.connect(ctrl.get_vtcs_selection)
-        # gui.select_stored_vtcs_pB.clicked.connect(ctrl.select_stored_vertices)
+
+        store_selection = partial(self.ctrl.get_vertex_selection, self.gui.vertices_stored)
+        self.gui.get_vertex_selection_push_button.clicked.connect(
+            store_selection
+        )
+
+        self.gui.select_vertex_selection_push_button.clicked.connect(
+            self.ctrl.select_stored_vertices
+        )
         # gui.select_non_symmetrical_vtcs_pB.clicked.connect(
         #     ctrl.select_non_mirrored_vertices
         # )
@@ -26,5 +33,7 @@ class Connector(object):
 
         set_base_line_edit = partial(self.gui.set_line_edit, self.gui.base_line_edit)
         self.ctrl.set_base.connect(set_base_line_edit)
-        set_target_line_edit = partial(self.gui.set_line_edit, self.gui.target_line_edit)
+        set_target_line_edit = partial(
+            self.gui.set_line_edit, self.gui.target_line_edit
+        )
         self.ctrl.set_target.connect(set_target_line_edit)

@@ -47,7 +47,7 @@ def get_sel_vtces_idcs():
         obj_dag_path, components = selection_list.getComponent(0)
     else:
         log.warning("No selection found.")
-        return {"objs_path": om2.MDagPath(), "indices": om2.MIntArray()}
+        return om2.MDagPath(), om2.MIntArray()
 
     # Initialize MDagPathArray
     dag_path_list = om2.MDagPathArray()
