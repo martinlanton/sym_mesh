@@ -2,8 +2,14 @@
 
 * build `symmetry table` (local space vertices position)
 * build `symmetry table` (topology)
-* get selected vertices (to work only on selection)
-* reset selection (to work on the whole object)
+* pass stored vertex selection to commands (to work only on selection)
+* set percentage from gui
+* create `revert to base` from stored target
+* implement non-symmetrical vertices selection
+* in extract axes : add duplicated meshes as blendshape on the last duplicated one
+* in extract axes : translate the last duplicated mesh from the position of the base (ideally, incrementally when using it in a loop, so that every subsequent mesh is easily identifiable)
+* in extract axes : add option to remove the targets
+* in extract axes : add option to reassign the default lambert
 
 # maya sym mesh
 This is a Maya project for mesh modification, including unittest setup

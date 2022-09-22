@@ -275,7 +275,7 @@ class SymMeshUI(QtWidgets.QWidget):
             )
         else:
             self.get_vertex_selection_push_button.setStyleSheet(
-                "QPushButton {background-color: dark gray;}"
+                "QPushButton {background-color: rgb(240, 240, 240);}"
             )
 
 
