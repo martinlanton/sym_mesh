@@ -279,25 +279,6 @@ class SymMeshUI(QtWidgets.QWidget):
             )
 
 
-# TODO : all getter methods should trigger a signal, and the signal should be
-#  connected to the relevant logic in the controller
-# def get_spinBox_value(self):
-#     """Get spinBox value and set slider value"""
-#     value = self.revert_value_slider.value()
-#
-#     self.controller._revert_value = value
-#
-#     self.revert_value_sB.setValue(value)
-#
-# def get_slider_value(self):
-#     """Get slider value and set spinBox value"""
-#     value = self.revert_value_sB.value()
-#
-#     self.controller._revert_value = value
-#
-#     self.revert_value_slider.setValue(value)
-
-
 if __name__ == "__main__":
     import sys                                                                  # pragma: no cover
 
