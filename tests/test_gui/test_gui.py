@@ -307,6 +307,19 @@ class TestGUI(base_test.BaseGUITest):
         self.assertEqual([], result)
         self.assertEqual(QtGui.QColor.fromRgbF(0.941176, 0.941176, 0.941176, 1.000000), color)
 
+    def test_non_symmetrical_vertices_selection(self):
+        mc.select(self.asym_cube)
+        QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+
+        mc.select(clear=True)
+        QtTest.QTest.mousePress(self.gui.select_non_symmetrical_vertices_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.select_non_symmetrical_vertices_push_button, QtCore.Qt.LeftButton)
+
+        result = mc.ls(selection=True, flatten=True)
+        expected = ["{}.vtx[{}]".format(self.asym_cube, nb) for nb in [0, 3, 5, 6]]
+        self.assertEqual(expected, result)
+
     def test_undo(self):
         mc.select(self.sym_cube)
         QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)

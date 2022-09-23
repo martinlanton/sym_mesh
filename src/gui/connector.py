@@ -22,9 +22,9 @@ class Connector(object):
         self.gui.select_vertex_selection_push_button.clicked.connect(
             self.ctrl.select_stored_vertices
         )
-        # gui.select_non_symmetrical_vtcs_pB.clicked.connect(
-        #     ctrl.select_non_mirrored_vertices
-        # )
+        self.gui.select_non_symmetrical_vertices_push_button.clicked.connect(
+            self.ctrl.select_non_mirrored_vertices
+        )
         self.gui.bake_deltas_push_button.clicked.connect(self.ctrl.bake_deltas)
         # gui.revert_to_base_pB.clicked.connect(ctrl.revert_to_base)
         self.gui.revert_to_base_push_button.clicked.connect(self.ctrl.revert_to_base)

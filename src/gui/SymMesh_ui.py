@@ -88,22 +88,22 @@ class SymMeshUI(QtWidgets.QWidget):
 
         self.get_vertex_selection_push_button.clicked.connect(self.store_selection)
 
-        # # Select non-symmetrical vertices
-        # self.select_non_symmetrical_vtcs_pB = QtWidgets.QPushButton(
-        #     "Select Non Symmetrical Vtcs"
-        # )
-        # sizePolicy = QtWidgets.QSizePolicy(
-        #     QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
-        # )
-        # sizePolicy.setHeightForWidth(
-        #     self.select_non_symmetrical_vtcs_pB.sizePolicy().hasHeightForWidth()
-        # )
-        # self.select_non_symmetrical_vtcs_pB.setSizePolicy(sizePolicy)
-        # self.select_non_symmetrical_vtcs_pB.setMinimumSize(QtCore.QSize(0, 25))
-        # self.select_non_symmetrical_vtcs_pB.setObjectName(
-        #     "select_non_symmetrical_vtcs_pB"
-        # )
-        # self.layout.addWidget(self.select_non_symmetrical_vtcs_pB)
+        # Select non-symmetrical vertices
+        self.select_non_symmetrical_vertices_push_button = QtWidgets.QPushButton(
+            "Select Non Symmetrical Vtcs"
+        )
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
+        sizePolicy.setHeightForWidth(
+            self.select_non_symmetrical_vertices_push_button.sizePolicy().hasHeightForWidth()
+        )
+        self.select_non_symmetrical_vertices_push_button.setSizePolicy(sizePolicy)
+        self.select_non_symmetrical_vertices_push_button.setMinimumSize(QtCore.QSize(0, 25))
+        self.select_non_symmetrical_vertices_push_button.setObjectName(
+            "select_non_symmetrical_vtcs_pB"
+        )
+        self.layout.addWidget(self.select_non_symmetrical_vertices_push_button)
 
         # Select stored vertex selection
         self.select_vertex_selection_push_button = QtWidgets.QPushButton("Select stored Vtcs")
