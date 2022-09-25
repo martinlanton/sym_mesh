@@ -5,6 +5,7 @@ from tests.fixtures import common
 
 from domain import table
 from domain import mesh_modification
+from domain import selection
 
 log = logging.getLogger(__name__)
 
@@ -38,6 +39,82 @@ class TestRevertToBase(common.BaseTest):
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
             for vtx in range(self.vtx_number)
         ]
+        self.assertEqual(self.expected_sym_position, result)
+
+    def test_revert_to_base_with_vertex_selection(self):
+        """Test that reverting the mesh to base when a proper vertex selection is
+        provided only reverts the selected vertices."""
+        geo_table = table.GeometryTable(self.asym_cube)
+        sym_table = table.GeometryTable(self.sym_cube)
+        mc.select("{}.vtx[1]".format(self.asym_cube))
+        vertex_selection = selection.get_sel_vtces_idcs()
+        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier.revert_to_base(
+            base_table=sym_table,
+            target_table=geo_table,
+            selected_vertices_indices=vertex_selection[1],
+            percentage=100,
+        )
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+        expected = [
+            [-0.5, -0.5, 0.5],
+            [0.5, -0.5, 0.5],
+            [-0.5, 0.5, 0.5],
+            [0.5, 1.5, 0.5],
+            [-0.5, 0.5, -0.5],
+            [0.5, 1.5, -0.5],
+            [-0.5, -0.5, -0.5],
+            [0.5, 0.5, -0.5],
+        ]
+
+        self.assertEqual(expected, result)
+
+    def test_revert_to_base_with_no_vertex_selection(self):
+        """Test that reverting to base with a vertex selection when nothing is
+        selected does revert the entire mesh and doesn't care about the vertex selection."""
+        geo_table = table.GeometryTable(self.asym_cube)
+        sym_table = table.GeometryTable(self.sym_cube)
+        mc.select(clear=True)
+        vertex_selection = selection.get_sel_vtces_idcs()
+        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier.revert_to_base(
+            base_table=sym_table,
+            target_table=geo_table,
+            selected_vertices_indices=vertex_selection[1],
+            percentage=100,
+        )
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+
+        self.assertEqual(self.expected_sym_position, result)
+
+    def test_revert_to_base_with_geometry_selected_for_vertex_selection(self):
+        """Test that reverting to base with a vertex selection from a full mesh
+        selected does revert the entire mesh and doesn't care about the vertex selection."""
+        geo_table = table.GeometryTable(self.asym_cube)
+        sym_table = table.GeometryTable(self.sym_cube)
+        mc.select(self.asym_cube)
+        vertex_selection = selection.get_sel_vtces_idcs()
+        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier.revert_to_base(
+            base_table=sym_table,
+            target_table=geo_table,
+            selected_vertices_indices=vertex_selection[1],
+            percentage=100,
+        )
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+
         self.assertEqual(self.expected_sym_position, result)
 
 
