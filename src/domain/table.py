@@ -27,11 +27,14 @@ class GeometryTable:
         """
         self._axis = axis
         self._direction = direction  # todo : convert this to an enum
-        self._threshold = threshold
+        self._threshold = 0.001
+        self._threshold_nb = 3
 
         self._dag_path = mesh_dag_path
         self._points_table = get_points_positions(self.dag_path)
         self._symmetry_table = None
+
+        self.threshold = threshold
         self.build_symmetry_table()
 
     def __str__(self):
@@ -55,7 +58,12 @@ class GeometryTable:
 
     @threshold.setter
     def threshold(self, value):
+        # TODO : test symmetry table building with higher threshold
         self._threshold = value
+        if self._threshold > 1:
+            self._threshold_nb = -len(str(self._threshold).split(".")[0])
+        else:
+            self._threshold_nb = len(str(self._threshold).split(".")[1])
 
     @property
     def dag_path(self):
@@ -98,11 +106,6 @@ class GeometryTable:
         axis_idcs = {"x": 0, "y": 1, "z": 2}
         axis_idx = axis_idcs[self._axis]
 
-        if self._threshold > 1:
-            threshold_nb = -len(str(self._threshold).split(".")[0])
-        else:
-            threshold_nb = len(str(self._threshold).split(".")[1])
-
         non_mirrored_table = list()
         symmetry_table = dict()
 
@@ -110,9 +113,9 @@ class GeometryTable:
 
         for idx, item in enumerate(points_table):
             position = (
-                round(item[0], threshold_nb),
-                round(item[1], threshold_nb),
-                round(item[2], threshold_nb),
+                round(item[0], self._threshold_nb),
+                round(item[1], self._threshold_nb),
+                round(item[2], self._threshold_nb),
             )
             check_table[position] = idx
             position_to_check = list(position)
