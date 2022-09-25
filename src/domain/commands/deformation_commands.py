@@ -66,8 +66,6 @@ class SymmetrizeCommand(AbstractDeformationCommand):
 
     def compute_point_position(self, base_point_array, target_point_array):
         axis = self.base_table.axis
-        axis_indices = {"x": 0, "y": 1, "z": 2}
-        axis_index = axis_indices[axis]
 
         symmetry_table = self.base_table.symmetry_table[0]
         log.debug("Symmetry table is : %s", symmetry_table)
@@ -85,7 +83,7 @@ class SymmetrizeCommand(AbstractDeformationCommand):
                 source_index = symmetry_table[i]
                 target_vertex_position = target_point_array[source_index]
                 symmetry_position = list(target_vertex_position)
-                symmetry_position[axis_index] = -target_vertex_position[axis_index]
+                symmetry_position[axis] = -target_vertex_position[axis]
                 symmetry_position = om2.MPoint(symmetry_position)
                 log.debug(
                     "Mirroring position of vtx %s from vtx %s. Current position : %s, target position : %s",
@@ -112,8 +110,6 @@ class FlipCommand(AbstractDeformationCommand):
 
     def compute_point_position(self, base_point_array, target_point_array):
         axis = self.base_table.axis
-        axis_indices = {"x": 0, "y": 1, "z": 2}
-        axis_index = axis_indices[axis]
 
         symmetry_table = self.base_table.symmetry_table[0]
         log.debug("Symmetry table is : %s", symmetry_table)
@@ -135,7 +131,7 @@ class FlipCommand(AbstractDeformationCommand):
             ):
                 # Modify new position
                 new_target_position = list(source_vertex_position)
-                new_target_position[axis_index] = -new_target_position[axis_index]
+                new_target_position[axis] = -new_target_position[axis]
                 new_target_position = om2.MPoint(new_target_position)
                 new_target_position = target_vertex_position + (
                     (new_target_position - target_vertex_position)
@@ -143,7 +139,7 @@ class FlipCommand(AbstractDeformationCommand):
                 )
 
                 new_source_position = list(target_vertex_position)
-                new_source_position[axis_index] = -new_source_position[axis_index]
+                new_source_position[axis] = -new_source_position[axis]
                 new_source_position = om2.MPoint(new_source_position)
                 new_source_position = source_vertex_position + (
                     (new_source_position - source_vertex_position)

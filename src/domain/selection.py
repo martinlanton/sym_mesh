@@ -12,8 +12,8 @@ def get_points_positions(obj_dag_path=None):
     :param obj_dag_path: dag path object of the geometry for which we want the points position
     :type obj_dag_path: maya.api.OpenMaya.MDagPath
 
-    :return: dag dir_path of the object, position of the points
-    :rtype: maya.api.OpenMaya.MDagPath, maya.api.OpenMaya.MPointArray
+    :return: position of the points
+    :rtype: maya.api.OpenMaya.MPointArray
     """
     mfn_object = om2.MFnMesh(obj_dag_path)
 
