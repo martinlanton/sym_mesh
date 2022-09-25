@@ -122,18 +122,17 @@ class GeometryTable:
             position_to_check[axis_idx] = -position_to_check[axis_idx]
             position_to_check = tuple(position_to_check)
 
-            if self.positive:
-                if position_to_check in check_table:
+            if position_to_check in check_table:
+                if self.positive:
                     if position[axis_idx] < position_to_check[axis_idx]:
                         symmetry_table[check_table[position_to_check]] = idx
                     else:
                         symmetry_table[idx] = check_table[position_to_check]
-            else:
-                if position_to_check in check_table:
-                    if position[axis_idx] < position_to_check[axis_idx]:
-                        symmetry_table[idx] = check_table[position_to_check]
-                    else:
+                else:
+                    if position[axis_idx] > position_to_check[axis_idx]:
                         symmetry_table[check_table[position_to_check]] = idx
+                    else:
+                        symmetry_table[idx] = check_table[position_to_check]
 
         for idx in range(len(points_table)):
             if idx not in symmetry_table and idx not in symmetry_table.values():
