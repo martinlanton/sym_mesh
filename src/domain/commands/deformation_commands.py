@@ -16,8 +16,8 @@ class BakeDifferenceCommand(AbstractDeformationCommand):
         for i in range(len(base_point_array)):
             # If the current point is also in selection
             if (
-                i in self.selected_vertices_indices
-                or self.selected_vertices_indices.__len__() == 0
+                i in self.vertex_selection.indices
+                or self.vertex_selection.indices.__len__() == 0
             ):
                 # Modify new position
                 destination_table.append(
@@ -43,8 +43,8 @@ class RevertToBaseCommand(AbstractDeformationCommand):
         for i in range(base_point_array.__len__()):
             # If the current point is also in selection
             if (
-                i in self.selected_vertices_indices
-                or self.selected_vertices_indices.__len__() == 0
+                i in self.vertex_selection.indices
+                or self.vertex_selection.indices.__len__() == 0
             ):
                 # Modify new position
                 base_position = base_point_array[i]
@@ -76,8 +76,8 @@ class SymmetrizeCommand(AbstractDeformationCommand):
             current_position = symmetry_position = target_point_array[i]
             # If the current point is also in selection
             if (
-                i in self.selected_vertices_indices
-                or self.selected_vertices_indices.__len__() == 0
+                    i in self.vertex_selection.indices
+                    or self.vertex_selection.indices.__len__() == 0
             ) and i in symmetry_table:
                 # Modify new position
                 source_index = symmetry_table[i]
@@ -125,9 +125,9 @@ class FlipCommand(AbstractDeformationCommand):
             target_vertex_position = target_point_array[target_index]
             # If the current point is also in selection
             if (
-                target_index in self.selected_vertices_indices
-                or source_index in self.selected_vertices_indices
-                or self.selected_vertices_indices.__len__() == 0
+                target_index in self.vertex_selection.indices
+                or source_index in self.vertex_selection.indices
+                or self.vertex_selection.indices.__len__() == 0
             ):
                 # Modify new position
                 new_target_position = list(source_vertex_position)

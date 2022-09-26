@@ -21,8 +21,7 @@ class Controller(object):
 
         # TODO : vertex selection should probably be extracted in its own object
         #  to make it easier to work with
-        self.sel_vtces_idcs = {"objs_path": om2.MDagPath(), "indices": om2.MIntArray()}
-        self.vtcs_selection = {"objs_path": om2.MDagPath(), "indices": om2.MIntArray()}
+        self.vtcs_selection = selection.VertexSelection(from_list=())
 
         self.mesh_modifier = mesh_modification.MeshModifier()
 
@@ -73,36 +72,18 @@ class Controller(object):
         :type reset: bool
         """
         if reset:
-            self.vtcs_selection = {
-                "objs_path": om2.MDagPath(),
-                "indices": om2.MIntArray(),
-            }
+            self.vtcs_selection = selection.VertexSelection(from_list=())
         else:
-            sel = selection.get_sel_vtces_idcs()
-            log.info("Selection is %s", sel)
-            self.vtcs_selection = {
-                "objs_path": sel[0],
-                "indices": sel[1],
-            }
+            self.vtcs_selection = selection.VertexSelection()
+            log.info("Selection is %s", self.vtcs_selection)
 
-        if len(self.vtcs_selection["indices"]) > 0:
+        if len(self.vtcs_selection.indices) > 0:
             self.are_vertices_stored = True
         else:
             self.are_vertices_stored = False
 
     def select_stored_vertices(self):
-        if len(self.vtcs_selection["indices"]) == 0:
-            log.warning("No vertex selection stored")
-        else:
-            vtcs_to_select = om2.MSelectionList()
-            MItVtx = om2.MItMeshVertex(self.vtcs_selection["objs_path"][0])
-            while not MItVtx.isDone():
-                if MItVtx.index() in self.vtcs_selection["indices"]:
-                    vtcs_to_select.add(
-                        (self.vtcs_selection["objs_path"][0], MItVtx.currentItem())
-                    )
-                MItVtx.next()
-            om2.MGlobal.setActiveSelectionList(vtcs_to_select)
+        self.vtcs_selection.select()
 
     def symmetrize(self):
         target = mc.ls(sl=True)[0]
@@ -113,12 +94,12 @@ class Controller(object):
         if not base_table:
             log.error("Unable to symmetrize, no base defined.")
             return
-        sel_vtces_idcs = selection.get_sel_vtces_idcs()
+        vertex_selection = selection.VertexSelection()
         target_table = table.GeometryTable(target)
         self.mesh_modifier.symmetrize(
             base_table,
             target_table,
-            selected_vertices_indices=sel_vtces_idcs[1],
+            selected_vertices_indices=vertex_selection,
             percentage=self._percentage,
         )
 
@@ -131,12 +112,12 @@ class Controller(object):
         if not base_table:
             log.error("Unable to flip, no base defined.")
             return
-        sel_vtces_idcs = selection.get_sel_vtces_idcs()
+        vertex_selection = selection.VertexSelection()
         target_table = table.GeometryTable(target)
         self.mesh_modifier.flip(
             base_table,
             target_table,
-            selected_vertices_indices=sel_vtces_idcs[1],
+            selected_vertices_indices=vertex_selection,
             percentage=self._percentage,
         )
 
@@ -155,12 +136,12 @@ class Controller(object):
         if not base_table:
             log.error("Unable to revert to base, no base defined.")
             return
-        sel_vtces_idcs = selection.get_sel_vtces_idcs()
+        vertex_selection = selection.VertexSelection()
         target_table = table.GeometryTable(target)
         self.mesh_modifier.revert_to_base(
             base_table,
             target_table,
-            selected_vertices_indices=sel_vtces_idcs[1],
+            selected_vertices_indices=vertex_selection,
             percentage=self._percentage,
         )
 
@@ -183,12 +164,12 @@ class Controller(object):
         if not base_table:
             log.error("Unable to bake deltas, no base position defined.")
             return
-        sel_vtces_idcs = selection.get_sel_vtces_idcs()
+        vertex_selection = selection.VertexSelection()
         for target_path in target_paths:
             self.mesh_modifier.bake_difference(
                 base_table,
                 target_table,
-                selected_vertices_indices=sel_vtces_idcs[1],
+                selected_vertices_indices=vertex_selection,
                 percentage=self._percentage,
                 target_dag_path=target_path
             )

@@ -3,6 +3,7 @@ import logging
 
 from domain import commands
 from domain.dag_path import create_MDagPath
+from domain import selection
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
@@ -39,7 +40,7 @@ class MeshModifier(object):
         self,
         base_table,
         target_table,
-        selected_vertices_indices=(),
+        selected_vertices_indices=selection.VertexSelection(from_list=()),
         percentage=100,
         target_dag_path=None,
         space=om2.MSpace.kObject,
@@ -49,13 +50,13 @@ class MeshModifier(object):
         of meshes.
 
         :param base_table: GeometryTable of the base geometry
-        :type base_table: sym_mesh.table.GeometryTable
+        :type base_table: domain.table.GeometryTable
 
         :param target_table: GeometryTable of the target geometry
-        :type target_table: sym_mesh.table.GeometryTable
+        :type target_table: domain.table.GeometryTable
 
         :param selected_vertices_indices: indices of the selected points on the target mesh
-        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
+        :type selected_vertices_indices: domain.selection.VertexSelection
 
         :param percentage: percentage used for the bake delta function. This
         is a value from 0 to 100, a value of 100 means we're adding the full
@@ -86,7 +87,7 @@ class MeshModifier(object):
         self,
         base_table,
         target_table,
-        selected_vertices_indices=(),
+        selected_vertices_indices=selection.VertexSelection(from_list=()),
         percentage=100,
         space=om2.MSpace.kObject,
     ):
@@ -94,13 +95,13 @@ class MeshModifier(object):
         Revert selected vertices on the target mesh to the base position.
 
         :param base_table: positions of the points of the base mesh
-        :type base_table: sym_mesh.table.GeometryTable
+        :type base_table: domain.table.GeometryTable
 
         :param target_table: positions of the points of the current mesh
-        :type target_table: sym_mesh.table.GeometryTable
+        :type target_table: domain.table.GeometryTable
 
         :param selected_vertices_indices: indices of the selected points on the target mesh
-        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
+        :type selected_vertices_indices: domain.selection.VertexSelection
 
         :param percentage: percentage used for the revert to base function. This
         is a value from 0 to 100, a value of 100 means we're reverting the
@@ -125,7 +126,7 @@ class MeshModifier(object):
         self,
         base_table,
         target_table,
-        selected_vertices_indices=(),
+        selected_vertices_indices=selection.VertexSelection(from_list=()),
         percentage=100,
         space=om2.MSpace.kObject,
     ):
@@ -133,13 +134,13 @@ class MeshModifier(object):
         Symmetrize selected vertices on the target mesh.
 
         :param base_table: positions of the points of the base mesh
-        :type base_table: sym_mesh.table.GeometryTable
+        :type base_table: domain.table.GeometryTable
 
         :param target_table: positions of the points of the current mesh
-        :type target_table: sym_mesh.table.GeometryTable
+        :type target_table: domain.table.GeometryTable
 
         :param selected_vertices_indices: indices of the selected points on the target mesh
-        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
+        :type selected_vertices_indices: domain.selection.VertexSelection
 
         :param percentage: percentage used for the revert to base function
         :type percentage: int
@@ -178,20 +179,20 @@ class MeshModifier(object):
         self,
         base_table,
         target_table,
-        selected_vertices_indices=(),
+        selected_vertices_indices=selection.VertexSelection(from_list=()),
         percentage=100,
         space=om2.MSpace.kObject,
     ):
         """Flip selected vertices on the target mesh.
 
         :param base_table: positions of the points of the base mesh
-        :type base_table: sym_mesh.table.GeometryTable
+        :type base_table: domain.table.GeometryTable
 
         :param target_table: positions of the points of the current mesh
-        :type target_table: sym_mesh.table.GeometryTable
+        :type target_table: domain.table.GeometryTable
 
         :param selected_vertices_indices: indices of the selected points on the target mesh
-        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
+        :type selected_vertices_indices: domain.selection.VertexSelection
 
         :param percentage: percentage used for the revert to base function
         :type percentage: int

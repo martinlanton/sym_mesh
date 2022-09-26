@@ -47,12 +47,12 @@ class TestRevertToBase(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select("{}.vtx[1]".format(self.asym_cube))
-        vertex_selection = selection.get_sel_vtces_idcs()
+        vertex_selection = selection.VertexSelection()
         mesh_modifier = mesh_modification.MeshModifier()
         mesh_modifier.revert_to_base(
             base_table=sym_table,
             target_table=geo_table,
-            selected_vertices_indices=vertex_selection[1],
+            selected_vertices_indices=vertex_selection,
             percentage=100,
         )
 
@@ -79,12 +79,12 @@ class TestRevertToBase(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select(clear=True)
-        vertex_selection = selection.get_sel_vtces_idcs()
+        vertex_selection = selection.VertexSelection()
         mesh_modifier = mesh_modification.MeshModifier()
         mesh_modifier.revert_to_base(
             base_table=sym_table,
             target_table=geo_table,
-            selected_vertices_indices=vertex_selection[1],
+            selected_vertices_indices=vertex_selection,
             percentage=100,
         )
 
@@ -101,12 +101,12 @@ class TestRevertToBase(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select(self.asym_cube)
-        vertex_selection = selection.get_sel_vtces_idcs()
+        vertex_selection = selection.VertexSelection()
         mesh_modifier = mesh_modification.MeshModifier()
         mesh_modifier.revert_to_base(
             base_table=sym_table,
             target_table=geo_table,
-            selected_vertices_indices=vertex_selection[1],
+            selected_vertices_indices=vertex_selection,
             percentage=100,
         )
 

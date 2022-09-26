@@ -5,7 +5,7 @@ import six
 
 from maya.api import OpenMaya as om2
 
-from domain.selection import get_points_positions
+from domain import selection
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
@@ -17,7 +17,7 @@ class AbstractDeformationCommand(object):
         self,
         base_table,
         target_table,
-        selected_vertices_indices=(),
+        vertex_selection=selection.VertexSelection(from_list=()),
         percentage=100,
         target_dag_path=None,
         space=om2.MSpace.kObject,
@@ -30,8 +30,8 @@ class AbstractDeformationCommand(object):
         :param target_table: GeometryTable of the target geometry
         :type target_table: sym_mesh.table.GeometryTable
 
-        :param selected_vertices_indices: indices of the selected points on the target mesh
-        :type selected_vertices_indices: maya.api.OpenMaya.MIntArray
+        :param vertex_selection: indices of the selected points on the target mesh
+        :type vertex_selection: domain.selection.VertexSelection
 
         :param percentage: percentage used for the computing operation. This
         is a value from 0 to 100, a value of 100 means we're adding the full
@@ -47,17 +47,17 @@ class AbstractDeformationCommand(object):
         """
         log.debug("base_table : %s", base_table)
         log.debug("target_table : %s", target_table)
-        log.debug("selected_vertices_indices : %s", selected_vertices_indices)
+        log.debug("selected_vertices_indices : %s", vertex_selection)
         log.debug("percentage : %s", percentage)
         log.debug("target_dag_path : %s", target_dag_path)
         log.debug("space : %s", space)
         self.base_table = base_table
         self.target_table = target_table
-        self.selected_vertices_indices = selected_vertices_indices
+        self.vertex_selection = vertex_selection
         self.percentage = percentage
         self.target_dag_path = target_dag_path
         self.space = space
-        self.current_point_array = get_points_positions(target_dag_path)
+        self.current_point_array = selection.get_points_positions(target_dag_path)
         self.undo_action = self.current_point_array
         self.result = self.deform()
         self.redo_action = self.result
