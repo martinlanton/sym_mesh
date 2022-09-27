@@ -7,7 +7,7 @@ from gui import SymMesh_ui
 class Connector(object):
     def __init__(self, parent=None):
         self.ctrl = controller.Controller()
-        self.gui = SymMesh_ui.SymMeshUI(parent)
+        self.gui = SymMesh_ui.Layout(parent)
 
         self.gui.get_base_pB.clicked.connect(self.ctrl.get_base)
         self.gui.get_target_pB.clicked.connect(self.ctrl.get_target)
