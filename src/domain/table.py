@@ -27,7 +27,7 @@ class GeometryTable:
         """
         self._axis = axis
         self._axis_idcs = {"x": 0, "y": 1, "z": 2}
-        self._direction = direction  # todo : convert this to an enum
+        self._direction = direction  # TODO : convert this to an enum
         self._threshold = 0.001
         self._threshold_nb = 3
 
@@ -118,7 +118,7 @@ class GeometryTable:
         symmetry_map = self._build_symmetry_map(points_table)
         non_mirrored_table = self._get_non_mirrored_vertices(points_table, symmetry_map)
 
-        # todo : test that this prints the right message.
+        # TODO : test that this prints the right message.
         path = base_mesh if base_mesh else self.dag_path
         if non_mirrored_table:
             log.info(

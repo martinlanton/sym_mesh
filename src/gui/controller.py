@@ -19,8 +19,6 @@ class Controller(object):
         # Attributes
         self.get_vertex_selection(reset=True)
 
-        # TODO : vertex selection should probably be extracted in its own object
-        #  to make it easier to work with
         self.vtcs_selection = selection.VertexSelection(from_list=())
 
         self.mesh_modifier = mesh_modification.MeshModifier()
