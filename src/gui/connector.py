@@ -13,6 +13,7 @@ class Connector(object):
         self.gui.get_target_pB.clicked.connect(self.ctrl.get_target)
         self.gui.symmetry_push_button.clicked.connect(self.ctrl.symmetrize)
         self.gui.flip_push_button.clicked.connect(self.ctrl.flip)
+        self.gui.extract_axes_push_button.clicked.connect(self.ctrl.extract_axes)
 
         store_selection = partial(self.ctrl.get_vertex_selection, self.gui.vertices_stored)
         self.gui.get_vertex_selection_push_button.clicked.connect(

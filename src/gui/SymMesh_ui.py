@@ -70,6 +70,11 @@ class Layout(QtWidgets.QVBoxLayout):
         self.flip_push_button.setObjectName("flip_pB")
         self.addWidget(self.flip_push_button)
 
+        # Extract axes
+        self.extract_axes_push_button = QtWidgets.QPushButton("Extract X Y Z axes")
+        self.extract_axes_push_button.setObjectName("extract_axes_pB")
+        self.addWidget(self.extract_axes_push_button)
+
         # TODO : add button for extract deltas
 
         # # Revert value

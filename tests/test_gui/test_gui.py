@@ -256,6 +256,72 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_asym_position, result)
 
+    def test_extract_axes_creates_geometry(self):
+        mc.select(self.sym_cube)
+        QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+
+        mc.select(self.test_extract_axes_cube)
+        QtTest.QTest.mousePress(
+            self.gui.extract_axes_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.extract_axes_push_button, QtCore.Qt.LeftButton
+        )
+
+        expected_x = [
+            [0.5, -0.5, 0.5],
+            [1.5, -0.5, 0.5],
+            [0.5, 0.5, 0.5],
+            [1.5, 0.5, 0.5],
+            [0.5, 0.5, -0.5],
+            [1.5, 0.5, -0.5],
+            [0.5, -0.5, -0.5],
+            [1.5, -0.5, -0.5],
+        ]
+        expected_y = [
+            [-0.5, 0.5, 0.5],
+            [0.5, 0.5, 0.5],
+            [-0.5, 1.5, 0.5],
+            [0.5, 1.5, 0.5],
+            [-0.5, 1.5, -0.5],
+            [0.5, 1.5, -0.5],
+            [-0.5, 0.5, -0.5],
+            [0.5, 0.5, -0.5],
+        ]
+        expected_z = [
+            [-0.5, -0.5, 1.5],
+            [0.5, -0.5, 1.5],
+            [-0.5, 0.5, 1.5],
+            [0.5, 0.5, 1.5],
+            [-0.5, 0.5, 0.5],
+            [0.5, 0.5, 0.5],
+            [-0.5, -0.5, 0.5],
+            [0.5, -0.5, 0.5],
+        ]
+
+        x, y, z = ["|{}_{}".format(self.test_extract_axes_cube, axis) for axis in ["x", "y", "z"]]
+        result_x = [
+            mc.pointPosition("{}.vtx[{}]".format(x, vtx), world=True)
+            for vtx in range(8)
+        ]
+        result_y = [
+            mc.pointPosition("{}.vtx[{}]".format(y, vtx), world=True)
+            for vtx in range(8)
+        ]
+        result_z = [
+            mc.pointPosition("{}.vtx[{}]".format(z, vtx), world=True)
+            for vtx in range(8)
+        ]
+
+        self.assertTrue(mc.objExists(x))
+        self.assertTrue(mc.objExists(y))
+        self.assertTrue(mc.objExists(z))
+        self.assertTrue(mc.objExists("|{}_extracted".format(self.test_extract_axes_cube)))
+        self.assertEqual(expected_x, result_x)
+        self.assertEqual(expected_y, result_y)
+        self.assertEqual(expected_z, result_z)
+
     def test_base_line_edit(self):
         mc.select(self.sym_cube)
         QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)

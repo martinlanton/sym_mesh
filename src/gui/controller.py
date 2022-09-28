@@ -121,6 +121,21 @@ class Controller(object):
             percentage=self._percentage,
         )
 
+    def extract_axes(self):
+        target = mc.ls(sl=True)[0]
+        if not target:
+            log.error("Unable to flip, no target selected.")
+            return
+        base_table = self.base_table
+        if not base_table:
+            log.error("Unable to flip, no base defined.")
+            return
+        target_table = table.GeometryTable(target)
+        self.mesh_modifier.extract_axes(
+            base_table,
+            target_table,
+        )
+
     def revert_to_base(self):
         """
         Revert selected mesh or vertices to base from the current value, using
