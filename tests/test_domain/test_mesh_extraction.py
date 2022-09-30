@@ -93,10 +93,6 @@ class TestExtractAxes(common.BaseTest):
         self.assertEqual(expected_y, result_y)
         self.assertEqual(expected_z, result_z)
 
-    def test_extract_axes_geometry_creates_blendshape_node(self):
-        pass
-        # TODO : add test to make sure a blendshape node is properly created and connected
-
     # def test_timing_extract_axes(self):
     #     import time
     #     from sym_mesh import dag_path
