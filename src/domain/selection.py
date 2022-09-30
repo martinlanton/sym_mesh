@@ -2,8 +2,6 @@ import logging
 
 from maya.api import OpenMaya as om2
 
-from domain import dag_path
-
 log = logging.getLogger(__name__)
 
 
