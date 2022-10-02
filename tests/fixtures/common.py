@@ -48,6 +48,29 @@ class BaseTest(unittest.TestCase):
             vtx_name = "{}.vtx[{}]".format(self.test_extract_axes_cube, vtx)
             mc.xform(vtx_name, relative=True, translation=[1, 1, 1])
 
+    def get_blendshape_target_vertices_positions(self, axis, blendshape, mesh):
+        """Get the vertices positions for the specified blendshape target.
+
+        :param axis: name of the axis for which we want the vertices positions.
+        :type axis: str
+
+        :param blendshape: name of the blendshape node from which we want the target
+        :type blendshape: str
+
+        :param mesh: name of the mesh from which we need to query the position
+        :type mesh: str
+
+        :return: vertices positions for the specified blendshape target.
+        :rtype: list[tuple(int, int, int)]
+        """
+        mc.setAttr("{}.{}_{}".format(blendshape, self.test_extract_axes_cube, axis), 1)
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(mesh, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+        mc.setAttr("{}.{}_{}".format(blendshape, self.test_extract_axes_cube, axis), 0)
+        return result
+
 
 def get_src_folder_path():
     path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))

@@ -262,9 +262,7 @@ class TestGUI(base_test.BaseGUITest):
         QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
 
         mc.select(self.test_extract_axes_cube)
-        QtTest.QTest.mousePress(
-            self.gui.extract_axes_push_button, QtCore.Qt.LeftButton
-        )
+        QtTest.QTest.mousePress(self.gui.extract_axes_push_button, QtCore.Qt.LeftButton)
         QtTest.QTest.mouseRelease(
             self.gui.extract_axes_push_button, QtCore.Qt.LeftButton
         )
@@ -300,27 +298,23 @@ class TestGUI(base_test.BaseGUITest):
             [0.5, -0.5, 0.5],
         ]
 
-        x, y, z = ["|{}_{}".format(self.test_extract_axes_cube, axis) for axis in ["x", "y", "z"]]
-        result_x = [
-            mc.pointPosition("{}.vtx[{}]".format(x, vtx), world=True)
-            for vtx in range(8)
-        ]
-        result_y = [
-            mc.pointPosition("{}.vtx[{}]".format(y, vtx), world=True)
-            for vtx in range(8)
-        ]
-        result_z = [
-            mc.pointPosition("{}.vtx[{}]".format(z, vtx), world=True)
-            for vtx in range(8)
+        extracted_mesh = "{}_extracted".format(self.test_extract_axes_cube)
+        blendshape = "{}_blendShape".format(extracted_mesh)
+
+        x, y, z = [
+            self.get_blendshape_target_vertices_positions(
+                axis, blendshape, extracted_mesh
+            )
+            for axis in ["x", "y", "z"]
         ]
 
-        self.assertTrue(mc.objExists(x))
-        self.assertTrue(mc.objExists(y))
-        self.assertTrue(mc.objExists(z))
-        self.assertTrue(mc.objExists("|{}_extracted".format(self.test_extract_axes_cube)))
-        self.assertEqual(expected_x, result_x)
-        self.assertEqual(expected_y, result_y)
-        self.assertEqual(expected_z, result_z)
+        self.assertTrue(
+            mc.objExists("|{}_extracted".format(self.test_extract_axes_cube))
+        )
+        self.assertTrue(mc.objExists(blendshape))
+        self.assertEqual(expected_x, x)
+        self.assertEqual(expected_y, y)
+        self.assertEqual(expected_z, z)
 
     def test_base_line_edit(self):
         mc.select(self.sym_cube)
@@ -342,12 +336,20 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_vertex_selection(self):
         mc.select("{}.vtx[1]".format(self.sym_cube))
-        QtTest.QTest.mousePress(self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mousePress(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
 
         mc.select(clear=True)
-        QtTest.QTest.mousePress(self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mousePress(
+            self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
 
         result = mc.ls(selection=True)
         color = self.gui.get_vertex_selection_push_button.palette().button().color()
@@ -357,21 +359,35 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_reset_vertex_selection(self):
         mc.select("{}.vtx[1]".format(self.sym_cube))
-        QtTest.QTest.mousePress(self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mousePress(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
 
         mc.select(clear=True)
-        QtTest.QTest.mousePress(self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mousePress(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
 
-        QtTest.QTest.mousePress(self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mousePress(
+            self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.select_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
 
         result = mc.ls(selection=True)
         color = self.gui.get_vertex_selection_push_button.palette().button().color()
 
         self.assertEqual([], result)
-        self.assertEqual(QtGui.QColor.fromRgbF(0.941176, 0.941176, 0.941176, 1.000000), color)
+        self.assertEqual(
+            QtGui.QColor.fromRgbF(0.941176, 0.941176, 0.941176, 1.000000), color
+        )
 
     def test_non_symmetrical_vertices_selection(self):
         mc.select(self.asym_cube)
@@ -379,8 +395,12 @@ class TestGUI(base_test.BaseGUITest):
         QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
 
         mc.select(clear=True)
-        QtTest.QTest.mousePress(self.gui.select_non_symmetrical_vertices_push_button, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.select_non_symmetrical_vertices_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mousePress(
+            self.gui.select_non_symmetrical_vertices_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.select_non_symmetrical_vertices_push_button, QtCore.Qt.LeftButton
+        )
 
         result = mc.ls(selection=True, flatten=True)
         expected = ["{}.vtx[{}]".format(self.asym_cube, nb) for nb in [0, 3, 5, 6]]
