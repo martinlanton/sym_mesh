@@ -9,6 +9,16 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
 
+# TODO : In its current form, the MeshModifier class is nothing more than an
+#  executor, although without a registry of available commands. This means that
+#  it does not actually serve any purpose. As soon as all commands are modified
+#  to exclusively use the maya API, instead of the cmds (currently only in the
+#  extract axes command), I should convert those commands to MPxCommand to get a
+#  proper maya undo/redo behavior and use Maya as the executor and registry.
+#  This will allow calling the commands directly from the controller instead of
+#  through the MeshModifier class. It will require however a refactor of the
+#  commands tests as well as of their undo/redo
+
 class MeshModifier(object):
     def __init__(self):
         self.undo_queue = list()
