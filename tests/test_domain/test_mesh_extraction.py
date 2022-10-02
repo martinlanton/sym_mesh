@@ -15,25 +15,24 @@ class TestExtractAxes(common.BaseTest):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
-        extracted_shapes = mesh_modifier.extract_axes(
+        extracted_mesh, blendshape = mesh_modifier.extract_axes(
             base_table=base_table, target_table=target_table
         )
 
-        self.assertTrue(mc.objExists(extracted_shapes[0]))
-        self.assertTrue(mc.objExists(extracted_shapes[1]))
-        self.assertTrue(mc.objExists(extracted_shapes[2]))
-        self.assertEqual(4, len(extracted_shapes))
+        self.assertTrue(mc.objExists(blendshape))
+        self.assertEqual("{}_extracted_blendShape".format(self.test_extract_axes_cube), blendshape)
+        targets = mc.listAttr("{}.weight".format(blendshape), multi=True)
+        self.assertTrue("{}_x".format(self.test_extract_axes_cube) in targets)
+        self.assertTrue("{}_y".format(self.test_extract_axes_cube) in targets)
+        self.assertTrue("{}_z".format(self.test_extract_axes_cube) in targets)
+        self.assertTrue(not mc.objExists("{}_x".format(self.test_extract_axes_cube)))
+        self.assertTrue(not mc.objExists("{}_y".format(self.test_extract_axes_cube)))
+        self.assertTrue(not mc.objExists("{}_z".format(self.test_extract_axes_cube)))
         self.assertEqual(
-            "|{}_x".format(self.test_extract_axes_cube), extracted_shapes[0]
+            "|{}_extracted".format(self.test_extract_axes_cube), extracted_mesh
         )
-        self.assertEqual(
-            "|{}_y".format(self.test_extract_axes_cube), extracted_shapes[1]
-        )
-        self.assertEqual(
-            "|{}_z".format(self.test_extract_axes_cube), extracted_shapes[2]
-        )
-        self.assertEqual(
-            "|{}_extracted".format(self.test_extract_axes_cube), extracted_shapes[3]
+        self.assertTrue(
+            mc.objExists("|{}_extracted".format(self.test_extract_axes_cube))
         )
 
     def test_extract_axes_geometries_point_positions(self):
@@ -42,7 +41,7 @@ class TestExtractAxes(common.BaseTest):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
-        extracted_shapes = mesh_modifier.extract_axes(
+        extracted_mesh, blendshape = mesh_modifier.extract_axes(
             base_table=base_table, target_table=target_table
         )
         expected_x = [
@@ -76,18 +75,26 @@ class TestExtractAxes(common.BaseTest):
             [0.5, -0.5, 0.5],
         ]
 
+        mc.setAttr("{}.{}_x".format(blendshape, self.test_extract_axes_cube), 1)
         result_x = [
-            mc.pointPosition("{}.vtx[{}]".format(extracted_shapes[0], vtx), world=True)
+            mc.pointPosition("{}.vtx[{}]".format(extracted_mesh, vtx), world=True)
             for vtx in range(vtx_number)
         ]
+        mc.setAttr("{}.{}_x".format(blendshape, self.test_extract_axes_cube), 0)
+
+        mc.setAttr("{}.{}_y".format(blendshape, self.test_extract_axes_cube), 1)
         result_y = [
-            mc.pointPosition("{}.vtx[{}]".format(extracted_shapes[1], vtx), world=True)
+            mc.pointPosition("{}.vtx[{}]".format(extracted_mesh, vtx), world=True)
             for vtx in range(vtx_number)
         ]
+        mc.setAttr("{}.{}_y".format(blendshape, self.test_extract_axes_cube), 0)
+
+        mc.setAttr("{}.{}_z".format(blendshape, self.test_extract_axes_cube), 1)
         result_z = [
-            mc.pointPosition("{}.vtx[{}]".format(extracted_shapes[2], vtx), world=True)
+            mc.pointPosition("{}.vtx[{}]".format(extracted_mesh, vtx), world=True)
             for vtx in range(vtx_number)
         ]
+        mc.setAttr("{}.{}_z".format(blendshape, self.test_extract_axes_cube), 0)
 
         self.assertEqual(expected_x, result_x)
         self.assertEqual(expected_y, result_y)

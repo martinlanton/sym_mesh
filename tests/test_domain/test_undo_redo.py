@@ -86,15 +86,13 @@ class TestUndo(common.BaseTest):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
-        extracted_shapes = mesh_modifier.extract_axes(
+        extracted_mesh, blendshape = mesh_modifier.extract_axes(
             base_table=base_table, target_table=target_table
         )
         mesh_modifier.undo()
 
-        self.assertFalse(mc.objExists(extracted_shapes[0]))
-        self.assertFalse(mc.objExists(extracted_shapes[1]))
-        self.assertFalse(mc.objExists(extracted_shapes[2]))
-        self.assertFalse(mc.objExists(extracted_shapes[3]))
+        self.assertFalse(mc.objExists(extracted_mesh))
+        self.assertFalse(mc.objExists(blendshape))
 
     def test_undo_flip(self):
         """Test that undo after symmetrization works properly."""
@@ -233,7 +231,7 @@ class TestRedo(common.BaseTest):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
-        extracted_shapes = mesh_modifier.extract_axes(
+        extracted_mesh, blendshape = mesh_modifier.extract_axes(
             base_table=base_table, target_table=target_table
         )
 
@@ -271,18 +269,26 @@ class TestRedo(common.BaseTest):
             [0.5, -0.5, 0.5],
         ]
 
+        mc.setAttr("{}.{}_x".format(blendshape, self.test_extract_axes_cube), 1)
         result_x = [
-            mc.pointPosition("{}.vtx[{}]".format(extracted_shapes[0], vtx), world=True)
+            mc.pointPosition("{}.vtx[{}]".format(extracted_mesh, vtx), world=True)
             for vtx in range(vtx_number)
         ]
+        mc.setAttr("{}.{}_x".format(blendshape, self.test_extract_axes_cube), 0)
+
+        mc.setAttr("{}.{}_y".format(blendshape, self.test_extract_axes_cube), 1)
         result_y = [
-            mc.pointPosition("{}.vtx[{}]".format(extracted_shapes[1], vtx), world=True)
+            mc.pointPosition("{}.vtx[{}]".format(extracted_mesh, vtx), world=True)
             for vtx in range(vtx_number)
         ]
+        mc.setAttr("{}.{}_y".format(blendshape, self.test_extract_axes_cube), 0)
+
+        mc.setAttr("{}.{}_z".format(blendshape, self.test_extract_axes_cube), 1)
         result_z = [
-            mc.pointPosition("{}.vtx[{}]".format(extracted_shapes[2], vtx), world=True)
+            mc.pointPosition("{}.vtx[{}]".format(extracted_mesh, vtx), world=True)
             for vtx in range(vtx_number)
         ]
+        mc.setAttr("{}.{}_z".format(blendshape, self.test_extract_axes_cube), 0)
 
         self.assertEqual(expected_x, result_x)
         self.assertEqual(expected_y, result_y)

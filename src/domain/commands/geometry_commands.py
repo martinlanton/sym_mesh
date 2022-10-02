@@ -1,6 +1,7 @@
 import logging
 
 from maya.api import OpenMaya as om2
+from maya import cmds as mc
 from domain.dag_path import create_MDagPath
 
 log = logging.getLogger(__name__)
@@ -10,7 +11,8 @@ class ExtractAxesCommand(object):
     def __init__(self, base_table, target_table):
         self.point_arrays = list()
         self.base_dag_path = base_table.dag_path
-        self.result = self.extract_axes(base_table, target_table)
+        self.meshes = self.extract_axes(base_table, target_table)
+        self.result = self.create_blendshape()
 
     def extract_axes(self, base_table, target_table):
         """Extract deltas between target table and base table on a new geometry.
@@ -84,9 +86,9 @@ class ExtractAxesCommand(object):
         mesh = mesh_function_set.duplicate()
         duplicate_function_set = om2.MFnDagNode(mesh)
         dag_path = duplicate_function_set.getPath()
-        new_x_path = self.get_new_name(name, dag_path, suffix=suffix)
+        new_path = self.get_new_name(name, dag_path, suffix=suffix)
         dag_modifier = om2.MDagModifier()
-        dag_modifier.renameNode(mesh, new_x_path)
+        dag_modifier.renameNode(mesh, new_path)
         dag_modifier.doIt()
         return dag_path
 
@@ -115,17 +117,24 @@ class ExtractAxesCommand(object):
         return new_path
 
     def undo(self):
-        for path in self.result:
-            node = create_MDagPath(path).node()
-            dag_modifier = om2.MDagModifier()
-            dag_modifier.deleteNode(node)
-            dag_modifier.doIt()
+        node = create_MDagPath(self.result[0]).node()
+        dag_modifier = om2.MDagModifier()
+        dag_modifier.deleteNode(node)
+        dag_modifier.doIt()
 
     def redo(self):
-        for i, path in enumerate(self.result):
+        for i, path in enumerate(self.meshes):
             name = path.split("|")[-1]
             dag_path = self.duplicate_mesh(self.base_dag_path, name)
 
             # Modify points position using the new coordinates
             tgt_mesh_functionset = om2.MFnMesh(dag_path)
             tgt_mesh_functionset.setPoints(self.point_arrays[i], om2.MSpace.kObject)
+        blendshape = self.create_blendshape()
+        return self.meshes[-1], blendshape
+
+    def create_blendshape(self):
+        blendshape = mc.blendShape(self.meshes)[0]
+        blendshape = mc.rename(blendshape, "{}_blendShape".format(self.meshes[-1]))
+        mc.delete(self.meshes[:-1])
+        return self.meshes[-1], blendshape
