@@ -120,7 +120,7 @@ class TestRevertToBase(common.BaseTest):
 
 class TestSymmetry(common.BaseTest):
     def test_symmetrization_x_positive(self):
-        """Test that symmetrizing on the X axis in the negative direction (-X towards +X)
+        """Test that symmetrizing on the X axis in the positive direction (-X towards +X)
         symmetrizes properly."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
@@ -213,6 +213,36 @@ class TestSymmetry(common.BaseTest):
         log.info("Expected : %s", self.expected_asym_position)
         log.info("Result : %s", result)
         self.assertEqual(self.expected_asym_position, result)
+
+    def test_symmetrization_x_positive_with_vertex_selection(self):
+        """Test that symmetrizing on the X axis in the positive direction (-X towards +X)
+        with a vertex selection symmetrizes properly."""
+        geo_table = table.GeometryTable(self.asym_cube)
+        sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
+        mc.select("{}.vtx[1]".format(self.asym_cube))
+        vertex_selection = selection.VertexSelection()
+        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table, selected_vertices_indices=vertex_selection)
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+        expected = [
+            [-0.5, -0.5, 0.5],
+            [0.5, -0.5, 0.5],
+            [-0.5, 0.5, 0.5],
+            [0.5, 1.5, 0.5],
+            [-0.5, 0.5, -0.5],
+            [0.5, 1.5, -0.5],
+            [-0.5, -0.5, -0.5],
+            [0.5, 0.5, -0.5],
+        ]
+
+        log.info("Symmetry table : %s", sym_table.symmetry_table)
+        log.info("Expected : %s", self.expected_sym_position)
+        log.info("Result : %s", result)
+        self.assertEqual(expected, result)
 
 
 class TestBakeDeltas(common.BaseTest):
