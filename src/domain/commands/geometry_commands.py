@@ -52,9 +52,7 @@ class ExtractAxesCommand(object):
             tgt_mesh_functionset = om2.MFnMesh(dag_path)
             tgt_mesh_functionset.setPoints(destination_table, om2.MSpace.kObject)
 
-        # TODO : add duplicated meshes as blendshapes to the last duplicated one
         # TODO : move the last duplicated mesh up from the position of the target
-        # TODO : add an option to automatically delete the x, y, z shapes
         # TODO : add an option to reassign the shader or assign the default lambert????
 
         # Adding base point array to point arrays list for redo purposes
@@ -134,6 +132,7 @@ class ExtractAxesCommand(object):
         return self.meshes[-1], blendshape
 
     def create_blendshape(self):
+        # TODO : update this method to use maya API 2.0 instead of cmds
         blendshape = mc.blendShape(self.meshes)[0]
         blendshape = mc.rename(blendshape, "{}_blendShape".format(self.meshes[-1]))
         mc.delete(self.meshes[:-1])
