@@ -202,7 +202,7 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(expected, result)
 
-    def test_bake_difference_no_base(self):
+    def test_bake_deltas_no_base(self):
         mc.select(self.other_cube)
         QtTest.QTest.mousePress(self.gui.bake_deltas_push_button, QtCore.Qt.LeftButton)
         QtTest.QTest.mouseRelease(
@@ -216,7 +216,7 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_sym_position, result)
 
-    def test_bake_difference_no_target(self):
+    def test_bake_deltas_no_target(self):
         mc.select(self.sym_cube)
         QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)
         QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
@@ -234,7 +234,7 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_sym_position, result)
 
-    def test_bake_difference_with_base_and_target(self):
+    def test_bake_deltas_with_base_and_target(self):
         mc.select(self.sym_cube)
         QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)
         QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
@@ -255,6 +255,8 @@ class TestGUI(base_test.BaseGUITest):
         ]
 
         self.assertEqual(self.expected_asym_position, result)
+
+    # TODO : add test bake_deltas with vertex selection
 
     def test_extract_axes_creates_geometry(self):
         mc.select(self.sym_cube)
