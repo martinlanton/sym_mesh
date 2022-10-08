@@ -46,7 +46,7 @@ class TestRevertToBase(common.BaseTest):
         mesh_modifier.revert_to_base(
             base_table=sym_table,
             target_table=geo_table,
-            selected_vertices_indices=vertex_selection,
+            vertex_selection=vertex_selection,
             percentage=100,
         )
 
@@ -78,7 +78,7 @@ class TestRevertToBase(common.BaseTest):
         mesh_modifier.revert_to_base(
             base_table=sym_table,
             target_table=geo_table,
-            selected_vertices_indices=vertex_selection,
+            vertex_selection=vertex_selection,
             percentage=100,
         )
 
@@ -100,7 +100,7 @@ class TestRevertToBase(common.BaseTest):
         mesh_modifier.revert_to_base(
             base_table=sym_table,
             target_table=geo_table,
-            selected_vertices_indices=vertex_selection,
+            vertex_selection=vertex_selection,
             percentage=100,
         )
 

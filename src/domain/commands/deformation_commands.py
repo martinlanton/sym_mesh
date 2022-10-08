@@ -13,7 +13,7 @@ class BakeDifferenceCommand(AbstractDeformationCommand):
     def compute_point_position(self, base_point_array, target_point_array):
         destination_table = om2.MPointArray()
         # Loop in MPointArray
-        for i in range(len(base_point_array)):
+        for i in range(len(self.current_point_array)):
             # If the current point is also in selection
             if (
                 i in self.vertex_selection.indices

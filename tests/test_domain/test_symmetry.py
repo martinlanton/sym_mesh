@@ -111,7 +111,7 @@ class TestSymmetry(common.BaseTest):
         mc.select("{}.vtx[1]".format(self.asym_cube))
         vertex_selection = selection.VertexSelection()
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table, selected_vertices_indices=vertex_selection)
+        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table, vertex_selection=vertex_selection)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -141,7 +141,7 @@ class TestSymmetry(common.BaseTest):
         mc.select(clear=True)
         vertex_selection = selection.VertexSelection()
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table, selected_vertices_indices=vertex_selection)
+        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table, vertex_selection=vertex_selection)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -161,7 +161,7 @@ class TestSymmetry(common.BaseTest):
         mc.select(self.asym_cube)
         vertex_selection = selection.VertexSelection()
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table, selected_vertices_indices=vertex_selection)
+        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table, vertex_selection=vertex_selection)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)

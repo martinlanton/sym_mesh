@@ -50,7 +50,7 @@ class MeshModifier(object):
         self,
         base_table,
         target_table,
-        selected_vertices_indices=selection.VertexSelection(from_list=()),
+        vertex_selection=selection.VertexSelection(from_list=()),
         percentage=100,
         target_dag_path=None,
         space=om2.MSpace.kObject,
@@ -65,8 +65,8 @@ class MeshModifier(object):
         :param target_table: GeometryTable of the target geometry
         :type target_table: domain.table.GeometryTable
 
-        :param selected_vertices_indices: indices of the selected points on the target mesh
-        :type selected_vertices_indices: domain.selection.VertexSelection
+        :param vertex_selection: indices of the selected points on the target mesh
+        :type vertex_selection: domain.selection.VertexSelection
 
         :param percentage: percentage used for the bake delta function. This
         is a value from 0 to 100, a value of 100 means we're adding the full
@@ -86,7 +86,7 @@ class MeshModifier(object):
         cmd = commands.BakeDifferenceCommand(
             base_table,
             target_table,
-            selected_vertices_indices,
+            vertex_selection,
             percentage,
             target_dag_path,
             space,
@@ -97,7 +97,7 @@ class MeshModifier(object):
         self,
         base_table,
         target_table,
-        selected_vertices_indices=selection.VertexSelection(from_list=()),
+        vertex_selection=selection.VertexSelection(from_list=()),
         percentage=100,
         space=om2.MSpace.kObject,
     ):
@@ -110,8 +110,8 @@ class MeshModifier(object):
         :param target_table: positions of the points of the current mesh
         :type target_table: domain.table.GeometryTable
 
-        :param selected_vertices_indices: indices of the selected points on the target mesh
-        :type selected_vertices_indices: domain.selection.VertexSelection
+        :param vertex_selection: indices of the selected points on the target mesh
+        :type vertex_selection: domain.selection.VertexSelection
 
         :param percentage: percentage used for the revert to base function. This
         is a value from 0 to 100, a value of 100 means we're reverting the
@@ -125,7 +125,7 @@ class MeshModifier(object):
         cmd = commands.RevertToBaseCommand(
             base_table,
             target_table,
-            selected_vertices_indices,
+            vertex_selection,
             percentage,
             target_table.dag_path.getPath(),
             space,
@@ -136,7 +136,7 @@ class MeshModifier(object):
         self,
         base_table,
         target_table,
-        selected_vertices_indices=selection.VertexSelection(from_list=()),
+        vertex_selection=selection.VertexSelection(from_list=()),
         percentage=100,
         space=om2.MSpace.kObject,
     ):
@@ -149,8 +149,8 @@ class MeshModifier(object):
         :param target_table: positions of the points of the current mesh
         :type target_table: domain.table.GeometryTable
 
-        :param selected_vertices_indices: indices of the selected points on the target mesh
-        :type selected_vertices_indices: domain.selection.VertexSelection
+        :param vertex_selection: indices of the selected points on the target mesh
+        :type vertex_selection: domain.selection.VertexSelection
 
         :param percentage: percentage used for the revert to base function
         :type percentage: int
@@ -161,7 +161,7 @@ class MeshModifier(object):
         cmd = commands.SymmetrizeCommand(
             base_table,
             target_table,
-            selected_vertices_indices,
+            vertex_selection,
             percentage,
             target_table.dag_path.getPath(),
             space,
@@ -189,7 +189,7 @@ class MeshModifier(object):
         self,
         base_table,
         target_table,
-        selected_vertices_indices=selection.VertexSelection(from_list=()),
+        vertex_selection=selection.VertexSelection(from_list=()),
         percentage=100,
         space=om2.MSpace.kObject,
     ):
@@ -201,8 +201,8 @@ class MeshModifier(object):
         :param target_table: positions of the points of the current mesh
         :type target_table: domain.table.GeometryTable
 
-        :param selected_vertices_indices: indices of the selected points on the target mesh
-        :type selected_vertices_indices: domain.selection.VertexSelection
+        :param vertex_selection: indices of the selected points on the target mesh
+        :type vertex_selection: domain.selection.VertexSelection
 
         :param percentage: percentage used for the revert to base function
         :type percentage: int
@@ -213,7 +213,7 @@ class MeshModifier(object):
         cmd = commands.FlipCommand(
             base_table,
             target_table,
-            selected_vertices_indices,
+            vertex_selection,
             percentage,
             target_table.dag_path.getPath(),
             space,

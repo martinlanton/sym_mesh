@@ -97,7 +97,7 @@ class Controller(object):
         self.mesh_modifier.symmetrize(
             base_table,
             target_table,
-            selected_vertices_indices=vertex_selection,
+            vertex_selection=vertex_selection,
             percentage=self._percentage,
         )
 
@@ -115,7 +115,7 @@ class Controller(object):
         self.mesh_modifier.flip(
             base_table,
             target_table,
-            selected_vertices_indices=vertex_selection,
+            vertex_selection=vertex_selection,
             percentage=self._percentage,
         )
 
@@ -154,7 +154,7 @@ class Controller(object):
         self.mesh_modifier.revert_to_base(
             base_table,
             target_table,
-            selected_vertices_indices=vertex_selection,
+            vertex_selection=vertex_selection,
             percentage=self._percentage,
         )
 
@@ -182,7 +182,7 @@ class Controller(object):
             self.mesh_modifier.bake_difference(
                 base_table,
                 target_table,
-                selected_vertices_indices=vertex_selection,
+                vertex_selection=vertex_selection,
                 percentage=self._percentage,
                 target_dag_path=target_path
             )

@@ -1,7 +1,12 @@
+import logging
+
 from maya import cmds as mc
 
-from domain import table, mesh_modification
+from domain import mesh_modification, selection, table
 from tests.fixtures import common
+
+logging.basicConfig()
+log = logging.getLogger(__name__)
 
 
 class TestBakeDeltas(common.BaseTest):
@@ -11,7 +16,9 @@ class TestBakeDeltas(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
         mesh_modifier.bake_difference(
-            sym_table, geo_table, target_dag_path=self.other_cube
+            base_table=sym_table,
+            target_table=geo_table,
+            target_dag_path=self.other_cube,
         )
 
         result = [
@@ -26,7 +33,10 @@ class TestBakeDeltas(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mesh_modifier = mesh_modification.MeshModifier()
         mesh_modifier.bake_difference(
-            sym_table, geo_table, percentage=0, target_dag_path=self.other_cube
+            base_table=sym_table,
+            target_table=geo_table,
+            percentage=0,
+            target_dag_path=self.other_cube,
         )
 
         result = [
@@ -34,5 +44,41 @@ class TestBakeDeltas(common.BaseTest):
             for vtx in range(self.vtx_number)
         ]
         self.assertEqual(self.expected_sym_position, result)
+
+    def test_bake_deltas_with_vertex_selection(self):
+        """Test that reverting the mesh to base when a proper vertex selection is
+        provided only reverts the selected vertices."""
+        sym_table = table.GeometryTable(self.sym_cube)
+        geo_table = table.GeometryTable(self.asym_cube)
+        mc.select("{}.vtx[1]".format(self.asym_cube))
+        vertex_selection = selection.VertexSelection()
+        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier.bake_difference(
+            base_table=sym_table,
+            target_table=geo_table,
+            vertex_selection=vertex_selection,
+            target_dag_path=self.other_cube,
+        )
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+        expected_sym_position = [
+            [-0.5, -0.5, 0.5],
+            [0.5, 0.5, 0.5],
+            [-0.5, 0.5, 0.5],
+            [0.5, 0.5, 0.5],
+            [-0.5, 0.5, -0.5],
+            [0.5, 0.5, -0.5],
+            [-0.5, -0.5, -0.5],
+            [0.5, -0.5, -0.5],
+        ]
+
+        log.info("Symmetry table : %s", sym_table.symmetry_table)
+        log.info("Expected : %s", expected_sym_position)
+        log.info("Result : %s", result)
+        self.assertEqual(expected_sym_position, result)
+
 
 # TODO : add tests with active vertices selection

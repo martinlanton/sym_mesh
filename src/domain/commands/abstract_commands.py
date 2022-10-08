@@ -64,12 +64,12 @@ class AbstractDeformationCommand(object):
 
     def deform(self):
         """
-        Bake the difference between 2 mesh on a list of vertices on a mesh.
+        Set the positions of the points of the mesh based on the computation algorithm.
         """
         base_point_array = self.base_table.point_array
-        log.debug("base_point_array :\n%s", pformat(base_point_array))
+        log.debug("base_point_array :\n%s", pformat(list(base_point_array)))
         target_point_array = self.target_table.point_array
-        log.debug("target_point_array :\n%s", pformat(target_point_array))
+        log.debug("target_point_array :\n%s", pformat(list(target_point_array)))
         destination_point_array = self.compute_point_position(
             base_point_array, target_point_array
         )

@@ -48,7 +48,7 @@ class TestFlip(common.BaseTest):
         mesh_modifier.flip(
             base_table=sym_table,
             target_table=geo_table,
-            selected_vertices_indices=vertex_selection,
+            vertex_selection=vertex_selection,
         )
 
         expected = [
@@ -80,7 +80,7 @@ class TestFlip(common.BaseTest):
         mesh_modifier.flip(
             base_table=sym_table,
             target_table=geo_table,
-            selected_vertices_indices=vertex_selection,
+            vertex_selection=vertex_selection,
         )
 
         expected = [
@@ -114,7 +114,7 @@ class TestFlip(common.BaseTest):
         mesh_modifier.flip(
             base_table=sym_table,
             target_table=geo_table,
-            selected_vertices_indices=vertex_selection,
+            vertex_selection=vertex_selection,
         )
 
         expected = [
