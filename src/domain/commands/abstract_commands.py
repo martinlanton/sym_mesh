@@ -8,7 +8,7 @@ from maya.api import OpenMaya as om2
 from domain import selection
 
 log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
+log.setLevel(logging.INFO)
 
 
 @six.add_metaclass(abc.ABCMeta)
