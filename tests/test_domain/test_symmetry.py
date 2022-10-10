@@ -111,7 +111,11 @@ class TestSymmetry(common.BaseTest):
         mc.select("{}.vtx[1]".format(self.asym_cube))
         vertex_selection = selection.VertexSelection()
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table, vertex_selection=vertex_selection)
+        mesh_modifier.symmetrize(
+            base_table=sym_table,
+            target_table=geo_table,
+            vertex_selection=vertex_selection,
+        )
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -141,7 +145,11 @@ class TestSymmetry(common.BaseTest):
         mc.select(clear=True)
         vertex_selection = selection.VertexSelection()
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table, vertex_selection=vertex_selection)
+        mesh_modifier.symmetrize(
+            base_table=sym_table,
+            target_table=geo_table,
+            vertex_selection=vertex_selection,
+        )
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -153,7 +161,9 @@ class TestSymmetry(common.BaseTest):
         log.info("Result : %s", result)
         self.assertEqual(self.expected_sym_position, result)
 
-    def test_symmetrization_x_positive_with_geometry_selected_for_vertex_selection(self):
+    def test_symmetrization_x_positive_with_geometry_selected_for_vertex_selection(
+        self,
+    ):
         """Test that symmetrizing on the X axis in the positive direction (-X towards +X)
         without vertex selection symmetrizes properly."""
         geo_table = table.GeometryTable(self.asym_cube)
@@ -161,7 +171,11 @@ class TestSymmetry(common.BaseTest):
         mc.select(self.asym_cube)
         vertex_selection = selection.VertexSelection()
         mesh_modifier = mesh_modification.MeshModifier()
-        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table, vertex_selection=vertex_selection)
+        mesh_modifier.symmetrize(
+            base_table=sym_table,
+            target_table=geo_table,
+            vertex_selection=vertex_selection,
+        )
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)

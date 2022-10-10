@@ -37,8 +37,12 @@ class Layout(QtWidgets.QVBoxLayout):
         self.addWidget(self.target_line_edit)
 
         # Store vertices selection
-        self.get_vertex_selection_push_button = QtWidgets.QPushButton("Get Vertex Selection")
-        self.get_vertex_selection_push_button.setObjectName("get_vertex_selection_push_button")
+        self.get_vertex_selection_push_button = QtWidgets.QPushButton(
+            "Get Vertex Selection"
+        )
+        self.get_vertex_selection_push_button.setObjectName(
+            "get_vertex_selection_push_button"
+        )
         self.addWidget(self.get_vertex_selection_push_button)
 
         # Select non-symmetrical vertices
@@ -51,8 +55,12 @@ class Layout(QtWidgets.QVBoxLayout):
         self.addWidget(self.select_non_symmetrical_vertices_push_button)
 
         # Select stored vertex selection
-        self.select_vertex_selection_push_button = QtWidgets.QPushButton("Select stored Vertices")
-        self.select_vertex_selection_push_button.setObjectName("select_stored_vertices_pB")
+        self.select_vertex_selection_push_button = QtWidgets.QPushButton(
+            "Select stored Vertices"
+        )
+        self.select_vertex_selection_push_button.setObjectName(
+            "select_stored_vertices_pB"
+        )
         self.addWidget(self.select_vertex_selection_push_button)
 
         # Bake deltas
@@ -151,16 +159,12 @@ class Layout(QtWidgets.QVBoxLayout):
         )
         self.undo_push_button.setToolTip(
             QtWidgets.QApplication.translate(
-                "MainWindow",
-                "Undo the last action.",
-                None,
+                "MainWindow", "Undo the last action.", None,
             )
         )
         self.redo_push_button.setToolTip(
             QtWidgets.QApplication.translate(
-                "MainWindow",
-                "Redo the last undone action.",
-                None,
+                "MainWindow", "Redo the last undone action.", None,
             )
         )
         log.info("Done Building UI")
@@ -182,11 +186,11 @@ class Layout(QtWidgets.QVBoxLayout):
 
 
 if __name__ == "__main__":
-    import sys                                                                  # pragma: no cover
+    import sys  # pragma: no cover
 
-    app = QtWidgets.QApplication(sys.argv)                                      # pragma: no cover
+    app = QtWidgets.QApplication(sys.argv)  # pragma: no cover
     dialog = QtWidgets.QDialog()
     layout = Layout(dialog)
 
     dialog.show()
-    sys.exit(app.exec_())                                                       # pragma: no cover
+    sys.exit(app.exec_())  # pragma: no cover

@@ -114,7 +114,11 @@ class GeometryTable:
         :rtype: dict
 
         """
-        points_table = get_points_positions(dag_path.create_MDagPath(base_mesh)) if base_mesh else self._points_table
+        points_table = (
+            get_points_positions(dag_path.create_MDagPath(base_mesh))
+            if base_mesh
+            else self._points_table
+        )
         symmetry_map = self._build_symmetry_map(points_table)
         non_mirrored_table = self._get_non_mirrored_vertices(points_table, symmetry_map)
 
@@ -147,9 +151,7 @@ class GeometryTable:
             position_to_check = self._get_opposite_position(position)
 
             if position_to_check in check_table:
-                if self._vertex_should_be_symmetry_source(
-                    position, position_to_check
-                ):
+                if self._vertex_should_be_symmetry_source(position, position_to_check):
                     symmetry_map[check_table[position_to_check]] = idx
                 else:  # Vertex should be symmetry target
                     symmetry_map[idx] = check_table[position_to_check]

@@ -19,6 +19,7 @@ log.setLevel(logging.INFO)
 #  through the MeshModifier class. It will require however a refactor of the
 #  commands tests as well as of their undo/redo
 
+
 class MeshModifier(object):
     def __init__(self):
         self.undo_queue = list()

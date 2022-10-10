@@ -37,7 +37,9 @@ class VertexSelection(object):
             self.get_live_selection()
 
     def __str__(self):
-        return "Vertex selection : path : {}, indices : {}".format(self.dag_path, self.indices)
+        return "Vertex selection : path : {}, indices : {}".format(
+            self.dag_path, self.indices
+        )
 
     def get_live_selection(self):
         """
@@ -78,7 +80,9 @@ class VertexSelection(object):
             selected_vertices_indices = fn_components.getElements()
 
         if dag_path_list.__len__() > 1:
-            log.error("More than one object selected, unable to initialize a vertex selection.")
+            log.error(
+                "More than one object selected, unable to initialize a vertex selection."
+            )
             del self
             return
 
@@ -98,8 +102,6 @@ class VertexSelection(object):
             MItVtx = om2.MItMeshVertex(self.dag_path)
             while not MItVtx.isDone():
                 if MItVtx.index() in self.indices:
-                    vtcs_to_select.add(
-                        (self.dag_path, MItVtx.currentItem())
-                    )
+                    vtcs_to_select.add((self.dag_path, MItVtx.currentItem()))
                 MItVtx.next()
             om2.MGlobal.setActiveSelectionList(vtcs_to_select)

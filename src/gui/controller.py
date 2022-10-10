@@ -130,8 +130,7 @@ class Controller(object):
             return
         target_table = table.GeometryTable(target)
         self.mesh_modifier.extract_axes(
-            base_table,
-            target_table,
+            base_table, target_table,
         )
 
     def revert_to_base(self):
@@ -184,7 +183,7 @@ class Controller(object):
                 target_table,
                 vertex_selection=vertex_selection,
                 percentage=self._percentage,
-                target_dag_path=target_path
+                target_dag_path=target_path,
             )
 
     def select_non_mirrored_vertices(self):
@@ -207,4 +206,3 @@ class Controller(object):
 
     def redo(self):
         self.mesh_modifier.redo()
-

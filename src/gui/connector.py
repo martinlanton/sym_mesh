@@ -15,10 +15,10 @@ class Connector(object):
         self.gui.flip_push_button.clicked.connect(self.ctrl.flip)
         self.gui.extract_axes_push_button.clicked.connect(self.ctrl.extract_axes)
 
-        store_selection = partial(self.ctrl.get_vertex_selection, self.gui.vertices_stored)
-        self.gui.get_vertex_selection_push_button.clicked.connect(
-            store_selection
+        store_selection = partial(
+            self.ctrl.get_vertex_selection, self.gui.vertices_stored
         )
+        self.gui.get_vertex_selection_push_button.clicked.connect(store_selection)
 
         self.gui.select_vertex_selection_push_button.clicked.connect(
             self.ctrl.select_stored_vertices
