@@ -95,7 +95,6 @@ class VertexSelection(object):
             log.warning("No vertex selection stored")
         else:
             vtcs_to_select = om2.MSelectionList()
-            print("LOOK HERE : {}, {}".format(self.dag_path, self.dag_path.getPath()))
             MItVtx = om2.MItMeshVertex(self.dag_path)
             while not MItVtx.isDone():
                 if MItVtx.index() in self.indices:
