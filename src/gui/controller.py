@@ -110,7 +110,7 @@ class Controller(object):
         if not base_table:
             log.error("Unable to flip, no base defined.")
             return
-        vertex_selection = VertexSelection()
+        vertex_selection = self.vertex_selection if self.vertices_are_stored else VertexSelection()
         target_table = table.GeometryTable(target)
         self.mesh_modifier.flip(
             base_table,
