@@ -4,7 +4,7 @@ import logging
 
 import domain.table
 from domain import mesh_modification
-from domain import selection
+from domain.selection import VertexSelection
 from gui import signal
 from domain import table
 
@@ -19,11 +19,11 @@ class Controller(object):
         # Attributes
         self.get_vertex_selection(reset=True)
 
-        self.vtcs_selection = selection.VertexSelection(from_list=())
+        self.vertex_selection = VertexSelection(from_list=())
 
         self.mesh_modifier = mesh_modification.MeshModifier()
 
-        self.are_vertices_stored = False
+        self.vertices_are_stored = False
         self._percentage = 100
         self.space = om2.MSpace.kObject
         self.base_table: domain.table.GeometryTable = None
@@ -70,18 +70,18 @@ class Controller(object):
         :type reset: bool
         """
         if reset:
-            self.vtcs_selection = selection.VertexSelection(from_list=())
+            self.vertex_selection = VertexSelection(from_list=())
         else:
-            self.vtcs_selection = selection.VertexSelection()
-            log.info("Selection is %s", self.vtcs_selection)
+            self.vertex_selection = VertexSelection()
+            log.info("Selection is %s", self.vertex_selection)
 
-        if len(self.vtcs_selection.indices) > 0:
-            self.are_vertices_stored = True
+        if len(self.vertex_selection.indices) > 0:
+            self.vertices_are_stored = True
         else:
-            self.are_vertices_stored = False
+            self.vertices_are_stored = False
 
     def select_stored_vertices(self):
-        self.vtcs_selection.select()
+        self.vertex_selection.select()
 
     def symmetrize(self):
         target = mc.ls(sl=True)[0]
@@ -92,7 +92,7 @@ class Controller(object):
         if not base_table:
             log.error("Unable to symmetrize, no base defined.")
             return
-        vertex_selection = selection.VertexSelection()
+        vertex_selection = VertexSelection()
         target_table = table.GeometryTable(target)
         self.mesh_modifier.symmetrize(
             base_table,
@@ -110,7 +110,7 @@ class Controller(object):
         if not base_table:
             log.error("Unable to flip, no base defined.")
             return
-        vertex_selection = selection.VertexSelection()
+        vertex_selection = VertexSelection()
         target_table = table.GeometryTable(target)
         self.mesh_modifier.flip(
             base_table,
@@ -148,8 +148,8 @@ class Controller(object):
         if not base_table:
             log.error("Unable to revert to base, no base defined.")
             return
-        vertex_selection = selection.VertexSelection()
         target_table = table.GeometryTable(target)
+        vertex_selection = self.vertex_selection if self.vertices_are_stored else VertexSelection()
         self.mesh_modifier.revert_to_base(
             base_table,
             target_table,
@@ -176,12 +176,11 @@ class Controller(object):
         if not base_table:
             log.error("Unable to bake deltas, no base position defined.")
             return
-        vertex_selection = selection.VertexSelection()
         for target_path in target_paths:
             self.mesh_modifier.bake_difference(
                 base_table,
                 target_table,
-                vertex_selection=vertex_selection,
+                vertex_selection=self.vertex_selection,
                 percentage=self._percentage,
                 target_dag_path=target_path,
             )

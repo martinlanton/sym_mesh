@@ -202,6 +202,44 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(expected, result)
 
+    def test_revert_to_base_with_base_and_stored_vertex_selection(self):
+        mc.select(self.sym_cube)
+        QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+
+        mc.select("{}.vtx[1]".format(self.asym_cube))
+        QtTest.QTest.mousePress(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+
+        mc.select(self.asym_cube)
+        QtTest.QTest.mousePress(
+            self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.revert_to_base_push_button, QtCore.Qt.LeftButton
+        )
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+        expected = [
+            [-0.5, -0.5, 0.5],
+            [0.5, -0.5, 0.5],
+            [-0.5, 0.5, 0.5],
+            [0.5, 1.5, 0.5],
+            [-0.5, 0.5, -0.5],
+            [0.5, 1.5, -0.5],
+            [-0.5, -0.5, -0.5],
+            [0.5, 0.5, -0.5],
+        ]
+
+        self.assertEqual(expected, result)
+
     def test_bake_deltas_no_base(self):
         mc.select(self.other_cube)
         QtTest.QTest.mousePress(self.gui.bake_deltas_push_button, QtCore.Qt.LeftButton)
@@ -256,7 +294,108 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_asym_position, result)
 
-    # TODO : add test bake_deltas with vertex selection
+    def test_bake_deltas_with_vertex_selection(self):
+        """Test that baking the deltas on a mesh when a proper vertex selection is
+        provided only bakes the deltas for the selected vertices."""
+        mc.select(self.sym_cube)
+        QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+
+        mc.select(self.asym_cube)
+        QtTest.QTest.mousePress(self.gui.get_target_pB, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_target_pB, QtCore.Qt.LeftButton)
+
+        mc.select("{}.vtx[1]".format(self.asym_cube))
+        QtTest.QTest.mousePress(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+
+        mc.select(self.other_cube, replace=True)
+        QtTest.QTest.mousePress(self.gui.bake_deltas_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(
+            self.gui.bake_deltas_push_button, QtCore.Qt.LeftButton
+        )
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+        expected_sym_position = [
+            [-0.5, -0.5, 0.5],
+            [0.5, 0.5, 0.5],
+            [-0.5, 0.5, 0.5],
+            [0.5, 0.5, 0.5],
+            [-0.5, 0.5, -0.5],
+            [0.5, 0.5, -0.5],
+            [-0.5, -0.5, -0.5],
+            [0.5, -0.5, -0.5],
+        ]
+
+        self.assertEqual(expected_sym_position, result)
+    #
+    def test_bake_delta_with_no_vertex_selection(self):
+        """Test that baking the deltas on a mesh when a proper vertex selection is
+        provided only bakes the deltas for the selected vertices."""
+        mc.select(self.sym_cube)
+        QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+
+        mc.select(self.asym_cube)
+        QtTest.QTest.mousePress(self.gui.get_target_pB, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_target_pB, QtCore.Qt.LeftButton)
+
+        mc.select(clear=True)
+        QtTest.QTest.mousePress(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+
+        mc.select(self.other_cube, replace=True)
+        QtTest.QTest.mousePress(self.gui.bake_deltas_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(
+            self.gui.bake_deltas_push_button, QtCore.Qt.LeftButton
+        )
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+        self.assertEqual(self.expected_asym_position, result)
+
+    def test_bake_delta_with_geometry_selected_for_vertex_selection(self):
+        """Test that baking delta functions properly on one geometry."""
+        mc.select(self.sym_cube)
+        QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+
+        mc.select(self.asym_cube)
+        QtTest.QTest.mousePress(self.gui.get_target_pB, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_target_pB, QtCore.Qt.LeftButton)
+
+        mc.select(self.asym_cube)
+        QtTest.QTest.mousePress(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+
+        mc.select(self.other_cube, replace=True)
+        QtTest.QTest.mousePress(self.gui.bake_deltas_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(
+            self.gui.bake_deltas_push_button, QtCore.Qt.LeftButton
+        )
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+        self.assertEqual(self.expected_asym_position, result)
 
     def test_extract_axes_creates_geometry(self):
         mc.select(self.sym_cube)
