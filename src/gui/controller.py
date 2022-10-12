@@ -92,6 +92,7 @@ class Controller(object):
         if not base_table:
             log.error("Unable to symmetrize, no base defined.")
             return
+        # TODO : update this to use stored or non stored vertex selection
         vertex_selection = VertexSelection()
         target_table = table.GeometryTable(target)
         self.mesh_modifier.symmetrize(
@@ -110,7 +111,9 @@ class Controller(object):
         if not base_table:
             log.error("Unable to flip, no base defined.")
             return
-        vertex_selection = self.vertex_selection if self.vertices_are_stored else VertexSelection()
+        vertex_selection = (
+            self.vertex_selection if self.vertices_are_stored else VertexSelection()
+        )
         target_table = table.GeometryTable(target)
         self.mesh_modifier.flip(
             base_table,
@@ -149,7 +152,9 @@ class Controller(object):
             log.error("Unable to revert to base, no base defined.")
             return
         target_table = table.GeometryTable(target)
-        vertex_selection = self.vertex_selection if self.vertices_are_stored else VertexSelection()
+        vertex_selection = (
+            self.vertex_selection if self.vertices_are_stored else VertexSelection()
+        )
         self.mesh_modifier.revert_to_base(
             base_table,
             target_table,
