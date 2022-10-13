@@ -483,7 +483,7 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.asym_cube, result)
 
-    def test_vertex_selection(self):
+    def test_select_stored_vertex_selection(self):
         mc.select("{}.vtx[1]".format(self.sym_cube))
         QtTest.QTest.mousePress(
             self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
