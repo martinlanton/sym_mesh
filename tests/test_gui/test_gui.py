@@ -70,6 +70,40 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(expected, result)
 
+    def test_symmetry_with_base_and_stored_vertex_selection(self):
+        mc.select(self.sym_cube)
+        QtTest.QTest.mousePress(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_base_pB, QtCore.Qt.LeftButton)
+
+        mc.select("{}.vtx[1]".format(self.asym_cube))
+        QtTest.QTest.mousePress(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+        QtTest.QTest.mouseRelease(
+            self.gui.get_vertex_selection_push_button, QtCore.Qt.LeftButton
+        )
+
+        mc.select(self.asym_cube, replace=True)
+        QtTest.QTest.mousePress(self.gui.symmetry_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.symmetry_push_button, QtCore.Qt.LeftButton)
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+        expected = [
+            [-0.5, -0.5, 0.5],
+            [0.5, -0.5, 0.5],
+            [-0.5, 0.5, 0.5],
+            [0.5, 1.5, 0.5],
+            [-0.5, 0.5, -0.5],
+            [0.5, 1.5, -0.5],
+            [-0.5, -0.5, -0.5],
+            [0.5, 0.5, -0.5],
+        ]
+
+        self.assertEqual(expected, result)
+
     def test_flip_no_base(self):
         mc.select(self.asym_cube)
         QtTest.QTest.mousePress(self.gui.flip_push_button, QtCore.Qt.LeftButton)
