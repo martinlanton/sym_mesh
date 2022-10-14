@@ -150,6 +150,7 @@ class Layout(QtWidgets.QVBoxLayout):
         self.addWidget(self.redo_push_button)
 
         # Tooltips
+        # TODO : implement proper tooltips for all the buttons
         self.revert_to_base_push_button.setToolTip(
             QtWidgets.QApplication.translate(
                 "MainWindow",
