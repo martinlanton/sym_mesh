@@ -535,7 +535,7 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual([], result)
         self.assertEqual(
-            QtGui.QColor.fromRgbF(0.941176, 0.941176, 0.941176, 1.000000), color
+            QtGui.QColor(QtCore.Qt.darkGray), color
         )
 
     def test_non_symmetrical_vertices_selection(self):

@@ -11,8 +11,33 @@
 * in extract axes : add option to remove the targets
 * in extract axes : add option to reassign the default lambert
 
-# maya sym mesh
+# Maya sym mesh
 This is a Maya project for mesh modification, including unittest setup
+
+## Installation
+To install this package for your local maya, you can use the following command: 
+```commandline
+mayapy -m pip install {package location}
+```
+Where {package location} represents the location you downloaded the package, for example :
+```commandline
+mayapy -m pip install D:/python/sym-mesh
+```
+If you have more than one maya version installed, you will need to replace `mayapy` with the full path to your `mayapy` executable file, like so : 
+```commandline
+"C:\Program Files\Autodesk\Maya2022\bin\mayapy.exe" -m pip install D:/python/sym-mesh
+```
+Note that you will have to put the path in quotation marks if there are any blank spaces in it as Windows can't handle those.
+
+## Launch
+You can currently launch the tool with the current command : 
+```python
+from gui import startup
+startup.startup()
+```
+
+
+# Development
 
 ## How to install coverage on Maya?
 

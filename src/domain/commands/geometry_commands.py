@@ -128,12 +128,16 @@ class ExtractAxesCommand(object):
             # Modify points position using the new coordinates
             tgt_mesh_functionset = om2.MFnMesh(dag_path)
             tgt_mesh_functionset.setPoints(self.point_arrays[i], om2.MSpace.kObject)
-        blendshape = self.create_blendshape()
-        return self.meshes[-1], blendshape
+        mesh, blendshape = self.create_blendshape()
+        return mesh, blendshape
 
     def create_blendshape(self):
         # TODO : update this method to use maya API 2.0 instead of cmds
         blendshape = mc.blendShape(self.meshes)[0]
         blendshape = mc.rename(blendshape, "{}_blendShape".format(self.meshes[-1]))
         mc.delete(self.meshes[:-1])
+
+        # Move the mesh 20 units in Y, placing this here to avoid doing it both
+        # in __init__ and redo methods
+        mc.xform(self.meshes[-1], relative=True, translation=[0, 20, 0])
         return self.meshes[-1], blendshape

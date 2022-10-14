@@ -81,10 +81,13 @@ class TestExtractAxes(common.BaseTest):
             )
             for axis in ["x", "y", "z"]
         ]
+        expected_pos = [0, 20, 0]
+        pos = mc.xform(extracted_mesh, query=True, translation=True)
 
         self.assertEqual(expected_x, x)
         self.assertEqual(expected_y, y)
         self.assertEqual(expected_z, z)
+        self.assertEqual(expected_pos, pos)
 
     # def test_timing_extract_axes(self):
     #     import time

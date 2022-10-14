@@ -126,11 +126,11 @@ class Controller(object):
     def extract_axes(self):
         target = mc.ls(sl=True)[0]
         if not target:
-            log.error("Unable to flip, no target selected.")
+            log.error("Unable to extract axes, no target selected.")
             return
         base_table = self.base_table
         if not base_table:
-            log.error("Unable to flip, no base defined.")
+            log.error("Unable to extract axes, no base defined.")
             return
         target_table = table.GeometryTable(target)
         self.mesh_modifier.extract_axes(

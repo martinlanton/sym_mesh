@@ -129,7 +129,9 @@ class FlipCommand(AbstractDeformationCommand):
                 or source_index in self.vertex_selection.indices
                 or self.vertex_selection.indices.__len__() == 0
             ):
-                # Modify new position
+                # TODO : could be worth doing a conditional here to only flip
+                #  the points that are ACTUALLY selected
+                # target point's new position
                 new_target_position = list(source_vertex_position)
                 new_target_position[axis] = -new_target_position[axis]
                 new_target_position = om2.MPoint(new_target_position)
@@ -138,6 +140,7 @@ class FlipCommand(AbstractDeformationCommand):
                     * (self.percentage / 100.0)
                 )
 
+                # source point's new position
                 new_source_position = list(target_vertex_position)
                 new_source_position[axis] = -new_source_position[axis]
                 new_source_position = om2.MPoint(new_source_position)

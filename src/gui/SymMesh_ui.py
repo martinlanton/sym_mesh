@@ -14,7 +14,7 @@ class Layout(QtWidgets.QVBoxLayout):
         # self.revert_value_sB.valueChanged.connect(self.get_slider_value)
         self.get_vertex_selection_push_button.clicked.connect(self.store_selection)
 
-        self.vertices_stored = False
+        self.vertices_are_stored = False
 
     def buildUI(self):
         self.get_base_pB = QtWidgets.QPushButton("Get Base")
@@ -47,7 +47,7 @@ class Layout(QtWidgets.QVBoxLayout):
 
         # Select non-symmetrical vertices
         self.select_non_symmetrical_vertices_push_button = QtWidgets.QPushButton(
-            "Select Non Symmetrical Vertices"
+            "Select Non Symmetrical Vertices on base"
         )
         self.select_non_symmetrical_vertices_push_button.setObjectName(
             "select_non_symmetrical_vertices_pB"
@@ -173,15 +173,16 @@ class Layout(QtWidgets.QVBoxLayout):
         line_edit.setText(arg)
 
     def store_selection(self):
-        self.vertices_stored = not self.vertices_stored
+        self.vertices_are_stored = not self.vertices_are_stored
 
-        if self.vertices_stored:
+        if self.vertices_are_stored:
             self.get_vertex_selection_push_button.setStyleSheet(
                 "QPushButton {background-color: red;}"
             )
         else:
+            # TODO : fix that color : it still doesn't match Maya's dark gray
             self.get_vertex_selection_push_button.setStyleSheet(
-                "QPushButton {background-color: rgb(240, 240, 240);}"
+                "QPushButton {background-color: rgb(128, 128, 128);}"
             )
 
 

@@ -65,7 +65,7 @@ class BaseTest(unittest.TestCase):
         """
         mc.setAttr("{}.{}_{}".format(blendshape, self.test_extract_axes_cube, axis), 1)
         result = [
-            mc.pointPosition("{}.vtx[{}]".format(mesh, vtx), world=True)
+            mc.pointPosition("{}.vtx[{}]".format(mesh, vtx), local=True)
             for vtx in range(self.vtx_number)
         ]
         mc.setAttr("{}.{}_{}".format(blendshape, self.test_extract_axes_cube, axis), 0)

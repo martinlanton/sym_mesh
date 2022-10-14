@@ -269,30 +269,16 @@ class TestRedo(common.BaseTest):
             [0.5, -0.5, 0.5],
         ]
 
-        mc.setAttr("{}.{}_x".format(blendshape, self.test_extract_axes_cube), 1)
-        result_x = [
-            mc.pointPosition("{}.vtx[{}]".format(extracted_mesh, vtx), world=True)
-            for vtx in range(vtx_number)
+        x, y, z = [
+            self.get_blendshape_target_vertices_positions(
+                axis, blendshape, extracted_mesh
+            )
+            for axis in ["x", "y", "z"]
         ]
-        mc.setAttr("{}.{}_x".format(blendshape, self.test_extract_axes_cube), 0)
 
-        mc.setAttr("{}.{}_y".format(blendshape, self.test_extract_axes_cube), 1)
-        result_y = [
-            mc.pointPosition("{}.vtx[{}]".format(extracted_mesh, vtx), world=True)
-            for vtx in range(vtx_number)
-        ]
-        mc.setAttr("{}.{}_y".format(blendshape, self.test_extract_axes_cube), 0)
-
-        mc.setAttr("{}.{}_z".format(blendshape, self.test_extract_axes_cube), 1)
-        result_z = [
-            mc.pointPosition("{}.vtx[{}]".format(extracted_mesh, vtx), world=True)
-            for vtx in range(vtx_number)
-        ]
-        mc.setAttr("{}.{}_z".format(blendshape, self.test_extract_axes_cube), 0)
-
-        self.assertEqual(expected_x, result_x)
-        self.assertEqual(expected_y, result_y)
-        self.assertEqual(expected_z, result_z)
+        self.assertEqual(expected_x, x)
+        self.assertEqual(expected_y, y)
+        self.assertEqual(expected_z, z)
 
     def test_redo_flip(self):
         """Test that undo after symmetrization works properly."""
