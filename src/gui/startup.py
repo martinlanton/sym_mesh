@@ -10,24 +10,24 @@ class Connector(object):
         self.ctrl = controller.Controller()
         self.gui = SymMesh_ui.Layout(parent)
 
-        self.gui.get_base_pB.clicked.connect(self.ctrl.get_base)
-        self.gui.get_target_pB.clicked.connect(self.ctrl.get_target)
+        self.gui.get_base_pb.clicked.connect(self.ctrl.get_base)
+        self.gui.get_target_pb.clicked.connect(self.ctrl.get_target)
 
-        self.gui.symmetry_push_button.clicked.connect(self.ctrl.symmetrize)
-        self.gui.flip_push_button.clicked.connect(self.ctrl.flip)
-        self.gui.extract_axes_push_button.clicked.connect(self.ctrl.extract_axes)
-        self.gui.bake_deltas_push_button.clicked.connect(self.ctrl.bake_deltas)
-        self.gui.revert_to_base_push_button.clicked.connect(self.ctrl.revert_to_base)
+        self.gui.symmetry_pb.clicked.connect(self.ctrl.symmetrize)
+        self.gui.flip_pb.clicked.connect(self.ctrl.flip)
+        self.gui.extract_axes_pb.clicked.connect(self.ctrl.extract_axes)
+        self.gui.bake_deltas_pb.clicked.connect(self.ctrl.bake_deltas)
+        self.gui.revert_to_base_pb.clicked.connect(self.ctrl.revert_to_base)
 
         store_selection = partial(
             self.ctrl.get_vertex_selection, self.gui.vertices_are_stored
         )
-        self.gui.get_vertex_selection_push_button.clicked.connect(store_selection)
+        self.gui.get_vertex_selection_pb.clicked.connect(store_selection)
 
-        self.gui.select_vertex_selection_push_button.clicked.connect(
+        self.gui.select_vertex_selection_pb.clicked.connect(
             self.ctrl.select_stored_vertices
         )
-        self.gui.select_non_symmetrical_vertices_push_button.clicked.connect(
+        self.gui.select_non_symmetrical_vertices_pb.clicked.connect(
             self.ctrl.select_non_mirrored_vertices
         )
 
@@ -42,6 +42,6 @@ class Connector(object):
         self.ctrl.set_target.connect(set_target_line_edit)
 
 
-def startup():
-    dialog = DockableDialog.instance(Connector)
-    dialog.show(dockable=True)
+def startup():  # pragma: no cover
+    dialog = DockableDialog.instance(Connector)  # pragma: no cover
+    dialog.show(dockable=True)  # pragma: no cover
