@@ -1,6 +1,6 @@
 import logging
 from maya import cmds as mc
-from PySide2 import QtTest, QtCore, QtGui
+from Qt import QtTest, QtCore, QtGui
 import unittest
 from tests.test_gui import base_test
 
@@ -512,7 +512,7 @@ class TestGUI(base_test.BaseGUITest):
         color = self.gui.get_vertex_selection_pb.palette().button().color()
 
         self.assertEqual([], result)
-        self.assertEqual(QtGui.QColor(QtCore.Qt.darkGray), color)
+        self.assertEqual(QtGui.QColor.fromRgbF(0.364706, 0.364706, 0.364706, 1.000000), color)
 
     def test_non_symmetrical_vertices_selection(self):
         mc.select(self.asym_cube)

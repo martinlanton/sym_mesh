@@ -207,9 +207,8 @@ class Layout(QtWidgets.QVBoxLayout):
                 "QPushButton {background-color: red;}"
             )
         else:
-            # TODO : fix that color : it still doesn't match Maya's dark gray
             self.get_vertex_selection_pb.setStyleSheet(
-                "QPushButton {background-color: rgb(128, 128, 128);}"
+                "QPushButton {background-color: rgb(93, 93, 93);}"
             )
 
 
