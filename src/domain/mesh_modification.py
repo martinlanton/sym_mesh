@@ -18,6 +18,9 @@ log.setLevel(logging.INFO)
 #  This will allow calling the commands directly from the controller instead of
 #  through the MeshModifier class. It will require however a refactor of the
 #  commands tests as well as of their undo/redo
+#  *
+#  This might not be possible depending on how I want to setup the undo
+#  mechanism for some commands.
 
 
 class MeshModifier(object):
