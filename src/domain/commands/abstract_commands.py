@@ -56,7 +56,6 @@ class AbstractDeformationCommand(object):
         self.vertex_selection = vertex_selection
         self.percentage = percentage
         self.target_dag_path = target_dag_path
-        # TODO : space should be moved to the geometry table, and taken from there
         self.space = space
         self.current_point_array = selection.get_points_positions(target_dag_path)
         self.undo_action = self.current_point_array

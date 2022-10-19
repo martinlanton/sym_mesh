@@ -4,6 +4,7 @@ from maya import cmds as mc
 
 from domain import table
 from domain import mesh_modification
+from domain import shading
 from tests.fixtures import common
 
 
@@ -18,6 +19,8 @@ class TestExtractAxes(common.BaseTest):
         extracted_mesh, blendshape = mesh_modifier.extract_axes(
             base_table=base_table, target_table=target_table
         )
+
+        shading_group = shading.get_shading_group_from_shader("lambert1")
 
         self.assertTrue(mc.objExists(blendshape))
         self.assertEqual(
@@ -36,6 +39,7 @@ class TestExtractAxes(common.BaseTest):
         self.assertTrue(
             mc.objExists("|{}_extracted".format(self.test_extract_axes_cube))
         )
+        self.assertEqual("initialShadingGroup", shading_group)
 
     def test_extract_axes_geometries_point_positions(self):
         target_table = table.GeometryTable(self.test_extract_axes_cube)

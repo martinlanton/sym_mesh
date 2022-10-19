@@ -34,6 +34,7 @@ class GeometryTable:
         self._dag_path = mesh_dag_path
         self._points_table = get_points_positions(self.dag_path)
 
+        # TODO : space should be moved to the geometry table, and taken from there
         # TODO : update symmetry table to ONLY be the symmetry map, and extract
         #  non_mirrored_vertices to its own property
         self._symmetry_table = None

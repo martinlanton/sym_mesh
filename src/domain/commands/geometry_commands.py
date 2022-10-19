@@ -3,6 +3,7 @@ import logging
 from maya.api import OpenMaya as om2
 from maya import cmds as mc
 from domain.dag_path import create_MDagPath
+from domain import shading
 
 log = logging.getLogger(__name__)
 
@@ -51,9 +52,6 @@ class ExtractAxesCommand(object):
             # Modify points position using the new coordinates
             tgt_mesh_functionset = om2.MFnMesh(dag_path)
             tgt_mesh_functionset.setPoints(destination_table, om2.MSpace.kObject)
-
-        # TODO : move the last duplicated mesh up from the position of the target
-        # TODO : add an option to reassign the shader or assign the default lambert????
 
         # Adding base point array to point arrays list for redo purposes
         self.point_arrays.append(base_point_array)
@@ -135,9 +133,10 @@ class ExtractAxesCommand(object):
         # TODO : update this method to use maya API 2.0 instead of cmds
         blendshape = mc.blendShape(self.meshes)[0]
         blendshape = mc.rename(blendshape, "{}_blendShape".format(self.meshes[-1]))
-        mc.delete(self.meshes[:-1])
 
         # Move the mesh 20 units in Y, placing this here to avoid doing it both
         # in __init__ and redo methods
+        mc.delete(self.meshes[:-1])
         mc.xform(self.meshes[-1], relative=True, translation=[0, 20, 0])
+        shading.assign_shader(self.meshes[-1], 'lambert1')
         return self.meshes[-1], blendshape
