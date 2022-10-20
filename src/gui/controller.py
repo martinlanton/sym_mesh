@@ -25,7 +25,6 @@ class Controller(object):
 
         self.vertices_are_stored = False
         self._percentage = 100
-        self.space = om2.MSpace.kObject
         self.base_table: domain.table.GeometryTable = None
         self.target_table: domain.table.GeometryTable = None
 
@@ -192,6 +191,7 @@ class Controller(object):
             )
 
     def select_non_mirrored_vertices(self):
+        # TODO : move this to the VertexSelection
         dag_path = self.base_table.dag_path
         non_mirrored_vertices = self.base_table.symmetry_table[1]
 

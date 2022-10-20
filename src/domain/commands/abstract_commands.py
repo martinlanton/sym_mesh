@@ -20,15 +20,14 @@ class AbstractDeformationCommand(object):
         vertex_selection=selection.VertexSelection(from_list=()),
         percentage=100,
         target_dag_path=None,
-        space=om2.MSpace.kObject,
     ):
         """Initialize the deformation command with the proper attributes.
 
         :param base_table: GeometryTable of the base geometry
-        :type base_table: sym_mesh.table.GeometryTable
+        :type base_table: domain.table.GeometryTable
 
         :param target_table: GeometryTable of the target geometry
-        :type target_table: sym_mesh.table.GeometryTable
+        :type target_table: domain.table.GeometryTable
 
         :param vertex_selection: indices of the selected points on the target mesh
         :type vertex_selection: domain.selection.VertexSelection
@@ -41,23 +40,20 @@ class AbstractDeformationCommand(object):
 
         :param target_dag_path: MDagPath of the target
         :type target_dag_path: maya.api.OpenMaya.MDagPath
-
-        :param space: space in which operate the deformation (object or world)
-        :type space: constant
         """
         log.debug("base_table : %s", base_table)
         log.debug("target_table : %s", target_table)
         log.debug("selected_vertices_indices : %s", vertex_selection)
         log.debug("percentage : %s", percentage)
         log.debug("target_dag_path : %s", target_dag_path)
-        log.debug("space : %s", space)
+        log.debug("space : %s", target_table.space)
         self.base_table = base_table
         self.target_table = target_table
         self.vertex_selection = vertex_selection
         self.percentage = percentage
         self.target_dag_path = target_dag_path
-        self.space = space
-        self.current_point_array = selection.get_points_positions(target_dag_path)
+        self.space = base_table.space
+        self.current_point_array = selection.get_points_positions(target_dag_path, base_table.space)
         self.undo_action = self.current_point_array
         self.result = self.deform()
         self.redo_action = self.result

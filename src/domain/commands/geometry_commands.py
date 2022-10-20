@@ -10,26 +10,30 @@ log = logging.getLogger(__name__)
 
 class ExtractAxesCommand(object):
     def __init__(self, base_table, target_table):
-        self.point_arrays = list()
-        self.base_dag_path = base_table.dag_path
-        self.meshes = self.extract_axes(base_table, target_table)
-        self.result = self.create_blendshape()
-
-    def extract_axes(self, base_table, target_table):
         """Extract deltas between target table and base table on a new geometry.
 
         :param base_table:
-        :type base_table: sym_mesh.table.GeometryTable
+        :type base_table: domain.table.GeometryTable
 
         :param target_table:
-        :type target_table: sym_mesh.table.GeometryTable
+        :type target_table: domain.table.GeometryTable
+        """
+        self.point_arrays = list()
+        self.base_table = base_table
+        self.target_table = target_table
+        self.base_dag_path = base_table.dag_path
+        self.meshes = self.extract_axes()
+        self.result = self.create_blendshape()
+
+    def extract_axes(self):
+        """Extract deltas between target table and base table on a new geometry.
 
         :return: names of the newly created geometries
         :rtype: str, str, str
         """
-        target_name = target_table.dag_path.fullPathName().split("|")[-1]
-        base_point_array = base_table.point_array
-        target_point_array = target_table.point_array
+        target_name = self.target_table.dag_path.fullPathName().split("|")[-1]
+        base_point_array = self.base_table.point_array
+        target_point_array = self.target_table.point_array
 
         pathes = list()
         for i, axis in enumerate(["x", "y", "z"]):
@@ -51,7 +55,7 @@ class ExtractAxesCommand(object):
 
             # Modify points position using the new coordinates
             tgt_mesh_functionset = om2.MFnMesh(dag_path)
-            tgt_mesh_functionset.setPoints(destination_table, om2.MSpace.kObject)
+            tgt_mesh_functionset.setPoints(destination_table, self.base_table.space)
 
         # Adding base point array to point arrays list for redo purposes
         self.point_arrays.append(base_point_array)
@@ -125,7 +129,7 @@ class ExtractAxesCommand(object):
 
             # Modify points position using the new coordinates
             tgt_mesh_functionset = om2.MFnMesh(dag_path)
-            tgt_mesh_functionset.setPoints(self.point_arrays[i], om2.MSpace.kObject)
+            tgt_mesh_functionset.setPoints(self.point_arrays[i], self.base_table.space)
         mesh, blendshape = self.create_blendshape()
         return mesh, blendshape
 

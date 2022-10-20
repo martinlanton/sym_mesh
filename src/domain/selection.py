@@ -5,19 +5,22 @@ from maya.api import OpenMaya as om2
 log = logging.getLogger(__name__)
 
 
-def get_points_positions(obj_dag_path=None):
+def get_points_positions(obj_dag_path=None, space=None):
     """
     Get the position of every point of the selected mesh.
 
     :param obj_dag_path: dag path object of the geometry for which we want the points position
     :type obj_dag_path: maya.api.OpenMaya.MDagPath
 
+    :param space: space in which the point position should be queried.
+    :type space: int
+
     :return: position of the points
     :rtype: maya.api.OpenMaya.MPointArray
     """
     mfn_object = om2.MFnMesh(obj_dag_path)
 
-    points = mfn_object.getPoints(space=om2.MSpace.kObject)
+    points = mfn_object.getPoints(space=space)
 
     return points
 

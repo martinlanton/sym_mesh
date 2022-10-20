@@ -57,7 +57,6 @@ class MeshModifier(object):
         vertex_selection=selection.VertexSelection(from_list=()),
         percentage=100,
         target_dag_path=None,
-        space=om2.MSpace.kObject,
     ):
         """
         Bake the difference between 2 mesh on a list of vertices on a selection
@@ -93,7 +92,6 @@ class MeshModifier(object):
             vertex_selection,
             percentage,
             target_dag_path,
-            space,
         )
         self.undo_queue.append(cmd)
 
@@ -103,7 +101,6 @@ class MeshModifier(object):
         target_table,
         vertex_selection=selection.VertexSelection(from_list=()),
         percentage=100,
-        space=om2.MSpace.kObject,
     ):
         """
         Revert selected vertices on the target mesh to the base position.
@@ -132,7 +129,6 @@ class MeshModifier(object):
             vertex_selection,
             percentage,
             target_table.dag_path.getPath(),
-            space,
         )
         self.undo_queue.append(cmd)
 
@@ -142,7 +138,6 @@ class MeshModifier(object):
         target_table,
         vertex_selection=selection.VertexSelection(from_list=()),
         percentage=100,
-        space=om2.MSpace.kObject,
     ):
         """
         Symmetrize selected vertices on the target mesh.
@@ -168,7 +163,6 @@ class MeshModifier(object):
             vertex_selection,
             percentage,
             target_table.dag_path.getPath(),
-            space,
         )
         self.undo_queue.append(cmd)
 
@@ -176,10 +170,10 @@ class MeshModifier(object):
         """Extract deltas between target table and base table on a new geometry.
 
         :param base_table:
-        :type base_table: sym_mesh.table.GeometryTable
+        :type base_table: domain.table.GeometryTable
 
         :param target_table:
-        :type target_table: sym_mesh.table.GeometryTable
+        :type target_table: domain.table.GeometryTable
 
         :return: names of the newly created geometries
         :rtype: str, str, str
@@ -195,7 +189,6 @@ class MeshModifier(object):
         target_table,
         vertex_selection=selection.VertexSelection(from_list=()),
         percentage=100,
-        space=om2.MSpace.kObject,
     ):
         """Flip selected vertices on the target mesh.
 
@@ -220,6 +213,5 @@ class MeshModifier(object):
             vertex_selection,
             percentage,
             target_table.dag_path.getPath(),
-            space,
         )
         self.undo_queue.append(cmd)

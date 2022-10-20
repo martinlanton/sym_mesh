@@ -1,4 +1,5 @@
 import logging
+from maya.api import OpenMaya as om2
 
 from domain import dag_path
 from domain.selection import get_points_positions
@@ -8,7 +9,7 @@ log.setLevel(logging.DEBUG)
 
 
 class GeometryTable:
-    def __init__(self, mesh_dag_path, axis="x", threshold=0.001, direction="positive"):
+    def __init__(self, mesh_dag_path, axis="x", threshold=0.001, direction="positive", space=om2.MSpace.kObject):
         """Initialize the symmetry table using the specified mesh.
 
         :param mesh_dag_path: name of the maya mesh to use to build the symmetry table.
@@ -24,19 +25,23 @@ class GeometryTable:
         directions are "positive" and "negative".
         :type direction: str
 
+        :param space: space in which the point position should be queried.
+        :type space: int
+
         """
         self._axis = axis
         self._axis_idcs = {"x": 0, "y": 1, "z": 2}
-        self._direction = direction  # TODO : convert this to an enum
+        self._direction = direction
         self._threshold = 0.001
         self._threshold_nb = 3
+        self._space = space
 
         self._dag_path = mesh_dag_path
-        self._points_table = get_points_positions(self.dag_path)
+        self._points_table = get_points_positions(self.dag_path, space=space)
 
-        # TODO : space should be moved to the geometry table, and taken from there
         # TODO : update symmetry table to ONLY be the symmetry map, and extract
         #  non_mirrored_vertices to its own property
+        # TODO : non_mirrored_vertices should be a VertexSelection object
         self._symmetry_table = None
 
         self.threshold = threshold
@@ -44,6 +49,10 @@ class GeometryTable:
 
     def __str__(self):
         return self._dag_path
+
+    @property
+    def space(self):
+        return self._space
 
     @property
     def symmetry_table(self):
@@ -116,7 +125,7 @@ class GeometryTable:
 
         """
         points_table = (
-            get_points_positions(dag_path.create_MDagPath(base_mesh))
+            get_points_positions(dag_path.create_MDagPath(base_mesh), self.space)
             if base_mesh
             else self._points_table
         )
