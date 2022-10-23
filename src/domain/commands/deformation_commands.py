@@ -67,7 +67,7 @@ class SymmetrizeCommand(AbstractDeformationCommand):
     def compute_point_position(self, base_point_array, target_point_array):
         axis = self.base_table.axis
 
-        symmetry_table = self.base_table.symmetry_table[0]
+        symmetry_table = self.base_table.symmetry_table
         log.debug("Symmetry table is : %s", symmetry_table)
 
         destination_point_array = om2.MPointArray()
@@ -111,7 +111,7 @@ class FlipCommand(AbstractDeformationCommand):
     def compute_point_position(self, base_point_array, target_point_array):
         axis = self.base_table.axis
 
-        symmetry_table = self.base_table.symmetry_table[0]
+        symmetry_table = self.base_table.symmetry_table
         log.debug("Symmetry table is : %s", symmetry_table)
 
         destination_point_array = om2.MPointArray(

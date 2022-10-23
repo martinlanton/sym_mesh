@@ -39,10 +39,9 @@ class GeometryTable:
         self._dag_path = mesh_dag_path
         self._points_table = get_points_positions(self.dag_path, space=space)
 
-        # TODO : update symmetry table to ONLY be the symmetry map, and extract
-        #  non_mirrored_vertices to its own property
         # TODO : non_mirrored_vertices should be a VertexSelection object
         self._symmetry_table = None
+        self._non_mirrored_vertices = None
 
         self.threshold = threshold
         self.build_symmetry_table()
@@ -57,6 +56,10 @@ class GeometryTable:
     @property
     def symmetry_table(self):
         return self._symmetry_table
+
+    @property
+    def non_mirrored_vertices(self):
+        return self._non_mirrored_vertices
 
     @property
     def axis(self):
@@ -142,7 +145,8 @@ class GeometryTable:
         else:
             log.info("Model %s is symmetrical.", path)
 
-        self._symmetry_table = symmetry_map, non_mirrored_table
+        self._symmetry_table = symmetry_map
+        self._non_mirrored_vertices = non_mirrored_table
 
     def _build_symmetry_map(self, points_table):
         """Build the symmetry map as a dict {target: source}.

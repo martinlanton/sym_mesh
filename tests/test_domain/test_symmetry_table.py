@@ -15,8 +15,8 @@ class TestSymmetryTable(common.BaseTest):
 
         expected_sym_table = {1: 0, 3: 2, 5: 4, 7: 6}
         expected_non_mirrored_vertices_indices = []
-        expected = (expected_sym_table, expected_non_mirrored_vertices_indices)
-        self.assertEqual(geo_table.symmetry_table, expected)
+        self.assertEqual(geo_table.symmetry_table, expected_sym_table)
+        self.assertEqual(geo_table.non_mirrored_vertices, expected_non_mirrored_vertices_indices)
 
     def test_symmetry_table_for_x_symmetrical_geometry_negative(self):
         """Test that building a symmetry table for a symmetrical geometry produces the right
@@ -25,8 +25,8 @@ class TestSymmetryTable(common.BaseTest):
 
         expected_sym_table = {0: 1, 2: 3, 4: 5, 6: 7}
         expected_non_mirrored_vertices_indices = []
-        expected = (expected_sym_table, expected_non_mirrored_vertices_indices)
-        self.assertEqual(geo_table.symmetry_table, expected)
+        self.assertEqual(geo_table.symmetry_table, expected_sym_table)
+        self.assertEqual(geo_table.non_mirrored_vertices, expected_non_mirrored_vertices_indices)
 
     def test_symmetry_table_for_y_symmetrical_geometry_positive(self):
         """Test that building a symmetry table for a symmetrical geometry produces the right
@@ -35,8 +35,8 @@ class TestSymmetryTable(common.BaseTest):
 
         expected_sym_table = {2: 0, 3: 1, 4: 6, 5: 7}
         expected_non_mirrored_vertices_indices = []
-        expected = (expected_sym_table, expected_non_mirrored_vertices_indices)
-        self.assertEqual(geo_table.symmetry_table, expected)
+        self.assertEqual(geo_table.symmetry_table, expected_sym_table)
+        self.assertEqual(geo_table.non_mirrored_vertices, expected_non_mirrored_vertices_indices)
 
     def test_symmetry_table_for_asymmetrical_geometry(self):
         """Test that building a symmetry table for an asymmetrical geometry produces the right
@@ -45,8 +45,8 @@ class TestSymmetryTable(common.BaseTest):
 
         expected_sym_table = {1: 2, 7: 4}
         expected_non_mirrored_vertices_indices = [0, 3, 5, 6]
-        expected = (expected_sym_table, expected_non_mirrored_vertices_indices)
-        self.assertEqual(geo_table.symmetry_table, expected)
+        self.assertEqual(geo_table.symmetry_table, expected_sym_table)
+        self.assertEqual(geo_table.non_mirrored_vertices, expected_non_mirrored_vertices_indices)
 
     def test_symmetry_table_from_different_geometry(self):
         """Test that building a symmetry table for a specific geometry from a different geometry
@@ -56,8 +56,8 @@ class TestSymmetryTable(common.BaseTest):
 
         expected_sym_table = {1: 0, 3: 2, 5: 4, 7: 6}
         expected_non_mirrored_vertices_indices = []
-        expected = (expected_sym_table, expected_non_mirrored_vertices_indices)
-        self.assertEqual(geo_table.symmetry_table, expected)
+        self.assertEqual(geo_table.symmetry_table, expected_sym_table)
+        self.assertEqual(geo_table.non_mirrored_vertices, expected_non_mirrored_vertices_indices)
 
     # def test_timing_symmetry_table(self):
     #     import time

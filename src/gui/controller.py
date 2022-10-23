@@ -193,7 +193,7 @@ class Controller(object):
     def select_non_mirrored_vertices(self):
         # TODO : move this to the VertexSelection
         dag_path = self.base_table.dag_path
-        non_mirrored_vertices = self.base_table.symmetry_table[1]
+        non_mirrored_vertices = self.base_table.non_mirrored_vertices
 
         if len(non_mirrored_vertices) == 0:
             log.info("Model is symmetrical, no vertices to select")
