@@ -82,6 +82,9 @@ class Controller(object):
     def select_stored_vertices(self):
         self.vertex_selection.select()
 
+    def select_non_mirrored_vertices(self):
+        self.base_table.non_mirrored_vertices.select()
+
     def symmetrize(self):
         target = mc.ls(sl=True)[0]
         if not target:
@@ -189,22 +192,6 @@ class Controller(object):
                 percentage=self._percentage,
                 target_dag_path=target_path,
             )
-
-    def select_non_mirrored_vertices(self):
-        # TODO : move this to the VertexSelection
-        dag_path = self.base_table.dag_path
-        non_mirrored_vertices = self.base_table.non_mirrored_vertices
-
-        if len(non_mirrored_vertices) == 0:
-            log.info("Model is symmetrical, no vertices to select")
-        else:
-            vtcs_to_select = om2.MSelectionList()
-            MItVtx = om2.MItMeshVertex(dag_path)
-            while not MItVtx.isDone():
-                if MItVtx.index() in non_mirrored_vertices:
-                    vtcs_to_select.add((dag_path, MItVtx.currentItem()))
-                MItVtx.next()
-            om2.MGlobal.setActiveSelectionList(vtcs_to_select)
 
     def undo(self):
         self.mesh_modifier.undo()

@@ -35,7 +35,7 @@ class VertexSelection(object):
         self.indices = om2.MIntArray()
 
         if from_list is not None:
-            self.get_selection_from_list()
+            self.get_selection_from_list(from_list)
         else:
             self.get_live_selection()
 
@@ -43,6 +43,9 @@ class VertexSelection(object):
         return "Vertex selection : path : {}, indices : {}".format(
             self.dag_path, self.indices
         )
+
+    def __bool__(self):
+        return bool(len(self.indices))
 
     def get_live_selection(self):
         """
@@ -96,6 +99,9 @@ class VertexSelection(object):
         if not from_list:
             self.dag_path = om2.MDagPath()
             self.indices = om2.MIntArray()
+        else:
+            self.dag_path = from_list[0]
+            self.indices = om2.MIntArray(from_list[1])
 
     def select(self):
         if len(self.indices) == 0:
