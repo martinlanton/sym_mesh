@@ -44,9 +44,6 @@ class VertexSelection(object):
             self.dag_path, self.indices
         )
 
-    def __bool__(self):
-        return bool(len(self.indices))
-
     def get_live_selection(self):
         """
         Get the indices of the selected vertices.
