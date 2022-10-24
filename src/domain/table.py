@@ -2,7 +2,7 @@ import logging
 from maya.api import OpenMaya as om2
 
 from domain import dag_path
-from domain.selection import get_points_positions
+from domain import selection
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
@@ -37,7 +37,7 @@ class GeometryTable:
         self._space = space
 
         self._dag_path = mesh_dag_path
-        self._points_table = get_points_positions(self.dag_path, space=space)
+        self._points_table = selection.get_points_positions(self.dag_path, space=space)
 
         # TODO : non_mirrored_vertices should be a VertexSelection object
         self._symmetry_table = None
@@ -128,7 +128,7 @@ class GeometryTable:
 
         """
         points_table = (
-            get_points_positions(dag_path.create_MDagPath(base_mesh), self.space)
+            selection.get_points_positions(dag_path.create_MDagPath(base_mesh), self.space)
             if base_mesh
             else self._points_table
         )
