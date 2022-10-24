@@ -13,15 +13,15 @@ This is a Maya project for mesh modification, including unittest setup
 ## Installation
 To install this package for your local maya, you can use the following command in a `TERMINAL` in **_ADMINISTRATOR MODE_**: 
 ```commandline
-mayapy -m pip install {package location}
+mayapy -m pip install {package location} -r {package location}/requirements.txt
 ```
 Where {package location} represents the location you downloaded the package, for example :
 ```commandline
-mayapy -m pip install D:/python/sym-mesh
+mayapy -m pip install D:/python/sym-mesh -r D:/python/sym-mesh/requirements.txt
 ```
 If you have more than one maya version installed, you will need to replace `mayapy` with the full path to your `mayapy` executable file, like so : 
 ```commandline
-"C:\Program Files\Autodesk\Maya2022\bin\mayapy.exe" -m pip install D:/python/sym-mesh
+"C:\Program Files\Autodesk\Maya2022\bin\mayapy.exe" -m pip install D:/python/sym-mesh -r D:/python/sym-mesh/requirements.txt
 ```
 Note that you will have to put the path in quotation marks if there are any blank spaces in it as Windows can't handle those.
 
