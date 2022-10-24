@@ -6,10 +6,6 @@
 * set percentage from gui
 * create `revert to base` from stored target
 * implement non-symmetrical vertices selection
-* in extract axes : add duplicated meshes as blendshape on the last duplicated one
-* in extract axes : translate the last duplicated mesh from the position of the base (ideally, incrementally when using it in a loop, so that every subsequent mesh is easily identifiable)
-* in extract axes : add option to remove the targets
-* in extract axes : add option to reassign the default lambert
 
 # Maya sym mesh
 This is a Maya project for mesh modification, including unittest setup
