@@ -11,7 +11,7 @@
 This is a Maya project for mesh modification, including unittest setup
 
 ## Installation
-To install this package for your local maya, you can use the following command in a `TERMINAL`: 
+To install this package for your local maya, you can use the following command in a `TERMINAL` in **_ADMINISTRATOR MODE_**: 
 ```commandline
 mayapy -m pip install {package location}
 ```
