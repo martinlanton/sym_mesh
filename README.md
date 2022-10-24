@@ -2,10 +2,10 @@
 
 * build `symmetry table` (local space vertices position)
 * build `symmetry table` (topology)
-* pass stored vertex selection to commands (to work only on selection)
 * set percentage from gui
 * create `revert to base` from stored target
 * implement non-symmetrical vertices selection
+* add shortcuts for undo and redo
 
 # Maya sym mesh
 This is a Maya project for mesh modification, including unittest setup
