@@ -9,7 +9,14 @@ log.setLevel(logging.DEBUG)
 
 
 class GeometryTable:
-    def __init__(self, mesh_dag_path, axis="x", threshold=0.001, direction="positive", space=om2.MSpace.kObject):
+    def __init__(
+        self,
+        mesh_dag_path,
+        axis="x",
+        threshold=0.001,
+        direction="positive",
+        space=om2.MSpace.kObject,
+    ):
         """Initialize the symmetry table using the specified mesh.
 
         :param mesh_dag_path: name of the maya mesh to use to build the symmetry table.
@@ -132,7 +139,9 @@ class GeometryTable:
 
         """
         points_table = (
-            selection.get_points_positions(dag_path.create_MDagPath(base_mesh), self.space)
+            selection.get_points_positions(
+                dag_path.create_MDagPath(base_mesh), self.space
+            )
             if base_mesh
             else self._points_table
         )
@@ -150,7 +159,9 @@ class GeometryTable:
             log.info("Model %s is symmetrical.", path)
 
         self._symmetry_table = symmetry_map
-        self._non_mirrored_vertices = selection.VertexSelection((self.dag_path, non_mirrored_table))
+        self._non_mirrored_vertices = selection.VertexSelection(
+            (self.dag_path, non_mirrored_table)
+        )
 
     def _build_symmetry_map(self, points_table):
         """Build the symmetry map as a dict {target: source}.
