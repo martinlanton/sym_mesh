@@ -14,7 +14,7 @@ class BaseGUITest(common.BaseTest):
     def setUp(self):
         super(BaseGUITest, self).setUp()
         self.dialog = QtWidgets.QDialog()
-        self.connector = startup.Connector(self.dialog)
+        self.connector = startup.ConnectionWidget(self.dialog)
         self.gui = self.connector.gui
         self.dialog.show()
 

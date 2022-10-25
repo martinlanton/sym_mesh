@@ -3,12 +3,14 @@ from functools import partial
 from gui import controller
 from gui import SymMesh_ui
 from gui.dockable_dialog import DockableDialog
+from Qt import QtWidgets
 
 
-class Connector(object):
+class ConnectionWidget(QtWidgets.QWidget):
     def __init__(self, parent=None):
+        super(ConnectionWidget, self).__init__(parent)
         self.ctrl = controller.Controller()
-        self.gui = SymMesh_ui.Layout(parent)
+        self.gui = SymMesh_ui.Layout(self)
 
         self.gui.get_base_pb.clicked.connect(self.ctrl.get_base)
         self.gui.get_target_pb.clicked.connect(self.ctrl.get_target)
@@ -41,7 +43,11 @@ class Connector(object):
         )
         self.ctrl.set_target.connect(set_target_line_edit)
 
+        self.undo_action = QtWidgets.QAction("undo", self)
+        self.undo_action.setShortcut("Ctrl+Z")
+        self.undo_action.triggered.connect(self.ctrl.undo)
+
 
 def startup():  # pragma: no cover
-    dialog = DockableDialog.instance(Connector)  # pragma: no cover
+    dialog = DockableDialog.instance(ConnectionWidget)  # pragma: no cover
     dialog.show(dockable=True)  # pragma: no cover
