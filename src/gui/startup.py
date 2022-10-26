@@ -3,6 +3,7 @@ from functools import partial
 from gui import controller
 from gui import SymMesh_ui
 from gui.dockable_dialog import DockableDialog
+from Qt import QtWidgets, QtCore
 
 
 class Connector(object):
@@ -40,6 +41,19 @@ class Connector(object):
             self.gui.set_line_edit, self.gui.target_line_edit
         )
         self.ctrl.set_target.connect(set_target_line_edit)
+
+        # self.undo_action = QtWidgets.QAction("undo", self)
+        # self.undo_action.setShortcut("Ctrl+Z")
+        # self.undo_action.triggered.connect(self.ctrl.undo)
+
+    def keyPressEvent(self, event):
+        if QtCore.Qt.Key_A <= event.key() <= QtCore.Qt.Key_Z:
+            if event.modifiers() & QtCore.Qt.ControlModifier:
+                self.ctrl.undo()
+            elif event.modifiers() & QtCore.Qt.ControlModifier & QtCore.Qt.ShiftModifier:
+                self.ctrl.redo()
+        else:
+            QtWidgets.QWidget.keyPressEvent(self, event)
 
 
 def startup():  # pragma: no cover
