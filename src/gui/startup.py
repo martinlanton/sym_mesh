@@ -7,6 +7,8 @@ from gui.dockable_dialog import DockableDialog
 
 class Connector(object):
     def __init__(self, parent=None):
+        # TODO : try placing all the stuff from SymMesh_ui.Layout into this class
+        #  directly, and turn it into a Widget
         self.ctrl = controller.Controller()
         self.gui = SymMesh_ui.Layout(parent)
 

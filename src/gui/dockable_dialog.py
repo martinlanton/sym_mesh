@@ -9,7 +9,7 @@ class DockableDialog(dockable, QtWidgets.QDialog):
     def __init__(self, connector, parent=None):
         """
 
-        :param connector:
+        :param connector: Class in charge of connecting the functionality of the layout to the controller.
         :type connector: gui.startup.Connector
 
         :param parent:
