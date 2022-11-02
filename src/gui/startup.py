@@ -1,16 +1,16 @@
 from functools import partial
 
 from gui import controller
-from gui import SymMesh_ui
+from gui.SymMesh_ui import Layout
 from gui.dockable_dialog import DockableDialog
-from Qt import QtWidgets
+from Qt import QtWidgets, QtCore
 
 
 class ConnectionWidget(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(ConnectionWidget, self).__init__(parent)
         self.ctrl = controller.Controller()
-        self.gui = SymMesh_ui.Layout(self)
+        self.gui = Layout(self)
 
         self.gui.get_base_pb.clicked.connect(self.ctrl.get_base)
         self.gui.get_target_pb.clicked.connect(self.ctrl.get_target)
@@ -43,9 +43,24 @@ class ConnectionWidget(QtWidgets.QWidget):
         )
         self.ctrl.set_target.connect(set_target_line_edit)
 
-        self.undo_action = QtWidgets.QAction("undo", self)
-        self.undo_action.setShortcut("Ctrl+Z")
-        self.undo_action.triggered.connect(self.ctrl.undo)
+    def keyPressEvent(self, event):
+        """Overriding this method is necessary to force the key event to be accepted.
+
+        """
+        if event.key() == QtCore.Qt.Key_Z and event.modifiers() == QtCore.Qt.ControlModifier:
+            self.ctrl.undo()
+            return event.accept()
+
+        return super(ConnectionWidget, self).keyPressEvent(event)
+
+    def mousePressEvent(self, event):
+        """Overriding this method is necessary to force the focus on the widget when clicking it.
+
+        Without the widget focused, then Maya takes the priority for all key press events
+
+        """
+        super(ConnectionWidget, self).mousePressEvent(event)
+        self.setFocus()
 
 
 def startup():  # pragma: no cover
