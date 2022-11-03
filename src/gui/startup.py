@@ -1,16 +1,18 @@
 from functools import partial
 
 from gui import controller
-from gui import SymMesh_ui
+from gui.SymMesh_ui import Layout
 from gui.dockable_dialog import DockableDialog
+from Qt import QtWidgets, QtCore
 
 
-class Connector(object):
+class ConnectionWidget(QtWidgets.QGroupBox):
+    """Group box that can be parented to a dialog to open it in Maya or other DCCs."""
     def __init__(self, parent=None):
-        # TODO : try placing all the stuff from SymMesh_ui.Layout into this class
-        #  directly, and turn it into a Widget
+        super(ConnectionWidget, self).__init__(parent)
+
         self.ctrl = controller.Controller()
-        self.gui = SymMesh_ui.Layout(parent)
+        self.gui = Layout(self)
 
         self.gui.get_base_pb.clicked.connect(self.ctrl.get_base)
         self.gui.get_target_pb.clicked.connect(self.ctrl.get_target)
@@ -43,7 +45,32 @@ class Connector(object):
         )
         self.ctrl.set_target.connect(set_target_line_edit)
 
+    def keyPressEvent(self, event):
+        """Overriding this method is necessary to force the key event to be accepted.
+
+        This is necessary to set up shortcuts.
+
+        """
+        if event.key() == QtCore.Qt.Key_Z:
+            if event.modifiers() == QtCore.Qt.ShiftModifier | QtCore.Qt.ControlModifier:
+                self.ctrl.redo()
+                return event.accept()
+            elif event.modifiers() & QtCore.Qt.ControlModifier:
+                self.ctrl.undo()
+                return event.accept()
+
+        return super(ConnectionWidget, self).keyPressEvent(event)
+
+    def mousePressEvent(self, event):
+        """Overriding this method is necessary to force the focus on the widget when clicking it.
+
+        Without the widget focused, then Maya takes the priority for all key press events
+
+        """
+        super(ConnectionWidget, self).mousePressEvent(event)
+        self.setFocus()
+
 
 def startup():  # pragma: no cover
-    dialog = DockableDialog.instance(Connector)  # pragma: no cover
+    dialog = DockableDialog.instance(ConnectionWidget)  # pragma: no cover
     dialog.show(dockable=True)  # pragma: no cover
