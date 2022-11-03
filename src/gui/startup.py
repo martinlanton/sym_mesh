@@ -6,7 +6,7 @@ from gui.dockable_dialog import DockableDialog
 from Qt import QtWidgets, QtCore
 
 
-class ConnectionWidget(QtWidgets.QWidget):
+class ConnectionWidget(QtWidgets.QGroupBox):
     def __init__(self, parent=None):
         super(ConnectionWidget, self).__init__(parent)
         self.ctrl = controller.Controller()
@@ -47,9 +47,13 @@ class ConnectionWidget(QtWidgets.QWidget):
         """Overriding this method is necessary to force the key event to be accepted.
 
         """
-        if event.key() == QtCore.Qt.Key_Z and event.modifiers() == QtCore.Qt.ControlModifier:
-            self.ctrl.undo()
-            return event.accept()
+        if event.key() == QtCore.Qt.Key_Z:
+            if event.modifiers() == QtCore.Qt.ShiftModifier | QtCore.Qt.ControlModifier:
+                self.ctrl.redo()
+                return event.accept()
+            elif event.modifiers() & QtCore.Qt.ControlModifier:
+                self.ctrl.undo()
+                return event.accept()
 
         return super(ConnectionWidget, self).keyPressEvent(event)
 

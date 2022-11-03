@@ -15,10 +15,11 @@ class DockableDialog(dockable, QtWidgets.QDialog):
         :param parent:
         """
         super(DockableDialog, self).__init__(parent=parent)  # pragma: no cover
-        # TODO : fix problem with dialog not resizing to the ConnectionWidget's size
         self.connector = connector(self)  # pragma: no cover
 
         self.setWindowTitle("Sym Mesh")  # pragma: no cover
+        self.layout = QtWidgets.QVBoxLayout(self)
+        self.layout.addWidget(self.connector)
 
     @classmethod
     def instance(cls, connector, parent=None):
