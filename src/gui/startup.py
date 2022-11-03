@@ -7,6 +7,7 @@ from Qt import QtWidgets, QtCore
 
 
 class ConnectionWidget(QtWidgets.QGroupBox):
+    """Group box that can be parented to a dialog to open it in Maya or other DCCs."""
     def __init__(self, parent=None):
         super(ConnectionWidget, self).__init__(parent)
         self.ctrl = controller.Controller()
@@ -45,6 +46,8 @@ class ConnectionWidget(QtWidgets.QGroupBox):
 
     def keyPressEvent(self, event):
         """Overriding this method is necessary to force the key event to be accepted.
+
+        This is necessary to set up shortcuts.
 
         """
         if event.key() == QtCore.Qt.Key_Z:
