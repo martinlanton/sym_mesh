@@ -14,7 +14,7 @@ class DockableDialog(dockable, QtWidgets.QDialog):
         we can parent the contained widget to it. Parenting the contained widget
         without a layout does work BUT prevents the resizing of the dialog and
         the widget in relation to each other. As a consequence the dialog just
-        opens extremely small and its content does not resize when the dialog is
+        opens tiny and its content does not resize when the dialog is
         resized.
 
         :param connector:
