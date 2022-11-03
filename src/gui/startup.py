@@ -8,6 +8,7 @@ from Qt import QtWidgets, QtCore
 
 class ConnectionWidget(QtWidgets.QGroupBox):
     """Group box that can be parented to a dialog to open it in Maya or other DCCs."""
+
     def __init__(self, parent=None):
         super(ConnectionWidget, self).__init__(parent)
 

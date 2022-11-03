@@ -22,15 +22,15 @@ class DockableDialog(dockable, QtWidgets.QDialog):
 
         :param parent:
         """
-        super(DockableDialog, self).__init__(parent=parent)     # pragma: no cover
-        self.connector = connector(self)                        # pragma: no cover
+        super(DockableDialog, self).__init__(parent=parent)  # pragma: no cover
+        self.connector = connector(self)  # pragma: no cover
 
-        self.setWindowTitle("Sym Mesh")                         # pragma: no cover
-        self.layout = QtWidgets.QVBoxLayout(self)               # pragma: no cover
-        self.layout.addWidget(self.connector)                   # pragma: no cover
+        self.setWindowTitle("Sym Mesh")  # pragma: no cover
+        self.layout = QtWidgets.QVBoxLayout(self)  # pragma: no cover
+        self.layout.addWidget(self.connector)  # pragma: no cover
 
     @classmethod
     def instance(cls, connector, parent=None):
-        if not cls._instance:                                   # pragma: no cover
-            cls._instance = DockableDialog(connector, parent)   # pragma: no cover
-        return cls._instance                                    # pragma: no cover
+        if not cls._instance:  # pragma: no cover
+            cls._instance = DockableDialog(connector, parent)  # pragma: no cover
+        return cls._instance  # pragma: no cover
