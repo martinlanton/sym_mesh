@@ -77,8 +77,6 @@ class Layout(QtWidgets.QVBoxLayout):
         self.extract_axes_pb.setObjectName("extract_axes_pB")
         self.addWidget(self.extract_axes_pb)
 
-        # TODO : implement hotkey for undo/redo
-
         # # Revert value
         # self.horizontalLayout = QtWidgets.QHBoxLayout()
         # self.horizontalLayout.setObjectName("horizontalLayout")
