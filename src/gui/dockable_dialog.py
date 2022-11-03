@@ -17,7 +17,7 @@ class DockableDialog(dockable, QtWidgets.QDialog):
         opens tiny and its content does not resize when the dialog is
         resized.
 
-        :param connector:
+        :param connector: Class in charge of connecting the functionality of the layout to the controller.
         :type connector: gui.startup.ConnectionWidget
 
         :param parent:

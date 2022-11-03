@@ -1,4 +1,3 @@
-import maya.api.OpenMaya as om2
 from maya import cmds as mc
 import logging
 

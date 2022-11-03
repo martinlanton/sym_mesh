@@ -4,7 +4,9 @@ from maya import cmds as mc
 def get_shading_group_from_shader(shader):
     shading_group = ""
     if mc.objExists(shader):
-        shading_groups = mc.listConnections(shader, destination=True, exactType=True, type='shadingEngine')
+        shading_groups = mc.listConnections(
+            shader, destination=True, exactType=True, type="shadingEngine"
+        )
         if shading_groups:
             try:
                 shading_groups.remove("initialParticleSE")

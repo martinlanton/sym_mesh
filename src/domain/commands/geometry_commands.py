@@ -142,5 +142,5 @@ class ExtractAxesCommand(object):
         # in __init__ and redo methods
         mc.delete(self.meshes[:-1])
         mc.xform(self.meshes[-1], relative=True, translation=[0, 20, 0])
-        shading.assign_shader(self.meshes[-1], 'lambert1')
+        shading.assign_shader(self.meshes[-1], "lambert1")
         return self.meshes[-1], blendshape

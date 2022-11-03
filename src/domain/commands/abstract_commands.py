@@ -53,7 +53,9 @@ class AbstractDeformationCommand(object):
         self.percentage = percentage
         self.target_dag_path = target_dag_path
         self.space = base_table.space
-        self.current_point_array = selection.get_points_positions(target_dag_path, base_table.space)
+        self.current_point_array = selection.get_points_positions(
+            target_dag_path, base_table.space
+        )
         self.undo_action = self.current_point_array
         self.result = self.deform()
         self.redo_action = self.result
