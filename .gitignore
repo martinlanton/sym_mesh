@@ -5,3 +5,5 @@
 *.coverage
 cov_html/
 venv
+build/
+*.egg-info
