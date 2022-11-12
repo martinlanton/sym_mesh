@@ -141,6 +141,13 @@ class ExtractAxesCommand(object):
         # Move the mesh 20 units in Y, placing this here to avoid doing it both
         # in __init__ and redo methods
         mc.delete(self.meshes[:-1])
-        mc.xform(self.meshes[-1], relative=True, translation=[0, 20, 0])
+        position = mc.xform(
+            self.target_table.dag_path.fullPathName(),
+            query=True,
+            worldSpace=True,
+            translation=True,
+        )
+        new_position = [position[0], position[1] + 20, position[2]]
+        mc.xform(self.meshes[-1], relative=True, translation=new_position)
         shading.assign_shader(self.meshes[-1], "lambert1")
         return self.meshes[-1], blendshape
