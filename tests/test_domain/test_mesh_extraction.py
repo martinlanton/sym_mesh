@@ -85,7 +85,7 @@ class TestExtractAxes(common.BaseTest):
             )
             for axis in ["x", "y", "z"]
         ]
-        expected_pos = [0, 20, 0]
+        expected_pos = [10, 30, 10]
         pos = mc.xform(extracted_mesh, query=True, translation=True)
 
         self.assertEqual(expected_x, x)

@@ -44,6 +44,7 @@ class BaseTest(unittest.TestCase):
         self.test_extract_axes_cube = mc.polyCube(
             name="axes_cube", constructionHistory=False
         )[0]
+        mc.xform(self.test_extract_axes_cube, relative=True, translation=[10, 10, 10])
         for vtx in range(8):
             vtx_name = "{}.vtx[{}]".format(self.test_extract_axes_cube, vtx)
             mc.xform(vtx_name, relative=True, translation=[1, 1, 1])
