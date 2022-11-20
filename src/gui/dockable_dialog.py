@@ -18,7 +18,7 @@ class DockableDialog(dockable, QtWidgets.QDialog):
         resized.
 
         :param connector: Class in charge of connecting the functionality of the layout to the controller.
-        :type connector: gui.startup.ConnectionWidget
+        :type connector: gui.connection_widget.ConnectionWidget
 
         :param parent:
         """

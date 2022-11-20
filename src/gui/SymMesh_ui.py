@@ -17,6 +17,22 @@ class Layout(QtWidgets.QVBoxLayout):
         self.vertices_are_stored = False
 
     def buildUI(self):
+        # Direction
+        direction_layout = QtWidgets.QHBoxLayout()
+        self.addLayout(direction_layout)
+
+        self.direction_rb_group = QtWidgets.QButtonGroup()
+
+        self.negative_rb = QtWidgets.QRadioButton("Negative: - <= +")
+        direction_layout.addWidget(self.negative_rb)
+        self.direction_rb_group.addButton(self.negative_rb)
+
+        self.positive_rb = QtWidgets.QRadioButton("Positive: - => +")
+        direction_layout.addWidget(self.positive_rb)
+        self.direction_rb_group.addButton(self.positive_rb)
+        self.positive_rb.setChecked(True)
+
+        # Get base
         self.get_base_pb = QtWidgets.QPushButton("Get Base")
         self.get_base_pb.setObjectName("get_base_pB")
         self.addWidget(self.get_base_pb)
