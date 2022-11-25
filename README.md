@@ -4,9 +4,6 @@
 * build `symmetry table` (topology)
 * set percentage from gui
 * create `revert to base` from stored target
-* implement non-symmetrical vertices selection
-* add shortcuts for undo and redo
-* add axes and direction for geometry tables to GUI
 
 # Maya sym mesh
 This is a Maya project for mesh modification, including unittest setup

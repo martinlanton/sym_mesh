@@ -25,6 +25,7 @@ class Controller(object):
         self.vertices_are_stored = False
         self._percentage = 100
         self._direction = "positive"
+        self._axis = "x"
         self.base_table: domain.table.GeometryTable = None
         self.target_table: domain.table.GeometryTable = None
 
@@ -43,8 +44,14 @@ class Controller(object):
         """
         self._percentage = value
 
-    def get_direction(self, direction):
-        log.info("Changing direction to : %s", direction)
+    def set_axis(self, axis):
+        # TODO : setting this should trigger a recalculation of the base and target geometry tables
+        log.info("Setting axis to : %s", axis)
+        self._axis = axis
+
+    def set_direction(self, direction):
+        # TODO : setting this should trigger a recalculation of the base and target geometry tables
+        log.info("Setting direction to : %s", direction)
         self._direction = direction
 
     def get_base(self):
@@ -53,7 +60,9 @@ class Controller(object):
         :return:
         """
         mesh = mc.ls(sl=True)[0]
-        self.base_table = table.GeometryTable(mesh, direction=self._direction)
+        self.base_table = table.GeometryTable(
+            mesh, axis=self._axis, direction=self._direction
+        )
         self.set_base.emit(mesh)
 
     def get_target(self):
@@ -62,7 +71,9 @@ class Controller(object):
         :return:
         """
         mesh = mc.ls(sl=True)[0]
-        self.target_table = table.GeometryTable(mesh, direction=self._direction)
+        self.target_table = table.GeometryTable(
+            mesh, axis=self._axis, direction=self._direction
+        )
         self.set_target.emit(mesh)
 
     def get_vertex_selection(self, reset=False):
@@ -101,7 +112,9 @@ class Controller(object):
         vertex_selection = (
             self.vertex_selection if self.vertices_are_stored else VertexSelection()
         )
-        target_table = table.GeometryTable(target, direction=self._direction)
+        target_table = table.GeometryTable(
+            target, axis=self._axis, direction=self._direction
+        )
         self.mesh_modifier.symmetrize(
             base_table,
             target_table,
@@ -121,7 +134,9 @@ class Controller(object):
         vertex_selection = (
             self.vertex_selection if self.vertices_are_stored else VertexSelection()
         )
-        target_table = table.GeometryTable(target, direction=self._direction)
+        target_table = table.GeometryTable(
+            target, axis=self._axis, direction=self._direction
+        )
         self.mesh_modifier.flip(
             base_table,
             target_table,
@@ -138,7 +153,9 @@ class Controller(object):
         if not base_table:
             log.error("Unable to extract axes, no base defined.")
             return
-        target_table = table.GeometryTable(target, direction=self._direction)
+        target_table = table.GeometryTable(
+            target, axis=self._axis, direction=self._direction
+        )
         self.mesh_modifier.extract_axes(
             base_table, target_table,
         )
@@ -158,7 +175,9 @@ class Controller(object):
         if not base_table:
             log.error("Unable to revert to base, no base defined.")
             return
-        target_table = table.GeometryTable(target, direction=self._direction)
+        target_table = table.GeometryTable(
+            target, axis=self._axis, direction=self._direction
+        )
         vertex_selection = (
             self.vertex_selection if self.vertices_are_stored else VertexSelection()
         )

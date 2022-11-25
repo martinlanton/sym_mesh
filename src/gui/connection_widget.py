@@ -14,7 +14,8 @@ class ConnectionWidget(QtWidgets.QGroupBox):
         self.ctrl = controller.Controller()
         self.gui = Layout(self)
 
-        self.gui.direction_rb_group.buttonReleased.connect(self.get_direction)
+        self.gui.direction_rb_group.buttonReleased.connect(self.set_direction)
+        self.gui.axis_rb_group.buttonReleased.connect(self.set_axis)
 
         self.gui.get_base_pb.clicked.connect(self.ctrl.get_base)
         self.gui.get_target_pb.clicked.connect(self.ctrl.get_target)
@@ -72,7 +73,12 @@ class ConnectionWidget(QtWidgets.QGroupBox):
         super(ConnectionWidget, self).mousePressEvent(event)
         self.setFocus()
 
-    def get_direction(self):
+    def set_axis(self):
+        button_text = self.gui.axis_rb_group.checkedButton().text()
+        axis = button_text.split(":")[0].lower()
+        self.ctrl.set_axis(axis)
+
+    def set_direction(self):
         button_text = self.gui.direction_rb_group.checkedButton().text()
         direction = button_text.split(":")[0].lower()
-        self.ctrl.get_direction(direction)
+        self.ctrl.set_direction(direction)
