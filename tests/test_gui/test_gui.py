@@ -634,27 +634,27 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_sym_position, result)
 
-    # def test_redo_shortcut(self):
-    #     mc.select(self.sym_cube)
-    #     QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-    #     QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-    #
-    #     mc.select(self.asym_cube)
-    #     QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-    #     QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-    #
-    #     QtTest.QTest.keyClicks(self.connector, "z", QtCore.Qt.ControlModifier)
-    #
-    #     QtTest.QTest.keyClicks(
-    #         self.connector, "z", QtCore.Qt.ControlModifier, QtCore.Qt.ShiftModifier
-    #     )
-    #
-    #     result = [
-    #         mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
-    #         for vtx in range(self.vtx_number)
-    #     ]
-    #
-    #     self.assertEqual(self.expected_sym_position, result)
+    def test_redo_shortcut(self):
+        mc.select(self.sym_cube)
+        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+
+        mc.select(self.asym_cube)
+        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+
+        QtTest.QTest.keyClicks(self.connector, "z", QtCore.Qt.ControlModifier)
+
+        QtTest.QTest.keyClicks(
+            self.connector, "z", QtCore.Qt.ControlModifier | QtCore.Qt.ShiftModifier
+        )
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+
+        self.assertEqual(self.expected_sym_position, result)
 
 
 if __name__ == "__main__":
