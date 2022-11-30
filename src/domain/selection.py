@@ -40,7 +40,7 @@ class VertexSelection(object):
             self.get_live_selection()
 
     def __str__(self):
-        return "Vertex selection : path : {}, indices : {}".format(
+        return "Vertex selection : path : {}, indices : {}".format(  # pragma: no cover
             self.dag_path, self.indices
         )
 
