@@ -3,6 +3,7 @@
 * build `symmetry table` (local space vertices position)
 * build `symmetry table` (topology)
 * set percentage from gui
+* set symmetry detection threshold from gui
 * create `revert to base` from stored target
 
 # Maya sym mesh
