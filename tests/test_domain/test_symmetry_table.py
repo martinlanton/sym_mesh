@@ -70,6 +70,8 @@ class TestSymmetryTable(common.BaseTest):
             list(geo_table.non_mirrored_vertices.indices), expected_non_mirrored_vertices_indices
         )
 
+    # TODO : add tests for threshold for symmetry table creation
+
     # def test_timing_symmetry_table(self):
     #     import time
     #     from maya import cmds as mc
