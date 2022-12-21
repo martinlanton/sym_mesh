@@ -39,7 +39,7 @@ class GeometryTable:
         self._axis = axis
         self._axis_idcs = {"x": 0, "y": 1, "z": 2}
         self._direction = direction
-        self._threshold = 0.001
+        self._threshold = threshold
         self._threshold_nb = 3
         self._space = space
 
@@ -49,7 +49,6 @@ class GeometryTable:
         self._symmetry_table = None
         self._non_mirrored_vertices = selection.VertexSelection(from_list=())
 
-        self.threshold = threshold
         self.build_symmetry_table()
 
     def __str__(self):
