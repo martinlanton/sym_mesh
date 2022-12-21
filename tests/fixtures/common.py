@@ -37,17 +37,35 @@ class BaseTest(unittest.TestCase):
         mc.file(newFile=True, force=True)
         self.sym_cube = mc.polyCube(name="sym_cube", constructionHistory=False)[0]
         self.other_cube = mc.polyCube(name="other_cube", constructionHistory=False)[0]
-        self.asym_cube = mc.polyCube(name="asym_cube", constructionHistory=False)[0]
-        for vtx in [1, 3, 5, 7]:
-            vtx_name = "{}.vtx[{}]".format(self.asym_cube, vtx)
-            mc.xform(vtx_name, relative=True, translation=[0, 1, 0])
-        self.test_extract_axes_cube = mc.polyCube(
+        self.asym_cube = self.create_asym_cube()
+        self.test_extract_axes_cube = self.create_test_extract_cube()
+        self.asym_threshold_cube = self.create_threshold_cube()
+
+    def create_test_extract_cube(self):
+        test_extract_axes_cube = mc.polyCube(
             name="axes_cube", constructionHistory=False
         )[0]
-        mc.xform(self.test_extract_axes_cube, relative=True, translation=[10, 10, 10])
+        mc.xform(test_extract_axes_cube, relative=True, translation=[10, 10, 10])
         for vtx in range(8):
-            vtx_name = "{}.vtx[{}]".format(self.test_extract_axes_cube, vtx)
+            vtx_name = "{}.vtx[{}]".format(test_extract_axes_cube, vtx)
             mc.xform(vtx_name, relative=True, translation=[1, 1, 1])
+        return test_extract_axes_cube
+
+    def create_asym_cube(self):
+        asym_cube = mc.polyCube(name="asym_cube", constructionHistory=False)[0]
+        for vtx in [1, 3, 5, 7]:
+            vtx_name = "{}.vtx[{}]".format(asym_cube, vtx)
+            mc.xform(vtx_name, relative=True, translation=[0, 1, 0])
+        return asym_cube
+
+    def create_threshold_cube(self):
+        threshold_cube = mc.polyCube(
+            name="asym_threshold_cube", constructionHistory=False
+        )[0]
+        for vtx in [1, 3, 5, 7]:
+            vtx_name = "{}.vtx[{}]".format(threshold_cube, vtx)
+            mc.xform(vtx_name, relative=True, translation=[0, 0.1, 0])
+        return threshold_cube
 
     def get_blendshape_target_vertices_positions(self, axis, blendshape, mesh):
         """Get the vertices positions for the specified blendshape target.

@@ -14,7 +14,7 @@ python_requires = ">=3.6, <4"
 
 setup(
     name=name,
-    version="0.4.0",
+    version="0.5.0",
     author=author,
     author_email=author_email,
     description=description,

@@ -1,4 +1,5 @@
 import logging
+import math
 from maya.api import OpenMaya as om2
 
 from domain import dag_path
@@ -39,8 +40,7 @@ class GeometryTable:
         self._axis = axis
         self._axis_idcs = {"x": 0, "y": 1, "z": 2}
         self._direction = direction
-        self._threshold = threshold
-        self._threshold_nb = 3
+        self.threshold = threshold
         self._space = space
 
         self._dag_path = mesh_dag_path
@@ -99,12 +99,7 @@ class GeometryTable:
 
     @threshold.setter
     def threshold(self, value):
-        # TODO : test symmetry table building with higher threshold
         self._threshold = value
-        if self._threshold > 1:
-            self._threshold_nb = -len(str(self._threshold).split(".")[0])
-        else:
-            self._threshold_nb = len(str(self._threshold).split(".")[1])
 
     @property
     def dag_path(self):
@@ -174,30 +169,17 @@ class GeometryTable:
         symmetry_map = dict()
         check_table = dict()
         for idx, item in enumerate(points_table):
-            position = self._round_vector(item)
+            position = (item[0], item[1], item[2])
             check_table[position] = idx
             position_to_check = self._get_opposite_position(position)
 
-            if position_to_check in check_table:
-                if self._vertex_should_be_symmetry_source(position, position_to_check):
-                    symmetry_map[check_table[position_to_check]] = idx
-                else:  # Vertex should be symmetry target
-                    symmetry_map[idx] = check_table[position_to_check]
+            for pos in check_table:
+                if self._distance(position_to_check, pos) < self.threshold:
+                    if self._vertex_should_be_symmetry_source(position, pos):
+                        symmetry_map[check_table[pos]] = idx
+                    else:  # Vertex should be symmetry target
+                        symmetry_map[idx] = check_table[pos]
         return symmetry_map
-
-    def _round_vector(self, vector):
-        """Return the rounded vector using the threshold value.
-
-        :param vector: 3D vector for which we want to round the values.
-
-        :return: Rounded 3D vector
-        :rtype: tuple(float, float, float)
-        """
-        return (
-            round(vector[0], self._threshold_nb),
-            round(vector[1], self._threshold_nb),
-            round(vector[2], self._threshold_nb),
-        )
 
     def _get_opposite_position(self, position):
         """Get the opposite position along the selected symmetry axis.
@@ -238,3 +220,24 @@ class GeometryTable:
             if idx not in list(symmetry_map.keys()) + list(symmetry_map.values()):
                 non_mirrored_table.append(idx)
         return non_mirrored_table
+
+    @staticmethod
+    def _distance(point_a, point_b):
+        """Calculate the distance between 2 points.
+
+        :param point_a: starting point
+        :type point_a: tuple(float, float, float)
+
+        :param point_b: point to subtract
+        :type point_b: tuple(float, float, float)
+
+        :return: distance between the 2 vectors
+        :rtype: float
+        """
+        vector = (
+            point_a[0] - point_b[0],
+            point_a[1] - point_b[1],
+            point_a[2] - point_b[2],
+        )
+        distance = math.sqrt(vector[0] ** 2 + vector[1] ** 2 + vector[2] ** 2)
+        return distance

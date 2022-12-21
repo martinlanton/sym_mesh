@@ -17,7 +17,8 @@ class TestSymmetryTable(common.BaseTest):
         expected_non_mirrored_vertices_indices = []
         self.assertEqual(geo_table.symmetry_table, expected_sym_table)
         self.assertEqual(
-            list(geo_table.non_mirrored_vertices.indices), expected_non_mirrored_vertices_indices
+            list(geo_table.non_mirrored_vertices.indices),
+            expected_non_mirrored_vertices_indices,
         )
 
     def test_symmetry_table_for_x_symmetrical_geometry_negative(self):
@@ -29,7 +30,8 @@ class TestSymmetryTable(common.BaseTest):
         expected_non_mirrored_vertices_indices = []
         self.assertEqual(geo_table.symmetry_table, expected_sym_table)
         self.assertEqual(
-            list(geo_table.non_mirrored_vertices.indices), expected_non_mirrored_vertices_indices
+            list(geo_table.non_mirrored_vertices.indices),
+            expected_non_mirrored_vertices_indices,
         )
 
     def test_symmetry_table_for_y_symmetrical_geometry_positive(self):
@@ -41,7 +43,8 @@ class TestSymmetryTable(common.BaseTest):
         expected_non_mirrored_vertices_indices = []
         self.assertEqual(geo_table.symmetry_table, expected_sym_table)
         self.assertEqual(
-            list(geo_table.non_mirrored_vertices.indices), expected_non_mirrored_vertices_indices
+            list(geo_table.non_mirrored_vertices.indices),
+            expected_non_mirrored_vertices_indices,
         )
 
     def test_symmetry_table_for_asymmetrical_geometry(self):
@@ -67,10 +70,25 @@ class TestSymmetryTable(common.BaseTest):
         expected_non_mirrored_vertices_indices = []
         self.assertEqual(geo_table.symmetry_table, expected_sym_table)
         self.assertEqual(
-            list(geo_table.non_mirrored_vertices.indices), expected_non_mirrored_vertices_indices
+            list(geo_table.non_mirrored_vertices.indices),
+            expected_non_mirrored_vertices_indices,
         )
 
     # TODO : add tests for threshold for symmetry table creation
+    def test_symmetry_table_threshold(self):
+        """Test that building a symmetry table for an asymmetrical geometry produces the right
+        symmetry table when a threshold is provided."""
+        geo_table = table.GeometryTable(
+            self.asym_threshold_cube, axis="x", threshold=0.2
+        )
+
+        expected_sym_table = {1: 0, 3: 2, 5: 4, 7: 6}
+        expected_non_mirrored_vertices_indices = []
+        self.assertEqual(geo_table.symmetry_table, expected_sym_table)
+        self.assertEqual(
+            list(geo_table.non_mirrored_vertices.indices),
+            expected_non_mirrored_vertices_indices,
+        )
 
     # def test_timing_symmetry_table(self):
     #     import time
