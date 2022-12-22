@@ -74,7 +74,6 @@ class TestSymmetryTable(common.BaseTest):
             expected_non_mirrored_vertices_indices,
         )
 
-    # TODO : add tests for threshold for symmetry table creation
     def test_symmetry_table_threshold(self):
         """Test that building a symmetry table for an asymmetrical geometry produces the right
         symmetry table when a threshold is provided."""
