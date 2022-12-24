@@ -17,6 +17,18 @@ class Layout(QtWidgets.QVBoxLayout):
         self.vertices_are_stored = False
 
     def buildUI(self):
+        # Threshold
+        threshold_layout = QtWidgets.QHBoxLayout()
+        self.addLayout(threshold_layout)
+
+        threshold_label = QtWidgets.QLabel("Threshold")
+        threshold_layout.addWidget(threshold_label)
+
+        self.threshold_sb = QtWidgets.QDoubleSpinBox()
+        self.threshold_sb.setDecimals(3)
+        self.threshold_sb.setValue(0.001)
+        threshold_layout.addWidget(self.threshold_sb)
+
         # Direction
         direction_layout = QtWidgets.QHBoxLayout()
         self.addLayout(direction_layout)

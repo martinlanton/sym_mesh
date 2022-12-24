@@ -162,6 +162,26 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(expected, result)
 
+    def test_symmetry_table_threshold(self):
+        """Test that building a symmetry table for an asymmetrical geometry produces the right
+        symmetry table when a threshold is provided."""
+        self.gui.threshold_sb.setValue(0.2)
+
+        mc.select(self.asym_threshold_cube)
+        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+
+        mc.select(self.asym_cube, replace=True)
+        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+
+        self.assertEqual(self.expected_sym_position, result)
+
     def test_flip_no_base(self):
         mc.select(self.asym_cube)
         QtTest.QTest.mousePress(self.gui.flip_pb, QtCore.Qt.LeftButton)

@@ -114,7 +114,6 @@ def startup_maya_session():
 def setup_environment():
     # Adding package into the environment
     path = get_src_folder_path()
-    print(path)
     if path not in sys.path:
         sys.path.append(path)
     from pprint import pprint

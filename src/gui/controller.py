@@ -23,6 +23,7 @@ class Controller(object):
         self.mesh_modifier = mesh_modification.MeshModifier()
 
         self.vertices_are_stored = False
+        self._threshold = 0.001
         self._percentage = 100
         self._direction = "positive"
         self._axis = "x"
@@ -44,12 +45,23 @@ class Controller(object):
         """
         self._percentage = value
 
+    @property
+    def threshold(self):
+        return self._threshold
+
+    @threshold.setter
+    def threshold(self, value):
+        # TODO : setting this should trigger a recalculation of the base and target geometry tables
+        self._threshold = value
+
     def set_axis(self, axis):
+        # TODO : turn this into a property
         # TODO : setting this should trigger a recalculation of the base and target geometry tables
         log.info("Setting axis to : %s", axis)
         self._axis = axis
 
     def set_direction(self, direction):
+        # TODO : turn this into a property
         # TODO : setting this should trigger a recalculation of the base and target geometry tables
         log.info("Setting direction to : %s", direction)
         self._direction = direction
@@ -61,7 +73,7 @@ class Controller(object):
         """
         mesh = mc.ls(sl=True)[0]
         self.base_table = table.GeometryTable(
-            mesh, axis=self._axis, direction=self._direction
+            mesh, axis=self._axis, direction=self._direction, threshold=self._threshold
         )
         self.set_base.emit(mesh)
 
@@ -72,7 +84,7 @@ class Controller(object):
         """
         mesh = mc.ls(sl=True)[0]
         self.target_table = table.GeometryTable(
-            mesh, axis=self._axis, direction=self._direction
+            mesh, axis=self._axis, direction=self._direction, threshold=self._threshold
         )
         self.set_target.emit(mesh)
 
@@ -113,7 +125,10 @@ class Controller(object):
             self.vertex_selection if self.vertices_are_stored else VertexSelection()
         )
         target_table = table.GeometryTable(
-            target, axis=self._axis, direction=self._direction
+            target,
+            axis=self._axis,
+            direction=self._direction,
+            threshold=self._threshold,
         )
         self.mesh_modifier.symmetrize(
             base_table,
@@ -135,7 +150,10 @@ class Controller(object):
             self.vertex_selection if self.vertices_are_stored else VertexSelection()
         )
         target_table = table.GeometryTable(
-            target, axis=self._axis, direction=self._direction
+            target,
+            axis=self._axis,
+            direction=self._direction,
+            threshold=self._threshold,
         )
         self.mesh_modifier.flip(
             base_table,
@@ -154,7 +172,10 @@ class Controller(object):
             log.error("Unable to extract axes, no base defined.")
             return
         target_table = table.GeometryTable(
-            target, axis=self._axis, direction=self._direction
+            target,
+            axis=self._axis,
+            direction=self._direction,
+            threshold=self._threshold,
         )
         self.mesh_modifier.extract_axes(
             base_table, target_table,
@@ -176,7 +197,10 @@ class Controller(object):
             log.error("Unable to revert to base, no base defined.")
             return
         target_table = table.GeometryTable(
-            target, axis=self._axis, direction=self._direction
+            target,
+            axis=self._axis,
+            direction=self._direction,
+            threshold=self._threshold,
         )
         vertex_selection = (
             self.vertex_selection if self.vertices_are_stored else VertexSelection()
