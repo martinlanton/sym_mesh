@@ -51,8 +51,10 @@ class Controller(object):
 
     @threshold.setter
     def threshold(self, value):
-        # TODO : setting this should trigger a recalculation of the base and target geometry tables
+        log.info("Setting threshold to : %s", value)
         self._threshold = value
+
+        self._regenerate_base()
 
     @property
     def axis(self):
@@ -63,21 +65,7 @@ class Controller(object):
         log.info("Setting axis to : %s", value)
         self._axis = value
 
-        if self.base_table:
-            mesh = str(self.base_table)
-            log.debug(
-                "Existing base table found, regenerating base table with "
-                'mesh "{}", axis "{}", direction "{}", threshold "{}"'.format(
-                    mesh, self._axis, self._direction, self._threshold
-                )
-            )
-            self.base_table = table.GeometryTable(
-                mesh,
-                axis=self._axis,
-                direction=self._direction,
-                threshold=self._threshold,
-            )
-            self.set_base.emit(mesh)
+        self._regenerate_base()
 
     @property
     def direction(self):
@@ -88,6 +76,9 @@ class Controller(object):
         log.info("Setting direction to : %s", value)
         self._direction = value
 
+        self._regenerate_base()
+
+    def _regenerate_base(self):
         if self.base_table:
             mesh = str(self.base_table)
             log.debug(
