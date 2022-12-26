@@ -36,7 +36,7 @@ class Controller(object):
 
     @property
     def percentage(self):
-        return self._percentage
+        return self._percentage  # pragma: no cover
 
     @percentage.setter
     def percentage(self, value):
@@ -47,7 +47,7 @@ class Controller(object):
 
     @property
     def threshold(self):
-        return self._threshold
+        return self._threshold  # pragma: no cover
 
     @threshold.setter
     def threshold(self, value):
@@ -58,7 +58,7 @@ class Controller(object):
 
     @property
     def axis(self):
-        return self._axis
+        return self._axis  # pragma: no cover
 
     @axis.setter
     def axis(self, value):
@@ -69,7 +69,7 @@ class Controller(object):
 
     @property
     def direction(self):
-        return self._direction
+        return self._direction  # pragma: no cover
 
     @direction.setter
     def direction(self, value):
