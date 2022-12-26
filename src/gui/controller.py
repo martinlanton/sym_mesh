@@ -70,9 +70,24 @@ class Controller(object):
 
     @direction.setter
     def direction(self, value):
-        # TODO : setting this should trigger a recalculation of the base and target geometry tables
         log.info("Setting direction to : %s", value)
         self._direction = value
+
+        if self.base_table:
+            mesh = str(self.base_table)
+            log.debug(
+                "Existing base table found, regenerating base table with "
+                'mesh "{}", axis "{}", direction "{}", threshold "{}"'.format(
+                    mesh, self._axis, self._direction, self._threshold
+                )
+            )
+            self.base_table = table.GeometryTable(
+                mesh,
+                axis=self._axis,
+                direction=self._direction,
+                threshold=self._threshold,
+            )
+            self.set_base.emit(mesh)
 
     def get_base(self):
         """
