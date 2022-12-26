@@ -74,9 +74,14 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(expected, result)
 
-    def test_symmetry_with_base_y_axis(self):
+    def test_symmetry_with_base_y_axis_negative(self):
+        QtTest.QTest.mousePress(self.gui.negative_rb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseRelease(self.gui.negative_rb, QtCore.Qt.LeftButton)
+        self.gui.direction_rb_group.buttonReleased.emit(self.gui.negative_rb)
+
         QtTest.QTest.mousePress(self.gui.y_axis_rb, QtCore.Qt.LeftButton)
         QtTest.QTest.mouseRelease(self.gui.y_axis_rb, QtCore.Qt.LeftButton)
+        self.gui.axis_rb_group.buttonReleased.emit(self.gui.y_axis_rb)
 
         mc.select(self.sym_cube)
         QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
@@ -88,13 +93,13 @@ class TestGUI(base_test.BaseGUITest):
 
         expected = [
             [-0.5, -0.5, 0.5],
-            [0.5, -0.5, 0.5],
+            [0.5, -1.5, 0.5],
             [-0.5, 0.5, 0.5],
-            [0.5, 0.5, 0.5],
+            [0.5, 1.5, 0.5],
             [-0.5, 0.5, -0.5],
-            [0.5, 0.5, -0.5],
+            [0.5, 1.5, -0.5],
             [-0.5, -0.5, -0.5],
-            [0.5, -0.5, -0.5],
+            [0.5, -1.5, -0.5],
         ]
 
         result = [

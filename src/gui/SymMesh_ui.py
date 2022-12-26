@@ -42,6 +42,7 @@ class Layout(QtWidgets.QVBoxLayout):
         self.positive_rb = QtWidgets.QRadioButton("Positive: - => +")
         direction_layout.addWidget(self.positive_rb)
         self.direction_rb_group.addButton(self.positive_rb)
+
         self.positive_rb.setChecked(True)
 
         # Axis
@@ -53,7 +54,6 @@ class Layout(QtWidgets.QVBoxLayout):
         self.x_axis_rb = QtWidgets.QRadioButton("X")
         axis_layout.addWidget(self.x_axis_rb)
         self.axis_rb_group.addButton(self.x_axis_rb)
-        self.x_axis_rb.setChecked(True)
 
         self.y_axis_rb = QtWidgets.QRadioButton("Y")
         axis_layout.addWidget(self.y_axis_rb)
@@ -62,6 +62,8 @@ class Layout(QtWidgets.QVBoxLayout):
         self.z_axis_rb = QtWidgets.QRadioButton("Z")
         axis_layout.addWidget(self.z_axis_rb)
         self.axis_rb_group.addButton(self.z_axis_rb)
+
+        self.x_axis_rb.setChecked(True)
 
         # Get base
         self.get_base_pb = QtWidgets.QPushButton("Get Base")

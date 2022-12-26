@@ -77,12 +77,12 @@ class ConnectionWidget(QtWidgets.QGroupBox):
     def set_threshold(self, value):
         self.ctrl.threshold = value
 
-    def set_direction(self):
-        button_text = self.gui.direction_rb_group.checkedButton().text()
+    def set_direction(self, button):
+        button_text = button.text()
         direction = button_text.split(":")[0].lower()
-        self.ctrl.set_direction(direction)
+        self.ctrl.direction = direction
 
-    def set_axis(self):
-        button_text = self.gui.axis_rb_group.checkedButton().text()
-        axis = button_text.split(":")[0].lower()
-        self.ctrl.set_axis(axis)
+    def set_axis(self, button):
+        button_text = button.text()
+        axis = button_text.lower()
+        self.ctrl.axis = axis

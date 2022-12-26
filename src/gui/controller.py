@@ -54,17 +54,25 @@ class Controller(object):
         # TODO : setting this should trigger a recalculation of the base and target geometry tables
         self._threshold = value
 
-    def set_axis(self, axis):
-        # TODO : turn this into a property
-        # TODO : setting this should trigger a recalculation of the base and target geometry tables
-        log.info("Setting axis to : %s", axis)
-        self._axis = axis
+    @property
+    def axis(self):
+        return self._axis
 
-    def set_direction(self, direction):
-        # TODO : turn this into a property
+    @axis.setter
+    def axis(self, value):
         # TODO : setting this should trigger a recalculation of the base and target geometry tables
-        log.info("Setting direction to : %s", direction)
-        self._direction = direction
+        log.info("Setting axis to : %s", value)
+        self._axis = value
+
+    @property
+    def direction(self):
+        return self._direction
+
+    @direction.setter
+    def direction(self, value):
+        # TODO : setting this should trigger a recalculation of the base and target geometry tables
+        log.info("Setting direction to : %s", value)
+        self._direction = value
 
     def get_base(self):
         """
