@@ -52,6 +52,7 @@ class GeometryTable:
         self.build_symmetry_table()
 
     def __str__(self):
+        # TODO : test this
         return self._dag_path
 
     @property
