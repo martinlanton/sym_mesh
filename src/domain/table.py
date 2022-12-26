@@ -84,23 +84,6 @@ class GeometryTable:
         """
         return self._axis_idcs[self._axis]
 
-    @axis.setter
-    def axis(self, value):
-        """Set the axis as a string (x, y, or z).
-
-        :param value: axis to use for the symmetrization direction.
-        :type value: str
-        """
-        self._axis = value
-
-    @property
-    def threshold(self):
-        return self._threshold
-
-    @threshold.setter
-    def threshold(self, value):
-        self._threshold = value
-
     @property
     def dag_path(self):
         return dag_path.create_MDagPath(self._dag_path)
@@ -114,13 +97,6 @@ class GeometryTable:
         if self._direction == "positive":
             return True
         return False
-
-    @positive.setter
-    def positive(self, value):
-        if value:
-            self._direction = "positive"
-        else:
-            self._direction = "negative"
 
     def build_symmetry_table(self, base_mesh=""):
         """Create symmetry table base on symmetry self._axis and self._threshold

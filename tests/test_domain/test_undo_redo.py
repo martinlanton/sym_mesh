@@ -11,6 +11,9 @@ log = logging.getLogger(__name__)
 
 
 class TestUndo(common.BaseTest):
+    # TODO : add test for when there's no action to undo (should check logs)
+    # TODO : add test for when there's no action to redo (should check logs)
+
     def test_undo_revert_to_base(self):
         """Test that undo after revert to base works properly."""
         vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))

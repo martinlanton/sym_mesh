@@ -11,8 +11,11 @@ def get_shading_group_from_shader(shader):
             try:
                 shading_groups.remove("initialParticleSE")
                 shading_group = shading_groups[0]
-            except ValueError:
-                pass
+            except ValueError:  # pragma: no cover
+                # Not covering this statement as there is most likely no reliable way to test it
+                # TODO : this should print a message because that means there's no initial particle
+                #  shading group and therefore there is something FUNDAMENTALLY WRONG with the scene
+                pass  # pragma: no cover
     return shading_group
 
 

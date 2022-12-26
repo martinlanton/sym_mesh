@@ -64,9 +64,6 @@ class VertexSelection(object):
             self.indices = om2.MIntArray()
             return
 
-        # Initialize MDagPathArray
-        dag_path_list = om2.MDagPathArray()
-
         # If no vertices selected
         if components.isNull():
             # Empty list of vertices
@@ -75,21 +72,13 @@ class VertexSelection(object):
             return
         # If vertices are selected
         else:
-
-            dag_path_list.append(selection_list.getDagPath(0))
+            path = selection_list.getDagPath(0)
             # Query vertex indices
             fn_components = om2.MFnSingleIndexedComponent(components)
             # Create an MIntArray with the vertex indices
             selected_vertices_indices = fn_components.getElements()
 
-        if dag_path_list.__len__() > 1:
-            log.error(
-                "More than one object selected, unable to initialize a vertex selection."
-            )
-            del self
-            return
-
-        self.dag_path = dag_path_list[0]
+        self.dag_path = path
         self.indices = selected_vertices_indices
 
     def get_selection_from_list(self, from_list=()):
