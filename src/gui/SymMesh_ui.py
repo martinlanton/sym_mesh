@@ -51,15 +51,17 @@ class Layout(QtWidgets.QVBoxLayout):
 
         self.axis_rb_group = QtWidgets.QButtonGroup()
 
-        self.x_axis_rb = QtWidgets.QRadioButton("X")
+        self.x_axis_rb = QtWidgets.QRadioButton(
+            "Axis : X"
+        )  # This needs a certain number of pixels in the label for the QtTest.QTest.mouseClick to fire the event, this doesn't cause the problem on pushButton, this might be entirely related to the buttonGroup as the signal that isn't fired (or at least that I have tested so far) is the QButtonGroup.buttonReleased
         axis_layout.addWidget(self.x_axis_rb)
         self.axis_rb_group.addButton(self.x_axis_rb)
 
-        self.y_axis_rb = QtWidgets.QRadioButton("Y")
+        self.y_axis_rb = QtWidgets.QRadioButton("Axis : Y")
         axis_layout.addWidget(self.y_axis_rb)
         self.axis_rb_group.addButton(self.y_axis_rb)
 
-        self.z_axis_rb = QtWidgets.QRadioButton("Z")
+        self.z_axis_rb = QtWidgets.QRadioButton("Axis : Z")
         axis_layout.addWidget(self.z_axis_rb)
         self.axis_rb_group.addButton(self.z_axis_rb)
 

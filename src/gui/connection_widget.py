@@ -2,7 +2,7 @@ from functools import partial
 from Qt import QtWidgets, QtCore
 
 from gui import controller
-from gui.SymMesh_ui import Layout
+from gui import SymMesh_ui
 
 
 class ConnectionWidget(QtWidgets.QGroupBox):
@@ -12,7 +12,7 @@ class ConnectionWidget(QtWidgets.QGroupBox):
         super(ConnectionWidget, self).__init__(parent)
 
         self.ctrl = controller.Controller()
-        self.gui = Layout(self)
+        self.gui = SymMesh_ui.Layout(self)
 
         self.gui.threshold_sb.valueChanged.connect(self.set_threshold)
         self.gui.direction_rb_group.buttonReleased.connect(self.set_direction)
@@ -84,5 +84,5 @@ class ConnectionWidget(QtWidgets.QGroupBox):
 
     def set_axis(self, button):
         button_text = button.text()
-        axis = button_text.lower()
+        axis = button_text.split(" : ")[-1].lower()
         self.ctrl.axis = axis

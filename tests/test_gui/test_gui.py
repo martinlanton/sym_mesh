@@ -18,8 +18,7 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_symmetry_no_base(self):
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -30,12 +29,10 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_symmetry_with_base(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -45,16 +42,13 @@ class TestGUI(base_test.BaseGUITest):
         self.assertEqual(self.expected_sym_position, result)
 
     def test_symmetry_with_base_negative_direction(self):
-        QtTest.QTest.mousePress(self.gui.negative_rb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.negative_rb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.negative_rb, QtCore.Qt.LeftButton)
 
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
         expected = [
             [-0.5, 0.5, 0.5],
@@ -76,15 +70,12 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_symmetry_with_base_negative_direction_after(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
-        QtTest.QTest.mousePress(self.gui.negative_rb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.negative_rb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.negative_rb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
         expected = [
             [-0.5, 0.5, 0.5],
@@ -105,21 +96,15 @@ class TestGUI(base_test.BaseGUITest):
         self.assertEqual(expected, result)
 
     def test_symmetry_with_base_y_axis(self):
-        QtTest.QTest.mousePress(self.gui.negative_rb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.negative_rb, QtCore.Qt.LeftButton)
-        self.gui.direction_rb_group.buttonReleased.emit(self.gui.negative_rb)
+        QtTest.QTest.mouseClick(self.gui.negative_rb, QtCore.Qt.LeftButton)
 
-        QtTest.QTest.mousePress(self.gui.y_axis_rb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.y_axis_rb, QtCore.Qt.LeftButton)
-        self.gui.axis_rb_group.buttonReleased.emit(self.gui.y_axis_rb)
+        QtTest.QTest.mouseClick(self.gui.y_axis_rb, QtCore.Qt.LeftButton)
 
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
         expected = [
             [-0.5, -0.5, 0.5],
@@ -140,21 +125,15 @@ class TestGUI(base_test.BaseGUITest):
         self.assertEqual(expected, result)
 
     def test_symmetry_with_base_y_axis_after(self):
-        QtTest.QTest.mousePress(self.gui.negative_rb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.negative_rb, QtCore.Qt.LeftButton)
-        self.gui.direction_rb_group.buttonReleased.emit(self.gui.negative_rb)
+        QtTest.QTest.mouseClick(self.gui.negative_rb, QtCore.Qt.LeftButton)
 
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
-        QtTest.QTest.mousePress(self.gui.y_axis_rb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.y_axis_rb, QtCore.Qt.LeftButton)
-        self.gui.axis_rb_group.buttonReleased.emit(self.gui.y_axis_rb)
+        QtTest.QTest.mouseClick(self.gui.y_axis_rb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
         expected = [
             [-0.5, -0.5, 0.5],
@@ -176,12 +155,10 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_symmetry_with_base_and_vertex_selection(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select("{}.vtx[1]".format(self.asym_cube))
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -202,18 +179,13 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_symmetry_with_base_and_stored_vertex_selection(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select("{}.vtx[1]".format(self.asym_cube))
-        QtTest.QTest.mousePress(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(
-            self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton
-        )
+        QtTest.QTest.mouseClick(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube, replace=True)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -238,12 +210,10 @@ class TestGUI(base_test.BaseGUITest):
         self.gui.threshold_sb.setValue(0.2)
 
         mc.select(self.asym_threshold_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube, replace=True)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -256,14 +226,12 @@ class TestGUI(base_test.BaseGUITest):
         """Test that building a symmetry table for an asymmetrical geometry produces the right
         symmetry table when a threshold is provided."""
         mc.select(self.asym_threshold_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         self.gui.threshold_sb.setValue(0.2)
 
         mc.select(self.asym_cube, replace=True)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -274,8 +242,7 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_flip_no_base(self):
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.flip_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.flip_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.flip_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -286,12 +253,10 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_flip_with_base(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.flip_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.flip_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.flip_pb, QtCore.Qt.LeftButton)
 
         expected = [
             [-0.5, 0.5, 0.5],
@@ -313,12 +278,10 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_flip_with_base_and_vertex_selection(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select("{}.vtx[1]".format(self.asym_cube))
-        QtTest.QTest.mousePress(self.gui.flip_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.flip_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.flip_pb, QtCore.Qt.LeftButton)
 
         expected = [
             [-0.5, 0.5, 0.5],
@@ -340,18 +303,13 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_flip_with_base_and_stored_vertex_selection(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select("{}.vtx[1]".format(self.asym_cube))
-        QtTest.QTest.mousePress(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(
-            self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton
-        )
+        QtTest.QTest.mouseClick(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube, replace=True)
-        QtTest.QTest.mousePress(self.gui.flip_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.flip_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.flip_pb, QtCore.Qt.LeftButton)
 
         expected = [
             [-0.5, 0.5, 0.5],
@@ -373,8 +331,7 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_revert_to_base_no_base(self):
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -385,12 +342,10 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_revert_to_base_with_base(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -401,12 +356,10 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_revert_to_base_with_base_and_vertex_selection(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select("{}.vtx[1]".format(self.asym_cube))
-        QtTest.QTest.mousePress(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -427,18 +380,13 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_revert_to_base_with_base_and_stored_vertex_selection(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select("{}.vtx[1]".format(self.asym_cube))
-        QtTest.QTest.mousePress(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(
-            self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton
-        )
+        QtTest.QTest.mouseClick(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube, replace=True)
-        QtTest.QTest.mousePress(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -459,8 +407,7 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_bake_deltas_no_base(self):
         mc.select(self.other_cube)
-        QtTest.QTest.mousePress(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
@@ -471,12 +418,10 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_bake_deltas_no_target(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.other_cube)
-        QtTest.QTest.mousePress(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
@@ -487,16 +432,13 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_bake_deltas_with_base_and_target(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.get_target_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_target_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_target_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.other_cube)
-        QtTest.QTest.mousePress(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
@@ -512,22 +454,16 @@ class TestGUI(base_test.BaseGUITest):
         """Test that baking the deltas on a mesh when a proper vertex selection is
         provided only bakes the deltas for the selected vertices."""
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.get_target_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_target_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_target_pb, QtCore.Qt.LeftButton)
 
         mc.select("{}.vtx[1]".format(self.asym_cube))
-        QtTest.QTest.mousePress(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(
-            self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton
-        )
+        QtTest.QTest.mouseClick(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.other_cube, replace=True)
-        QtTest.QTest.mousePress(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
@@ -548,12 +484,10 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_extract_axes_creates_geometry(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.test_extract_axes_cube)
-        QtTest.QTest.mousePress(self.gui.extract_axes_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.extract_axes_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.extract_axes_pb, QtCore.Qt.LeftButton)
 
         expected_x = [
             [0.5, -0.5, 0.5],
@@ -606,8 +540,7 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_base_line_edit(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         result = self.gui.base_line_edit.text()
 
@@ -615,8 +548,7 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_target_line_edit(self):
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.get_target_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_target_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_target_pb, QtCore.Qt.LeftButton)
 
         result = self.gui.target_line_edit.text()
 
@@ -624,16 +556,10 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_select_stored_vertex_selection(self):
         mc.select("{}.vtx[1]".format(self.sym_cube))
-        QtTest.QTest.mousePress(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(
-            self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton
-        )
+        QtTest.QTest.mouseClick(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
 
         mc.select(clear=True)
-        QtTest.QTest.mousePress(
-            self.gui.select_vertex_selection_pb, QtCore.Qt.LeftButton
-        )
-        QtTest.QTest.mouseRelease(
+        QtTest.QTest.mouseClick(
             self.gui.select_vertex_selection_pb, QtCore.Qt.LeftButton
         )
 
@@ -645,21 +571,12 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_reset_vertex_selection(self):
         mc.select("{}.vtx[1]".format(self.sym_cube))
-        QtTest.QTest.mousePress(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(
-            self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton
-        )
+        QtTest.QTest.mouseClick(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
 
         mc.select(clear=True)
-        QtTest.QTest.mousePress(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(
-            self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton
-        )
+        QtTest.QTest.mouseClick(self.gui.get_vertex_selection_pb, QtCore.Qt.LeftButton)
 
-        QtTest.QTest.mousePress(
-            self.gui.select_vertex_selection_pb, QtCore.Qt.LeftButton
-        )
-        QtTest.QTest.mouseRelease(
+        QtTest.QTest.mouseClick(
             self.gui.select_vertex_selection_pb, QtCore.Qt.LeftButton
         )
 
@@ -673,14 +590,10 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_non_symmetrical_vertices_selection(self):
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(clear=True)
-        QtTest.QTest.mousePress(
-            self.gui.select_non_symmetrical_vertices_pb, QtCore.Qt.LeftButton
-        )
-        QtTest.QTest.mouseRelease(
+        QtTest.QTest.mouseClick(
             self.gui.select_non_symmetrical_vertices_pb, QtCore.Qt.LeftButton
         )
 
@@ -690,15 +603,12 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_undo(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
-        QtTest.QTest.mousePress(self.gui.undo_push_button, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.undo_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.undo_push_button, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -709,12 +619,10 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_undo_shortcut(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
         QtTest.QTest.keyClicks(self.connector, "z", QtCore.Qt.ControlModifier)
 
@@ -727,18 +635,14 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_redo(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
-        QtTest.QTest.mousePress(self.gui.undo_push_button, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.undo_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.undo_push_button, QtCore.Qt.LeftButton)
 
-        QtTest.QTest.mousePress(self.gui.redo_push_button, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.redo_push_button, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.redo_push_button, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -749,12 +653,10 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_redo_shortcut(self):
         mc.select(self.sym_cube)
-        QtTest.QTest.mousePress(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.asym_cube)
-        QtTest.QTest.mousePress(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
-        QtTest.QTest.mouseRelease(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+        QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
 
         QtTest.QTest.keyClicks(self.connector, "z", QtCore.Qt.ControlModifier)
 
