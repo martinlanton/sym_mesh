@@ -51,9 +51,18 @@ class Layout(QtWidgets.QVBoxLayout):
 
         self.axis_rb_group = QtWidgets.QButtonGroup()
 
-        self.x_axis_rb = QtWidgets.QRadioButton(
-            "Axis : X"
-        )  # This needs a certain number of pixels in the label for the QtTest.QTest.mouseClick to fire the event, this doesn't cause the problem on pushButton, this might be entirely related to the buttonGroup as the signal that isn't fired (or at least that I have tested so far) is the QButtonGroup.buttonReleased
+        # QtTest.QTest.mouseClick, mousePress and mouseRelease use the .size()
+        # method to calculate the center of the widget to simulate the click,
+        # however the .size() method doesn't seem to return the proper value.
+        # The .sizeHint() method on the other hand DOES return the proper value.
+        # This means that if the actual size of the widget (.sizeHint()) is less
+        # than half of the size returned by the .size() method, then the center
+        # calculated from the result of the .size() method is actually OUTSIDE
+        # the widget, therefore the click is not triggered.
+        # To remediate that (and therefore have reliable tests) we have to put a
+        # widget label longer than what is actually necessary
+
+        self.x_axis_rb = QtWidgets.QRadioButton("Axis : X")
         axis_layout.addWidget(self.x_axis_rb)
         self.axis_rb_group.addButton(self.x_axis_rb)
 
