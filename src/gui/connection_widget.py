@@ -71,8 +71,8 @@ class ConnectionWidget(QtWidgets.QGroupBox):
         Without the widget focused, then Maya takes the priority for all key press events
 
         """
-        super(ConnectionWidget, self).mousePressEvent(event)
-        self.setFocus()
+        super(ConnectionWidget, self).mousePressEvent(event)  # pragma: no cover
+        self.setFocus()  # pragma: no cover
 
     def set_threshold(self, value):
         self.ctrl.threshold = value
