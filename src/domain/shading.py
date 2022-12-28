@@ -1,4 +1,7 @@
+import logging
 from maya import cmds as mc
+
+logger = logging.getLogger(__name__)
 
 
 def get_shading_group_from_shader(shader):
@@ -13,9 +16,10 @@ def get_shading_group_from_shader(shader):
                 shading_group = shading_groups[0]
             except ValueError:  # pragma: no cover
                 # Not covering this statement as there is most likely no reliable way to test it
-                # TODO : this should print a message because that means there's no initial particle
-                #  shading group and therefore there is something FUNDAMENTALLY WRONG with the scene
-                pass  # pragma: no cover
+                logger.error(
+                    'No "initialParticleSE" shading group found. The scene might be corrupted.'
+                    " Make sure everything works as expected."
+                )  # pragma: no cover
     return shading_group
 
 
