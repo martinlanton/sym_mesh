@@ -11,8 +11,6 @@ log = logging.getLogger(__name__)
 
 
 class TestUndo(common.BaseTest):
-    # TODO : add test for when there's no action to undo (should check logs)
-    # TODO : add test for when there's no action to redo (should check logs)
     def test_nothing_to_undo(self):
         mesh_modifier = mesh_modification.MeshModifier()
 
