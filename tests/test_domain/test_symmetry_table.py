@@ -7,8 +7,17 @@ from domain import table
 log = logging.getLogger(__name__)
 
 
-class TestSymmetryTable(common.BaseTest):
-    def test_symmetry_table_for_x_symmetrical_geometry_positive(self):
+class TestGeometryTable(common.BaseTest):
+    def test_geometry_table_as_string(self):
+        """Test that building a symmetry table for a symmetrical geometry produces the right
+        symmetry table."""
+        geo_table = table.GeometryTable(self.sym_cube, axis="x")
+
+        geometry_table_as_string = str(geo_table)
+
+        self.assertEqual(geometry_table_as_string, self.sym_cube)
+
+    def test_geometry_table_for_x_symmetrical_geometry_positive(self):
         """Test that building a symmetry table for a symmetrical geometry produces the right
         symmetry table."""
         geo_table = table.GeometryTable(self.sym_cube, axis="x")
@@ -21,7 +30,7 @@ class TestSymmetryTable(common.BaseTest):
             expected_non_mirrored_vertices_indices,
         )
 
-    def test_symmetry_table_for_x_symmetrical_geometry_negative(self):
+    def test_geometry_table_for_x_symmetrical_geometry_negative(self):
         """Test that building a symmetry table for a symmetrical geometry produces the right
         symmetry table."""
         geo_table = table.GeometryTable(self.sym_cube, axis="x", direction="negative")
@@ -34,7 +43,7 @@ class TestSymmetryTable(common.BaseTest):
             expected_non_mirrored_vertices_indices,
         )
 
-    def test_symmetry_table_for_y_symmetrical_geometry_positive(self):
+    def test_geometry_table_for_y_symmetrical_geometry_positive(self):
         """Test that building a symmetry table for a symmetrical geometry produces the right
         symmetry table."""
         geo_table = table.GeometryTable(self.sym_cube, axis="y")
@@ -47,7 +56,7 @@ class TestSymmetryTable(common.BaseTest):
             expected_non_mirrored_vertices_indices,
         )
 
-    def test_symmetry_table_for_asymmetrical_geometry(self):
+    def test_geometry_table_for_asymmetrical_geometry(self):
         """Test that building a symmetry table for an asymmetrical geometry produces the right
         symmetry table."""
         geo_table = table.GeometryTable(self.asym_cube)
@@ -60,7 +69,7 @@ class TestSymmetryTable(common.BaseTest):
             expected_non_mirrored_vertices_indices,
         )
 
-    def test_symmetry_table_from_different_geometry(self):
+    def test_geometry_table_from_different_geometry(self):
         """Test that building a symmetry table for a specific geometry from a different geometry
         produces the right symmetry table."""
         geo_table = table.GeometryTable(self.asym_cube)
@@ -74,7 +83,7 @@ class TestSymmetryTable(common.BaseTest):
             expected_non_mirrored_vertices_indices,
         )
 
-    def test_symmetry_table_threshold(self):
+    def test_geometry_table_threshold(self):
         """Test that building a symmetry table for an asymmetrical geometry produces the right
         symmetry table when a threshold is provided."""
         geo_table = table.GeometryTable(
