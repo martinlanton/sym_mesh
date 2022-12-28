@@ -33,7 +33,7 @@ class MeshModifier(object):
         if len(self.undo_queue) > 0:
             last_action = self.undo_queue.pop(-1)
         else:
-            log.error("No action action to undo.")
+            log.error("No action to undo.")
             return
 
         last_action.undo()
@@ -44,7 +44,7 @@ class MeshModifier(object):
         if len(self.redo_queue) > 0:
             last_action = self.redo_queue.pop(-1)
         else:
-            log.error("No action action to redo.")
+            log.error("No action to redo.")
             return
 
         last_action.redo()

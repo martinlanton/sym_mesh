@@ -13,6 +13,21 @@ log = logging.getLogger(__name__)
 class TestUndo(common.BaseTest):
     # TODO : add test for when there's no action to undo (should check logs)
     # TODO : add test for when there's no action to redo (should check logs)
+    def test_nothing_to_undo(self):
+        mesh_modifier = mesh_modification.MeshModifier()
+
+        with self.assertLogs(mesh_modification.log, logging.ERROR) as captured:
+            mesh_modifier.undo()
+
+        self.assertTrue("No action to undo." in captured.records[0].message)
+
+    def test_nothing_to_redo(self):
+        mesh_modifier = mesh_modification.MeshModifier()
+
+        with self.assertLogs(mesh_modification.log, logging.ERROR) as captured:
+            mesh_modifier.redo()
+
+        self.assertTrue("No action to redo." in captured.records[0].message)
 
     def test_undo_revert_to_base(self):
         """Test that undo after revert to base works properly."""

@@ -130,7 +130,9 @@ class FlipCommand(AbstractDeformationCommand):
                 or self.vertex_selection.indices.__len__() == 0
             ):
                 # TODO : could be worth doing a conditional here to only flip
-                #  the points that are ACTUALLY selected
+                #  the points that are ACTUALLY selected, instead of flipping
+                #  the selected points AND their counterpart
+
                 # target point's new position
                 new_target_position = list(source_vertex_position)
                 new_target_position[axis] = -new_target_position[axis]
