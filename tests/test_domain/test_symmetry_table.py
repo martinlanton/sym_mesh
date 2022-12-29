@@ -20,10 +20,15 @@ class TestGeometryTable(common.BaseTest):
     def test_geometry_table_for_x_symmetrical_geometry_positive(self):
         """Test that building a symmetry table for a symmetrical geometry produces the right
         symmetry table."""
-        geo_table = table.GeometryTable(self.sym_cube, axis="x")
+        with self.assertLogs(table.log, logging.INFO) as captured:
+            geo_table = table.GeometryTable(self.sym_cube, axis="x")
 
         expected_sym_table = {1: 0, 3: 2, 5: 4, 7: 6}
         expected_non_mirrored_vertices_indices = []
+        self.assertTrue(
+            "Model {} is symmetrical.".format(self.sym_cube)
+            in captured.records[0].message
+        )
         self.assertEqual(geo_table.symmetry_table, expected_sym_table)
         self.assertEqual(
             list(geo_table.non_mirrored_vertices.indices),
@@ -59,10 +64,18 @@ class TestGeometryTable(common.BaseTest):
     def test_geometry_table_for_asymmetrical_geometry(self):
         """Test that building a symmetry table for an asymmetrical geometry produces the right
         symmetry table."""
-        geo_table = table.GeometryTable(self.asym_cube)
+        with self.assertLogs(table.log, logging.WARNING) as captured:
+            geo_table = table.GeometryTable(self.asym_cube)
 
         expected_sym_table = {1: 2, 7: 4}
         expected_non_mirrored_vertices_indices = [0, 3, 5, 6]
+        print("LOOK HERE")
+        print(captured)
+        self.assertTrue(
+            "Model {} is NOT symmetrical,"
+            " mirroring might not work as expected.".format(self.asym_cube)
+            in captured.records[0].message
+        )
         self.assertEqual(geo_table.symmetry_table, expected_sym_table)
         self.assertEqual(
             list(geo_table.non_mirrored_vertices.indices),

@@ -118,10 +118,9 @@ class GeometryTable:
         symmetry_map = self._build_symmetry_map(points_table)
         non_mirrored_table = self._get_non_mirrored_vertices(points_table, symmetry_map)
 
-        # TODO : test that this prints the right message.
         path = base_mesh if base_mesh else self.dag_path
         if non_mirrored_table:
-            log.info(
+            log.warning(
                 "Model %s is NOT symmetrical," " mirroring might not work as expected.",
                 path,
             )
