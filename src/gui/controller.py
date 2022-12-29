@@ -183,10 +183,11 @@ class Controller(object):
         )
 
     def extract_axes(self):
-        target = mc.ls(sl=True)[0]
-        if not target:
+        selection = mc.ls(sl=True)
+        if not selection:
             log.error("Unable to extract axes, no target selected.")
             return
+        target = selection[0]
         base_table = self.base_table
         if not base_table:
             log.error("Unable to extract axes, no base defined.")

@@ -533,6 +533,23 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(expected_sym_position, result)
 
+    def test_extract_axes_no_base(self):
+        mc.select(self.test_extract_axes_cube)
+        with self.assertLogs(base_test.connection_widget.controller.log, logging.ERROR) as captured:
+            QtTest.QTest.mouseClick(self.gui.extract_axes_pb, QtCore.Qt.LeftButton)
+
+        self.assertTrue("Unable to extract axes, no base defined." in captured.records[0].message)
+
+    def test_extract_axes_no_selection(self):
+        mc.select(self.sym_cube)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+
+        mc.select(clear=True)
+        with self.assertLogs(base_test.connection_widget.controller.log, logging.ERROR) as captured:
+            QtTest.QTest.mouseClick(self.gui.extract_axes_pb, QtCore.Qt.LeftButton)
+
+        self.assertTrue("Unable to extract axes, no target selected." in captured.records[0].message)
+
     def test_extract_axes_creates_geometry(self):
         mc.select(self.sym_cube)
         QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
