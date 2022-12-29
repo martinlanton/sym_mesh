@@ -131,10 +131,11 @@ class Controller(object):
         self.base_table.non_mirrored_vertices.select()
 
     def symmetrize(self):
-        target = mc.ls(sl=True)[0]
-        if not target:
+        selection = mc.ls(sl=True)
+        if not selection:
             log.error("Unable to symmetrize, no target selected.")
             return
+        target = selection[0]
         base_table = self.base_table
         if not base_table:
             log.error("Unable to symmetrize, no base defined.")

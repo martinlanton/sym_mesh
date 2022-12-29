@@ -27,6 +27,16 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_asym_position, result)
 
+    def test_symmetry_no_target(self):
+        mc.select(self.sym_cube)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+
+        mc.select(clear=True)
+        with self.assertLogs(base_test.connection_widget.controller.log, logging.ERROR) as captured:
+            QtTest.QTest.mouseClick(self.gui.symmetry_pb, QtCore.Qt.LeftButton)
+
+        self.assertTrue("Unable to symmetrize, no target selected." in captured.records[0].message)
+
     def test_symmetry_with_base(self):
         mc.select(self.sym_cube)
         QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)

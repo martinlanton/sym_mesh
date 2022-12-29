@@ -1,9 +1,8 @@
 import sys
 from Qt import QtWidgets
 
-import gui.connection_widget
+from gui import connection_widget
 from tests.fixtures import common
-from gui import startup
 
 
 class BaseGUITest(common.BaseTest):
@@ -15,7 +14,7 @@ class BaseGUITest(common.BaseTest):
     def setUp(self):
         super(BaseGUITest, self).setUp()
         self.dialog = QtWidgets.QDialog()
-        self.connector = gui.connection_widget.ConnectionWidget(self.dialog)
+        self.connector = connection_widget.ConnectionWidget(self.dialog)
         self.gui = self.connector.gui
         self.dialog.show()
 
