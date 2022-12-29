@@ -261,6 +261,16 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_asym_position, result)
 
+    def test_flip_no_target(self):
+        mc.select(self.sym_cube)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+
+        mc.select(clear=True)
+        with self.assertLogs(base_test.connection_widget.controller.log, logging.ERROR) as captured:
+            QtTest.QTest.mouseClick(self.gui.flip_pb, QtCore.Qt.LeftButton)
+
+        self.assertTrue("Unable to flip, no target selected." in captured.records[0].message)
+
     def test_flip_with_base(self):
         mc.select(self.sym_cube)
         QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
@@ -350,6 +360,16 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_asym_position, result)
 
+    def test_revert_to_base_no_target(self):
+        mc.select(self.sym_cube)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+
+        mc.select(clear=True)
+        with self.assertLogs(base_test.connection_widget.controller.log, logging.ERROR) as captured:
+            QtTest.QTest.mouseClick(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
+
+        self.assertTrue("Unable to revert to base, no target selected." in captured.records[0].message)
+
     def test_revert_to_base_with_base(self):
         mc.select(self.sym_cube)
         QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
@@ -416,14 +436,19 @@ class TestGUI(base_test.BaseGUITest):
         self.assertEqual(expected, result)
 
     def test_bake_deltas_no_base(self):
+        mc.select(self.asym_cube)
+        QtTest.QTest.mouseClick(self.gui.get_target_pb, QtCore.Qt.LeftButton)
+
         mc.select(self.other_cube)
-        QtTest.QTest.mouseClick(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
+        with self.assertLogs(base_test.connection_widget.controller.log, logging.ERROR) as captured:
+            QtTest.QTest.mouseClick(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
             for vtx in range(self.vtx_number)
         ]
 
+        self.assertTrue("Unable to bake deltas, no base position defined." in captured.records[0].message)
         self.assertEqual(self.expected_sym_position, result)
 
     def test_bake_deltas_no_target(self):
@@ -431,14 +456,30 @@ class TestGUI(base_test.BaseGUITest):
         QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
         mc.select(self.other_cube)
-        QtTest.QTest.mouseClick(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
+        with self.assertLogs(base_test.connection_widget.controller.log, logging.ERROR) as captured:
+            QtTest.QTest.mouseClick(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.other_cube, vtx), world=True)
             for vtx in range(self.vtx_number)
         ]
 
+        self.assertTrue("Unable to bake deltas, no target position defined." in captured.records[0].message)
         self.assertEqual(self.expected_sym_position, result)
+
+    def test_bake_deltas_with_no_selection(self):
+        mc.select(self.sym_cube)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+
+        mc.select(self.asym_cube)
+        QtTest.QTest.mouseClick(self.gui.get_target_pb, QtCore.Qt.LeftButton)
+
+        mc.select(clear=True)
+        with self.assertLogs(base_test.connection_widget.controller.log, logging.ERROR) as captured:
+            QtTest.QTest.mouseClick(self.gui.bake_deltas_pb, QtCore.Qt.LeftButton)
+
+        self.assertTrue(
+            "Unable to bake deltas, no selected geometries to bake onto." in captured.records[0].message)
 
     def test_bake_deltas_with_base_and_target(self):
         mc.select(self.sym_cube)

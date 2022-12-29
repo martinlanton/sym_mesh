@@ -157,10 +157,11 @@ class Controller(object):
         )
 
     def flip(self):
-        target = mc.ls(sl=True)[0]
-        if not target:
+        selection = mc.ls(sl=True)
+        if not selection:
             log.error("Unable to flip, no target selected.")
             return
+        target = selection[0]
         base_table = self.base_table
         if not base_table:
             log.error("Unable to flip, no base defined.")
@@ -207,10 +208,11 @@ class Controller(object):
         mesh.
 
         """
-        target = mc.ls(sl=True)[0]
-        if not target:
+        selection = mc.ls(sl=True)
+        if not selection:
             log.error("Unable to revert to base, no target selected.")
             return
+        target = selection[0]
         base_table = self.base_table
         if not base_table:
             log.error("Unable to revert to base, no base defined.")
