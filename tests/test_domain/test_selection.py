@@ -8,6 +8,9 @@ log = logging.getLogger(__name__)
 
 
 class TestVertexSelection(common.BaseTest):
+    # TODO : add error test when creating a VertexSelection with an active
+    #  selection containing more than one mesh.
+
     def test_selecting_empty_stored_vertices(self):
         mc.select(clear=True)
 
@@ -36,5 +39,3 @@ class TestVertexSelection(common.BaseTest):
         expected = to_select
 
         self.assertEqual(expected, result)
-
-    # TODO : add error test when active selection comprises more than one mesh.

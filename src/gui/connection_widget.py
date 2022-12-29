@@ -52,7 +52,10 @@ class ConnectionWidget(QtWidgets.QGroupBox):
     def keyPressEvent(self, event):
         """Overriding this method is necessary to force the key event to be accepted.
 
-        This is necessary to set up shortcuts.
+        This is necessary to set up shortcuts. Without this, when using
+        maya.app.general.mayaMixin.MayaQWidgetDockableMixin, all keyEvents are
+        being intercepted by Maya, which prevents the implementation of
+        shortcuts for guis inheriting from Maya's dockable widget.
 
         """
         if event.key() == QtCore.Qt.Key_Z:
@@ -68,7 +71,8 @@ class ConnectionWidget(QtWidgets.QGroupBox):
     def mousePressEvent(self, event):
         """Overriding this method is necessary to force the focus on the widget when clicking it.
 
-        Without the widget focused, then Maya takes the priority for all key press events
+        Without the widget focused, then Maya takes the priority for all key
+        press events. For further details, see the `keyPressEvent` method's docstring.
 
         """
         super(ConnectionWidget, self).mousePressEvent(event)  # pragma: no cover
