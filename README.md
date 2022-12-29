@@ -3,7 +3,7 @@
 * build `symmetry table` (local space vertices position)
 * build `symmetry table` (topology)
 * set percentage from gui
-* create `revert to base` from stored target
+* Geometry operations from target or from selection
 
 # Maya sym mesh
 This is a Maya project for mesh modification, including unittest setup
