@@ -35,17 +35,6 @@ class Controller(object):
         self.set_target = signal.Signal()
 
     @property
-    def percentage(self):
-        return self._percentage  # pragma: no cover
-
-    @percentage.setter
-    def percentage(self, value):
-        """
-        :param value: percentage to use for deforming actions.
-        """
-        self._percentage = value
-
-    @property
     def threshold(self):
         return self._threshold  # pragma: no cover
 
