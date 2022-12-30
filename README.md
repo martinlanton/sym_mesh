@@ -2,7 +2,7 @@
 
 * build `symmetry table` (local space vertices position)
 * build `symmetry table` (topology)
-* set percentage from gui
+* Change geometry operations from a push button to a slider + spinbox and use the mouseReleased message to store the current command into the undo history
 * Geometry operations from target or from selection
 
 # Maya sym mesh
