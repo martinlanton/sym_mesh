@@ -4,6 +4,8 @@
 * build `symmetry table` (topology)
 * Change geometry operations from a push button to a slider + spinbox and use the mouseReleased message to store the current command into the undo history
 * Geometry operations from target or from selection
+* testing and push reject on github
+* Pip integration
 
 # Maya sym mesh
 This is a Maya project for mesh modification, including unittest setup
