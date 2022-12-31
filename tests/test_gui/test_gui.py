@@ -498,9 +498,6 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_asym_position, result)
 
-    # TODO : add test for bake deltas with different threshold
-    # TODO : add test for bake deltas with threshold setting AFTER (to test target table regeneration)
-
     def test_bake_deltas_with_stored_vertex_selection(self):
         """Test that baking the deltas on a mesh when a proper vertex selection is
         provided only bakes the deltas for the selected vertices."""
