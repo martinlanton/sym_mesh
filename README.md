@@ -2,8 +2,10 @@
 
 * build `symmetry table` (local space vertices position)
 * build `symmetry table` (topology)
-* Change geometry operations from a push button to a slider + spinbox and use the mouseReleased message to store the current command into the undo history
-* Geometry operations from target or from selection
+* Geometry operations with a spinbox in addition to the button
+* Add a slider for geometry operations and use the mouseReleased message to store the current command into the undo queue
+* Geometry operations `from target` or `from selection`
+* Adding coloring of geometry operations based on the active mode (`from selection` or `from target`)
 * testing and push reject on github
 * Pip integration
 
