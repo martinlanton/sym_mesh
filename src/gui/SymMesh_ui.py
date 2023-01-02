@@ -21,7 +21,7 @@ class Layout(QtWidgets.QVBoxLayout):
         threshold_layout = QtWidgets.QHBoxLayout()
         self.addLayout(threshold_layout)
 
-        threshold_label = QtWidgets.QLabel("Threshold")
+        threshold_label = QtWidgets.QLabel("Symmetry threshold")
         threshold_layout.addWidget(threshold_label)
 
         self.threshold_sb = QtWidgets.QDoubleSpinBox()
@@ -96,6 +96,9 @@ class Layout(QtWidgets.QVBoxLayout):
         self.target_line_edit.setObjectName("target_line_edit")
         self.addWidget(self.target_line_edit)
 
+        line2 = QHLine()
+        self.addWidget(line2)
+
         # Store vertices selection
         self.get_vertex_selection_pb = QtWidgets.QPushButton("Get Vertex Selection")
         self.get_vertex_selection_pb.setObjectName("get_vertex_selection_push_button")
@@ -116,6 +119,9 @@ class Layout(QtWidgets.QVBoxLayout):
         )
         self.select_vertex_selection_pb.setObjectName("select_stored_vertices_pB")
         self.addWidget(self.select_vertex_selection_pb)
+
+        line2 = QHLine()
+        self.addWidget(line2)
 
         # Bake deltas
         self.bake_deltas_pb = QtWidgets.QPushButton("Bake Deltas")
@@ -189,6 +195,9 @@ class Layout(QtWidgets.QVBoxLayout):
         self.revert_to_base_pb.setObjectName("revert_to_base_live_pB")
         self.addWidget(self.revert_to_base_pb)
 
+        line2 = QHLine()
+        self.addWidget(line2)
+
         # Undo
         self.undo_push_button = QtWidgets.QPushButton("Undo")
         self.undo_push_button.setObjectName("undo_pB")
@@ -210,11 +219,11 @@ class Layout(QtWidgets.QVBoxLayout):
         )
         self.get_vertex_selection_pb.setToolTip(
             "Store the currently selected vertices.\n"
-            "This is used a mask of the vertices that "
+            "This is used as a mask of the vertices that "
             "should be affected when doing any transformation.\n\n"
             "IMPORTANT : When vertices are currently selected on the mesh on "
             "which we want to perform an operation, the current vertex selection "
-            "will be used instead."
+            "will be used instead of the stored one."
         )
         self.select_non_symmetrical_vertices_pb.setToolTip(
             "Select non symmetrical vertices on the " "model stored as base."
@@ -254,7 +263,8 @@ class Layout(QtWidgets.QVBoxLayout):
         )
         log.info("Done Building UI")
 
-    def set_line_edit(self, line_edit, arg):
+    @staticmethod
+    def set_line_edit(line_edit, arg):
         line_edit.setText(arg)
 
     def store_selection(self):
@@ -270,8 +280,14 @@ class Layout(QtWidgets.QVBoxLayout):
             )
 
 
+class QHLine(QtWidgets.QFrame):
+    def __init__(self):
+        super(QHLine, self).__init__()
+        self.setFrameShape(QtWidgets.QFrame.HLine)
+
+
 if __name__ == "__main__":
-    """This is used to test the gui visually through the following command : 
+    """This is used to test the gui visually through the following command :
     `python -m SymMesh_ui`
     This has to be run in a terminal after cd'ing in the `gui` folder.
     """

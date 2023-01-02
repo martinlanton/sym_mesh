@@ -87,7 +87,11 @@ class MeshModifier(object):
             target_dag_path = create_MDagPath(target_dag_path)
 
         cmd = commands.BakeDifferenceCommand(
-            base_table, target_table, vertex_selection, percentage, target_dag_path,
+            base_table,
+            target_table,
+            vertex_selection,
+            percentage,
+            target_dag_path,
         )
         self.undo_queue.append(cmd)
 
