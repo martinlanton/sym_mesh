@@ -15,7 +15,7 @@ To install this package for your local maya, you can use the following command i
 ```commandline
 mayapy -m pip install {package location} -r {package location}/requirements.txt
 ```
-Where {package location} represents the location you downloaded the package, for example :
+Where `{package location}` represents the location you downloaded the package, for example :
 ```commandline
 mayapy -m pip install D:/python/sym-mesh -r D:/python/sym-mesh/requirements.txt
 ```
