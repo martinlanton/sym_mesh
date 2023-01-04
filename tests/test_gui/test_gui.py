@@ -250,6 +250,21 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_sym_position, result)
 
+    def test_symmetry_table_from_slider_at_0(self):
+        # TODO : add test for symmetry from a QSlider
+        pass
+
+    def test_symmetry_table_from_slider_at_100(self):
+        # TODO : add test for symmetry from a QSlider
+        pass
+
+    def test_symmetry_table_from_slider_with_different_values(self):
+        # TODO : add test for symmetry from a QSlider with different values to
+        #  make sure the command is only added to the undo stack from the
+        #  mouseRelease signal and that only the same command is edited as long
+        #  as the mouse has not been released.
+        pass
+
     def test_flip_no_base(self):
         mc.select(self.asym_cube)
         QtTest.QTest.mouseClick(self.gui.flip_pb, QtCore.Qt.LeftButton)
