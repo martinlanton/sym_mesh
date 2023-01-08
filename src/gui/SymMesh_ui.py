@@ -129,9 +129,17 @@ class Layout(QtWidgets.QVBoxLayout):
         self.addWidget(self.bake_deltas_pb)
 
         # Symmetry
+        sym_layout = QtWidgets.QHBoxLayout()
+        self.addLayout(sym_layout)
+
         self.symmetry_pb = QtWidgets.QPushButton("Symmetry")
         self.symmetry_pb.setObjectName("symmetry_pB")
-        self.addWidget(self.symmetry_pb)
+        sym_layout.addWidget(self.symmetry_pb)
+
+        self.symmetry_slider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal)
+        self.symmetry_slider.setMaximum(100)
+        self.symmetry_slider.setObjectName("symmetry_slider")
+        sym_layout.addWidget(self.symmetry_slider)
 
         # Flip
         self.flip_pb = QtWidgets.QPushButton("Flip")

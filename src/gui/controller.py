@@ -130,7 +130,7 @@ class Controller(object):
     def select_non_mirrored_vertices(self):
         self.base_table.non_mirrored_vertices.select()
 
-    def symmetrize(self):
+    def symmetrize(self, value):
         selection = mc.ls(sl=True)
         if not selection:
             log.error("Unable to symmetrize, no target selected.")
@@ -153,7 +153,7 @@ class Controller(object):
             base_table,
             target_table,
             vertex_selection=vertex_selection,
-            percentage=self._percentage,
+            percentage=value,
         )
 
     def flip(self):
