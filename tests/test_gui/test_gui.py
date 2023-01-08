@@ -250,7 +250,7 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_sym_position, result)
 
-    def test_symmetry_table_from_slider_at_0(self):
+    def test_symmetry_from_slider_at_0(self):
         mc.select(self.sym_cube)
         QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
@@ -264,7 +264,7 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_asym_position, result)
 
-    def test_symmetry_table_from_slider_at_100(self):
+    def test_symmetry_from_slider_at_100(self):
         mc.select(self.sym_cube)
         QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
@@ -278,7 +278,7 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_sym_position, result)
 
-    def test_symmetry_table_from_slider_with_different_values(self):
+    def test_symmetry_from_slider_with_different_values(self):
         # TODO : add test for symmetry from a QSlider with different values to
         #  make sure the command is only added to the undo stack from the
         #  mouseRelease signal and that only the same command is edited as long
@@ -384,6 +384,21 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(expected, result)
 
+    def test_flip_from_slider_at_0(self):
+        # TODO
+        pass
+
+    def test_flip_from_slider_at_100(self):
+        # TODO
+        pass
+
+    def test_flip_from_slider_with_different_values(self):
+        # TODO : add test for flip from a QSlider with different values to
+        #  make sure the command is only added to the undo stack from the
+        #  mouseRelease signal and that only the same command is edited as long
+        #  as the mouse has not been released.
+        pass
+
     def test_revert_to_base_no_base(self):
         mc.select(self.asym_cube)
         QtTest.QTest.mouseClick(self.gui.revert_to_base_pb, QtCore.Qt.LeftButton)
@@ -469,6 +484,21 @@ class TestGUI(base_test.BaseGUITest):
         ]
 
         self.assertEqual(expected, result)
+
+    def test_revert_to_base_from_slider_at_0(self):
+        # TODO
+        pass
+
+    def test_revert_to_base_from_slider_at_100(self):
+        # TODO
+        pass
+
+    def test_revert_to_base_from_slider_with_different_values(self):
+        # TODO : add test for revert to base from a QSlider with different values to
+        #  make sure the command is only added to the undo stack from the
+        #  mouseRelease signal and that only the same command is edited as long
+        #  as the mouse has not been released.
+        pass
 
     def test_bake_deltas_no_base(self):
         mc.select(self.asym_cube)
