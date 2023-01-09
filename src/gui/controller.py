@@ -199,8 +199,7 @@ class Controller(object):
             threshold=self._threshold,
         )
         self.mesh_modifier.extract_axes(
-            base_table,
-            target_table,
+            base_table, target_table,
         )
 
     def revert_to_base(self):

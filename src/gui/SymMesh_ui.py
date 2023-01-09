@@ -17,9 +17,17 @@ class Layout(QtWidgets.QVBoxLayout):
         self.vertices_are_stored = False
 
     def buildUI(self):
+        # ==========
+        # Setup
+        # TODO : add line around the groupbox on maya by default
+        setup_groupbox = QtWidgets.QGroupBox("Base setup")
+        self.addWidget(setup_groupbox)
+
+        setup_layout = QtWidgets.QVBoxLayout(setup_groupbox)
+
         # Threshold
         threshold_layout = QtWidgets.QHBoxLayout()
-        self.addLayout(threshold_layout)
+        setup_layout.addLayout(threshold_layout)
 
         threshold_label = QtWidgets.QLabel("Symmetry threshold")
         threshold_layout.addWidget(threshold_label)
@@ -31,23 +39,23 @@ class Layout(QtWidgets.QVBoxLayout):
 
         # Direction
         direction_layout = QtWidgets.QHBoxLayout()
-        self.addLayout(direction_layout)
+        setup_layout.addLayout(direction_layout)
 
         self.direction_rb_group = QtWidgets.QButtonGroup()
 
-        self.negative_rb = QtWidgets.QRadioButton("Negative: - <= +")
+        self.negative_rb = QtWidgets.QRadioButton("Negative: - \u21D0 +")
         direction_layout.addWidget(self.negative_rb)
         self.direction_rb_group.addButton(self.negative_rb)
 
-        self.positive_rb = QtWidgets.QRadioButton("Positive: - => +")
+        self.positive_rb = QtWidgets.QRadioButton("Positive: - \u21D2 +")
         direction_layout.addWidget(self.positive_rb)
         self.direction_rb_group.addButton(self.positive_rb)
 
-        self.positive_rb.setChecked(True)
+        self.negative_rb.setChecked(True)
 
         # Axis
         axis_layout = QtWidgets.QHBoxLayout()
-        self.addLayout(axis_layout)
+        setup_layout.addLayout(axis_layout)
 
         self.axis_rb_group = QtWidgets.QButtonGroup()
 
@@ -77,32 +85,36 @@ class Layout(QtWidgets.QVBoxLayout):
         self.x_axis_rb.setChecked(True)
 
         # Get base
+        base_layout = QtWidgets.QHBoxLayout()
+        setup_layout.addLayout(base_layout)
+
         self.get_base_pb = QtWidgets.QPushButton("Get Base")
         self.get_base_pb.setObjectName("get_base_pB")
-        self.addWidget(self.get_base_pb)
+        base_layout.addWidget(self.get_base_pb)
+
+        base_label = QtWidgets.QLabel("\u21D2")
+        base_layout.addWidget(base_label)
 
         self.base_line_edit = QtWidgets.QLineEdit("base")
         self.base_line_edit.setEnabled(False)
         self.base_line_edit.setObjectName("base_line_edit")
-        self.addWidget(self.base_line_edit)
+        base_layout.addWidget(self.base_line_edit)
 
         # Get target
+        target_layout = QtWidgets.QHBoxLayout()
+        setup_layout.addLayout(target_layout)
+
         self.get_target_pb = QtWidgets.QPushButton("Get Target")
         self.get_target_pb.setObjectName("get_target_pB")
-        self.addWidget(self.get_target_pb)
+        target_layout.addWidget(self.get_target_pb)
+
+        target_label = QtWidgets.QLabel("\u21D2")
+        target_layout.addWidget(target_label)
 
         self.target_line_edit = QtWidgets.QLineEdit("target")
         self.target_line_edit.setEnabled(False)
         self.target_line_edit.setObjectName("target_line_edit")
-        self.addWidget(self.target_line_edit)
-
-        line2 = QHLine()
-        self.addWidget(line2)
-
-        # Store vertices selection
-        self.get_vertex_selection_pb = QtWidgets.QPushButton("Get Vertex Selection")
-        self.get_vertex_selection_pb.setObjectName("get_vertex_selection_push_button")
-        self.addWidget(self.get_vertex_selection_pb)
+        target_layout.addWidget(self.target_line_edit)
 
         # Select non-symmetrical vertices
         self.select_non_symmetrical_vertices_pb = QtWidgets.QPushButton(
@@ -111,29 +123,48 @@ class Layout(QtWidgets.QVBoxLayout):
         self.select_non_symmetrical_vertices_pb.setObjectName(
             "select_non_symmetrical_vertices_pB"
         )
-        self.addWidget(self.select_non_symmetrical_vertices_pb)
+        setup_layout.addWidget(self.select_non_symmetrical_vertices_pb)
+
+        # ==========
+        # Selection
+        selection_groupbox = QtWidgets.QGroupBox("Selection")
+        self.addWidget(selection_groupbox)
+
+        # Store vertices selection
+        vertex_selection_layout = QtWidgets.QHBoxLayout(selection_groupbox)
+        self.addLayout(vertex_selection_layout)
+
+        self.get_vertex_selection_pb = QtWidgets.QPushButton("Get Vertex Selection")
+        self.get_vertex_selection_pb.setObjectName("get_vertex_selection_push_button")
+        vertex_selection_layout.addWidget(self.get_vertex_selection_pb)
 
         # Select stored vertex selection
         self.select_vertex_selection_pb = QtWidgets.QPushButton(
             "Select stored Vertices"
         )
         self.select_vertex_selection_pb.setObjectName("select_stored_vertices_pB")
-        self.addWidget(self.select_vertex_selection_pb)
+        vertex_selection_layout.addWidget(self.select_vertex_selection_pb)
 
-        line2 = QHLine()
-        self.addWidget(line2)
+        # =========
+        # Commands
+        commands_groupbox = QtWidgets.QGroupBox("Tools")
+        self.addWidget(commands_groupbox)
 
-        # Bake deltas
-        self.bake_deltas_pb = QtWidgets.QPushButton("Bake Deltas")
-        self.bake_deltas_pb.setObjectName("bake_deltas_pB")
-        self.addWidget(self.bake_deltas_pb)
+        commands_layout = QtWidgets.QVBoxLayout(commands_groupbox)
+
+        # Revert to base on selection
+        self.revert_to_base_pb = QtWidgets.QPushButton("Revert sel to base")
+        self.revert_to_base_pb.setObjectName("revert_to_base_live_pB")
+        self.revert_to_base_pb.setMinimumSize(50, 30)
+        commands_layout.addWidget(self.revert_to_base_pb)
 
         # Symmetry
         sym_layout = QtWidgets.QHBoxLayout()
-        self.addLayout(sym_layout)
+        commands_layout.addLayout(sym_layout)
 
         self.symmetry_pb = QtWidgets.QPushButton("Symmetry")
         self.symmetry_pb.setObjectName("symmetry_pB")
+        self.symmetry_pb.setMinimumSize(50, 30)
         sym_layout.addWidget(self.symmetry_pb)
 
         self.symmetry_slider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal)
@@ -144,77 +175,39 @@ class Layout(QtWidgets.QVBoxLayout):
         # Flip
         self.flip_pb = QtWidgets.QPushButton("Flip")
         self.flip_pb.setObjectName("flip_pB")
-        self.addWidget(self.flip_pb)
+        self.flip_pb.setMinimumSize(50, 30)
+        commands_layout.addWidget(self.flip_pb)
 
         # Extract axes
-        self.extract_axes_pb = QtWidgets.QPushButton("Extract X Y Z axes")
+        # TODO : add a doubleSpinbox to set the Y value at which the new mesh
+        #  should be translated from the target
+        # TODO : add a button to put the deformation of the extracted shape to
+        #  the original mesh (based on name) "bake extracted"
+        self.extract_axes_pb = QtWidgets.QPushButton("Extract X Y Z")
         self.extract_axes_pb.setObjectName("extract_axes_pB")
-        self.addWidget(self.extract_axes_pb)
+        self.extract_axes_pb.setMinimumSize(50, 30)
+        commands_layout.addWidget(self.extract_axes_pb)
 
-        # # Revert value
-        # self.horizontalLayout = QtWidgets.QHBoxLayout()
-        # self.horizontalLayout.setObjectName("horizontalLayout")
-        # self.addLayout(self.horizontalLayout)
-        #
-        # self.revert_value_slider = QtWidgets.QSlider()
-        # sizePolicy = QtWidgets.QSizePolicy(
-        #     QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        # )
-        # sizePolicy.setHeightForWidth(
-        #     self.revert_value_slider.sizePolicy().hasHeightForWidth()
-        # )
-        # self.revert_value_slider.setSizePolicy(sizePolicy)
-        # self.revert_value_slider.setMinimumSize(QtCore.QSize(0, 25))
-        # self.revert_value_slider.setMaximum(100)
-        # self.revert_value_slider.setProperty("value", 100)
-        # self.revert_value_slider.setOrientation(QtCore.Qt.Horizontal)
-        # self.revert_value_slider.setObjectName("percentage_slider")
-        # self.horizontalLayout.addWidget(self.revert_value_slider)
-        #
-        # self.revert_value_sB = QtWidgets.QSpinBox()
-        # sizePolicy = QtWidgets.QSizePolicy(
-        #     QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
-        # )
-        # sizePolicy.setHeightForWidth(
-        #     self.revert_value_sB.sizePolicy().hasHeightForWidth()
-        # )
-        # self.revert_value_sB.setSizePolicy(sizePolicy)
-        # self.revert_value_sB.setMinimumSize(QtCore.QSize(0, 25))
-        # self.revert_value_sB.setMaximum(100)
-        # self.revert_value_sB.setProperty("value", 100)
-        # self.revert_value_sB.setObjectName("percentage_sB")
-        # self.horizontalLayout.addWidget(self.revert_value_sB)
-        #
-        # # Revert to base from target
-        # self.revert_to_base_pB = QtWidgets.QPushButton("Revert sel to base (target)")
-        # sizePolicy = QtWidgets.QSizePolicy(
-        #     QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
-        # )
-        # sizePolicy.setHeightForWidth(
-        #     self.revert_to_base_pB.sizePolicy().hasHeightForWidth()
-        # )
-        # self.revert_to_base_pB.setSizePolicy(sizePolicy)
-        # self.revert_to_base_pB.setMinimumSize(QtCore.QSize(0, 25))
-        # self.revert_to_base_pB.setObjectName("revert_to_base_pB")
-        # self.addWidget(self.revert_to_base_pB)
+        # Bake deltas
+        self.bake_deltas_pb = QtWidgets.QPushButton("Bake Deltas")
+        self.bake_deltas_pb.setObjectName("bake_deltas_pB")
+        self.bake_deltas_pb.setMinimumSize(50, 30)
+        commands_layout.addWidget(self.bake_deltas_pb)
 
-        # Revert to base on selection
-        self.revert_to_base_pb = QtWidgets.QPushButton("Revert sel to base (live)")
-        self.revert_to_base_pb.setObjectName("revert_to_base_live_pB")
-        self.addWidget(self.revert_to_base_pb)
+        # =========
+        # Undo Redo
+        undo_redo_groupbox = QtWidgets.QGroupBox("Edit")
+        self.addWidget(undo_redo_groupbox)
 
-        line2 = QHLine()
-        self.addWidget(line2)
+        undo_layout = QtWidgets.QHBoxLayout(undo_redo_groupbox)
 
-        # Undo
         self.undo_push_button = QtWidgets.QPushButton("Undo")
         self.undo_push_button.setObjectName("undo_pB")
-        self.addWidget(self.undo_push_button)
+        undo_layout.addWidget(self.undo_push_button)
 
-        # Redo
         self.redo_push_button = QtWidgets.QPushButton("Redo")
         self.redo_push_button.setObjectName("redo_push_button")
-        self.addWidget(self.redo_push_button)
+        undo_layout.addWidget(self.redo_push_button)
 
         # Tooltips
         self.get_base_pb.setToolTip(
@@ -286,12 +279,6 @@ class Layout(QtWidgets.QVBoxLayout):
             self.get_vertex_selection_pb.setStyleSheet(
                 "QPushButton {background-color: rgb(93, 93, 93);}"
             )
-
-
-class QHLine(QtWidgets.QFrame):
-    def __init__(self):
-        super(QHLine, self).__init__()
-        self.setFrameShape(QtWidgets.QFrame.HLine)
 
 
 if __name__ == "__main__":
