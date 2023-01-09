@@ -10,8 +10,6 @@ class Layout(QtWidgets.QVBoxLayout):
         super(Layout, self).__init__(parent)
         self.buildUI()
 
-        # self.revert_value_slider.valueChanged.connect(self.get_spinBox_value)
-        # self.revert_value_sB.valueChanged.connect(self.get_slider_value)
         self.get_vertex_selection_pb.clicked.connect(self.store_selection)
 
         self.vertices_are_stored = False
@@ -209,6 +207,10 @@ class Layout(QtWidgets.QVBoxLayout):
         self.redo_push_button.setObjectName("redo_push_button")
         undo_layout.addWidget(self.redo_push_button)
 
+        self.add_tooltips()
+        log.info("Done Building UI")
+
+    def add_tooltips(self):
         # Tooltips
         self.get_base_pb.setToolTip(
             "Store the currently selected geometry as Base geometry.\n"
@@ -262,7 +264,6 @@ class Layout(QtWidgets.QVBoxLayout):
         self.redo_push_button.setToolTip(
             "Straightforward : Redo the last undone action."
         )
-        log.info("Done Building UI")
 
     @staticmethod
     def set_line_edit(line_edit, arg):
