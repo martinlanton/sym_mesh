@@ -500,8 +500,18 @@ class TestGUI(base_test.BaseGUITest):
         self.assertEqual(self.expected_asym_position, result)
 
     def test_revert_to_base_from_slider_at_100(self):
-        # TODO
-        pass
+        mc.select(self.sym_cube)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+
+        mc.select(self.asym_cube)
+        self.gui.revert_to_base_slider.setValue(100)
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+
+        self.assertEqual(self.expected_sym_position, result)
 
     def test_revert_to_base_from_slider_with_different_values(self):
         # TODO : add test for revert to base from a QSlider with different values to

@@ -130,7 +130,47 @@ class Controller(object):
     def select_non_mirrored_vertices(self):
         self.base_table.non_mirrored_vertices.select()
 
+    def revert_to_base(self, value):
+        """Revert selected mesh or vertices to base from the current value, using
+        vertices selection (if one has been stored or is active) or on the whole
+        mesh.
+
+        :param value: percentage value to use for the revert to base operation.
+        :type value: int
+        """
+        selection = mc.ls(sl=True)
+        if not selection:
+            log.error("Unable to revert to base, no target selected.")
+            return
+        target = selection[0]
+        base_table = self.base_table
+        if not base_table:
+            log.error("Unable to revert to base, no base defined.")
+            return
+        target_table = table.GeometryTable(
+            target,
+            axis=self._axis,
+            direction=self._direction,
+            threshold=self._threshold,
+        )
+        vertex_selection = (
+            self.vertex_selection if self.vertices_are_stored else VertexSelection()
+        )
+        self.mesh_modifier.revert_to_base(
+            base_table,
+            target_table,
+            vertex_selection=vertex_selection,
+            percentage=value,
+        )
+
     def symmetrize(self, value):
+        """symmetrize selected mesh or vertices from the current value, using
+        vertices selection (if one has been stored or is active) or on the whole
+        mesh.
+
+        :param value: percentage value to use for the symmetry operation.
+        :type value: int
+        """
         selection = mc.ls(sl=True)
         if not selection:
             log.error("Unable to symmetrize, no target selected.")
@@ -200,38 +240,6 @@ class Controller(object):
         )
         self.mesh_modifier.extract_axes(
             base_table, target_table,
-        )
-
-    def revert_to_base(self):
-        """
-        Revert selected mesh or vertices to base from the current value, using
-        vertices selection (if one has been stored or is active) or on the whole
-        mesh.
-
-        """
-        selection = mc.ls(sl=True)
-        if not selection:
-            log.error("Unable to revert to base, no target selected.")
-            return
-        target = selection[0]
-        base_table = self.base_table
-        if not base_table:
-            log.error("Unable to revert to base, no base defined.")
-            return
-        target_table = table.GeometryTable(
-            target,
-            axis=self._axis,
-            direction=self._direction,
-            threshold=self._threshold,
-        )
-        vertex_selection = (
-            self.vertex_selection if self.vertices_are_stored else VertexSelection()
-        )
-        self.mesh_modifier.revert_to_base(
-            base_table,
-            target_table,
-            vertex_selection=vertex_selection,
-            percentage=self._percentage,
         )
 
     def bake_deltas(self):

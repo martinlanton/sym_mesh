@@ -151,10 +151,19 @@ class Layout(QtWidgets.QVBoxLayout):
         commands_layout = QtWidgets.QVBoxLayout(commands_groupbox)
 
         # Revert to base on selection
-        self.revert_to_base_pb = QtWidgets.QPushButton("Revert sel to base")
+        revert_to_base_layout = QtWidgets.QHBoxLayout()
+        commands_layout.addLayout(revert_to_base_layout)
+
+        self.revert_to_base_pb = QtWidgets.QPushButton("Revert to base")
         self.revert_to_base_pb.setObjectName("revert_to_base_live_pB")
-        self.revert_to_base_pb.setMinimumSize(50, 30)
-        commands_layout.addWidget(self.revert_to_base_pb)
+        self.revert_to_base_pb.setMinimumSize(80, 30)
+        revert_to_base_layout.addWidget(self.revert_to_base_pb)
+
+        self.revert_to_base_slider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal)
+        self.revert_to_base_slider.setMaximum(100)
+        self.revert_to_base_slider.setObjectName("revert_to_base_slider")
+        revert_to_base_layout.addWidget(self.revert_to_base_slider)
+
 
         # Symmetry
         sym_layout = QtWidgets.QHBoxLayout()
@@ -162,7 +171,7 @@ class Layout(QtWidgets.QVBoxLayout):
 
         self.symmetry_pb = QtWidgets.QPushButton("Symmetry")
         self.symmetry_pb.setObjectName("symmetry_pB")
-        self.symmetry_pb.setMinimumSize(50, 30)
+        self.symmetry_pb.setMinimumSize(80, 30)
         sym_layout.addWidget(self.symmetry_pb)
 
         self.symmetry_slider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal)
@@ -173,7 +182,7 @@ class Layout(QtWidgets.QVBoxLayout):
         # Flip
         self.flip_pb = QtWidgets.QPushButton("Flip")
         self.flip_pb.setObjectName("flip_pB")
-        self.flip_pb.setMinimumSize(50, 30)
+        self.flip_pb.setMinimumSize(80, 30)
         commands_layout.addWidget(self.flip_pb)
 
         # Extract axes
@@ -183,13 +192,13 @@ class Layout(QtWidgets.QVBoxLayout):
         #  the original mesh (based on name) "bake extracted"
         self.extract_axes_pb = QtWidgets.QPushButton("Extract X Y Z")
         self.extract_axes_pb.setObjectName("extract_axes_pB")
-        self.extract_axes_pb.setMinimumSize(50, 30)
+        self.extract_axes_pb.setMinimumSize(80, 30)
         commands_layout.addWidget(self.extract_axes_pb)
 
         # Bake deltas
         self.bake_deltas_pb = QtWidgets.QPushButton("Bake Deltas")
         self.bake_deltas_pb.setObjectName("bake_deltas_pB")
-        self.bake_deltas_pb.setMinimumSize(50, 30)
+        self.bake_deltas_pb.setMinimumSize(80, 30)
         commands_layout.addWidget(self.bake_deltas_pb)
 
         # =========

@@ -21,12 +21,13 @@ class ConnectionWidget(QtWidgets.QGroupBox):
         self.gui.get_base_pb.clicked.connect(self.ctrl.get_base)
         self.gui.get_target_pb.clicked.connect(self.ctrl.get_target)
 
+        self.gui.revert_to_base_pb.clicked.connect(partial(self.ctrl.revert_to_base, 100))
+        self.gui.revert_to_base_slider.valueChanged.connect(self.ctrl.revert_to_base)
         self.gui.symmetry_pb.clicked.connect(partial(self.ctrl.symmetrize, 100))
         self.gui.symmetry_slider.valueChanged.connect(self.ctrl.symmetrize)
         self.gui.flip_pb.clicked.connect(self.ctrl.flip)
         self.gui.extract_axes_pb.clicked.connect(self.ctrl.extract_axes)
         self.gui.bake_deltas_pb.clicked.connect(self.ctrl.bake_deltas)
-        self.gui.revert_to_base_pb.clicked.connect(self.ctrl.revert_to_base)
 
         store_selection = partial(
             self.ctrl.get_vertex_selection, self.gui.vertices_are_stored
