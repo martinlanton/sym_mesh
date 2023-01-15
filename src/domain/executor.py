@@ -25,6 +25,7 @@ log.setLevel(logging.INFO)
 
 class Executor(object):
     def __init__(self):
+        self._current_command = None
         self.undo_queue = list()
         self.redo_queue = list()
 
@@ -86,10 +87,9 @@ class Executor(object):
         if not isinstance(target_dag_path, om2.MDagPath):
             target_dag_path = create_MDagPath(target_dag_path)
 
-        cmd = commands.BakeDifferenceCommand(
+        self._current_command = commands.BakeDifferenceCommand(
             base_table, target_table, vertex_selection, percentage, target_dag_path,
         )
-        self.undo_queue.append(cmd)
 
     def revert_to_base(
         self,
@@ -119,14 +119,13 @@ class Executor(object):
         :param space: space in which operate the deformation (object or world)
         :type space: constant
         """
-        cmd = commands.RevertToBaseCommand(
+        self._current_command = commands.RevertToBaseCommand(
             base_table,
             target_table,
             vertex_selection,
             percentage,
             target_table.dag_path.getPath(),
         )
-        self.undo_queue.append(cmd)
 
     def symmetrize(
         self,
@@ -153,14 +152,13 @@ class Executor(object):
         :param space: space in which operate the deformation (object or world)
         :type space: constant
         """
-        cmd = commands.SymmetrizeCommand(
+        self._current_command = commands.SymmetrizeCommand(
             base_table,
             target_table,
             vertex_selection,
             percentage,
             target_table.dag_path.getPath(),
         )
-        self.undo_queue.append(cmd)
 
     def extract_axes(self, base_table, target_table):
         """Extract deltas between target table and base table on a new geometry.
@@ -174,10 +172,9 @@ class Executor(object):
         :return: names of the newly created geometries
         :rtype: str, str, str
         """
-        cmd = commands.ExtractAxesCommand(base_table, target_table)
+        self._current_command = commands.ExtractAxesCommand(base_table, target_table)
 
-        self.undo_queue.append(cmd)
-        return cmd.result
+        return self._current_command.result
 
     def flip(
         self,
@@ -203,11 +200,15 @@ class Executor(object):
         :param space: space in which operate the deformation (object or world)
         :type space: constant
         """
-        cmd = commands.FlipCommand(
+        self._current_command = commands.FlipCommand(
             base_table,
             target_table,
             vertex_selection,
             percentage,
             target_table.dag_path.getPath(),
         )
-        self.undo_queue.append(cmd)
+
+    def stash_command(self):
+        """Add the current command to the undo queue and remove it from self._current_command."""
+        self.undo_queue.append(self._current_command)
+        self._current_command = None

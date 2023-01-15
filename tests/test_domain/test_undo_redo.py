@@ -33,6 +33,7 @@ class TestUndo(common.BaseTest):
         executor_.revert_to_base(
             base_table=sym_table, target_table=asym_table, percentage=100
         )
+        executor_.stash_command()
         executor_.undo()
 
         result = [
@@ -56,6 +57,7 @@ class TestUndo(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         executor_ = executor.Executor()
         executor_.symmetrize(base_table=sym_table, target_table=geo_table)
+        executor_.stash_command()
         executor_.undo()
 
         result = [
@@ -81,6 +83,7 @@ class TestUndo(common.BaseTest):
         executor_.bake_difference(
             sym_table, geo_table, target_dag_path=self.other_cube
         )
+        executor_.stash_command()
         executor_.undo()
 
         result = [
@@ -97,6 +100,7 @@ class TestUndo(common.BaseTest):
         extracted_mesh, blendshape = executor_.extract_axes(
             base_table=base_table, target_table=target_table
         )
+        executor_.stash_command()
         executor_.undo()
 
         self.assertFalse(mc.objExists(extracted_mesh))
@@ -114,6 +118,7 @@ class TestUndo(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         executor_ = executor.Executor()
         executor_.flip(base_table=sym_table, target_table=geo_table)
+        executor_.stash_command()
         executor_.undo()
 
         result = [
@@ -149,6 +154,7 @@ class TestRedo(common.BaseTest):
         executor_.revert_to_base(
             base_table=sym_table, target_table=asym_table, percentage=100
         )
+        executor_.stash_command()
         executor_.undo()
         executor_.redo()
 
@@ -175,6 +181,7 @@ class TestRedo(common.BaseTest):
         executor_.revert_to_base(
             base_table=sym_table, target_table=asym_table, percentage=100
         )
+        executor_.stash_command()
         executor_.undo()
         executor_.redo()
         executor_.undo()
@@ -206,6 +213,7 @@ class TestRedo(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         executor_ = executor.Executor()
         executor_.symmetrize(base_table=sym_table, target_table=geo_table)
+        executor_.stash_command()
         executor_.undo()
         executor_.redo()
 
@@ -232,6 +240,7 @@ class TestRedo(common.BaseTest):
         executor_.bake_difference(
             sym_table, geo_table, target_dag_path=self.other_cube
         )
+        executor_.stash_command()
         executor_.undo()
         executor_.redo()
 
@@ -250,7 +259,7 @@ class TestRedo(common.BaseTest):
         extracted_mesh, blendshape = executor_.extract_axes(
             base_table=base_table, target_table=target_table
         )
-
+        executor_.stash_command()
         executor_.undo()
         executor_.redo()
 
@@ -314,6 +323,7 @@ class TestRedo(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="positive")
         executor_ = executor.Executor()
         executor_.flip(base_table=sym_table, target_table=geo_table)
+        executor_.stash_command()
         executor_.undo()
         executor_.redo()
 

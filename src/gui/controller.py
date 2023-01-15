@@ -20,7 +20,7 @@ class Controller(object):
 
         self.vertex_selection = VertexSelection(from_list=())
 
-        self.mesh_modifier = executor.Executor()
+        self.executor = executor.Executor()
 
         self.vertices_are_stored = False
         self._threshold = 0.001
@@ -156,12 +156,13 @@ class Controller(object):
         vertex_selection = (
             self.vertex_selection if self.vertices_are_stored else VertexSelection()
         )
-        self.mesh_modifier.revert_to_base(
+        self.executor.revert_to_base(
             base_table,
             target_table,
             vertex_selection=vertex_selection,
             percentage=value,
         )
+        self.executor.stash_command()
 
     def symmetrize(self, value):
         """symmetrize selected mesh or vertices from the current value, using
@@ -189,12 +190,13 @@ class Controller(object):
             direction=self._direction,
             threshold=self._threshold,
         )
-        self.mesh_modifier.symmetrize(
+        self.executor.symmetrize(
             base_table,
             target_table,
             vertex_selection=vertex_selection,
             percentage=value,
         )
+        self.executor.stash_command()
 
     def flip(self):
         selection = mc.ls(sl=True)
@@ -215,12 +217,13 @@ class Controller(object):
             direction=self._direction,
             threshold=self._threshold,
         )
-        self.mesh_modifier.flip(
+        self.executor.flip(
             base_table,
             target_table,
             vertex_selection=vertex_selection,
             percentage=self._percentage,
         )
+        self.executor.stash_command()
 
     def extract_axes(self):
         selection = mc.ls(sl=True)
@@ -238,9 +241,10 @@ class Controller(object):
             direction=self._direction,
             threshold=self._threshold,
         )
-        self.mesh_modifier.extract_axes(
+        self.executor.extract_axes(
             base_table, target_table,
         )
+        self.executor.stash_command()
 
     def bake_deltas(self):
         """
@@ -262,16 +266,17 @@ class Controller(object):
             log.error("Unable to bake deltas, no base position defined.")
             return
         for target_path in target_paths:
-            self.mesh_modifier.bake_difference(
+            self.executor.bake_difference(
                 base_table,
                 target_table,
                 vertex_selection=self.vertex_selection,
                 percentage=self._percentage,
                 target_dag_path=target_path,
             )
+            self.executor.stash_command()
 
     def undo(self):
-        self.mesh_modifier.undo()
+        self.executor.undo()
 
     def redo(self):
-        self.mesh_modifier.redo()
+        self.executor.redo()
