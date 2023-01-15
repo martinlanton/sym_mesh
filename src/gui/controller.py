@@ -3,9 +3,10 @@ import logging
 
 import domain.table
 from domain import executor
+from domain import table
+from domain.commands.deformation_commands import BakeDifferenceCommand
 from domain.selection import VertexSelection
 from gui import signal
-from domain import table
 
 
 log = logging.getLogger(__name__)
@@ -266,9 +267,10 @@ class Controller(object):
             log.error("Unable to bake deltas, no base position defined.")
             return
         for target_path in target_paths:
-            self.executor.bake_difference(
-                base_table,
-                target_table,
+            self.executor.execute(
+                BakeDifferenceCommand,
+                base_table=base_table,
+                target_table=target_table,
                 vertex_selection=self.vertex_selection,
                 percentage=self._percentage,
                 target_dag_path=target_path,

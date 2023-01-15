@@ -3,6 +3,7 @@ import logging
 from maya import cmds as mc
 
 from domain import executor, selection, table
+from domain.commands.deformation_commands import BakeDifferenceCommand
 from tests.fixtures import common
 
 logging.basicConfig()
@@ -15,7 +16,8 @@ class TestBakeDeltas(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         executor_ = executor.Executor()
-        executor_.bake_difference(
+        executor_.execute(
+            BakeDifferenceCommand,
             base_table=sym_table,
             target_table=geo_table,
             target_dag_path=self.other_cube,
@@ -32,7 +34,8 @@ class TestBakeDeltas(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         executor_ = executor.Executor()
-        executor_.bake_difference(
+        executor_.execute(
+            BakeDifferenceCommand,
             base_table=sym_table,
             target_table=geo_table,
             percentage=0,
@@ -53,7 +56,8 @@ class TestBakeDeltas(common.BaseTest):
         mc.select("{}.vtx[1]".format(self.asym_cube))
         vertex_selection = selection.VertexSelection()
         executor_ = executor.Executor()
-        executor_.bake_difference(
+        executor_.execute(
+            BakeDifferenceCommand,
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -88,7 +92,8 @@ class TestBakeDeltas(common.BaseTest):
         mc.select(clear=True)
         vertex_selection = selection.VertexSelection()
         executor_ = executor.Executor()
-        executor_.bake_difference(
+        executor_.execute(
+            BakeDifferenceCommand,
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -108,7 +113,8 @@ class TestBakeDeltas(common.BaseTest):
         mc.select(self.asym_cube)
         vertex_selection = selection.VertexSelection()
         executor_ = executor.Executor()
-        executor_.bake_difference(
+        executor_.execute(
+            BakeDifferenceCommand,
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,

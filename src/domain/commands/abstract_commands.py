@@ -12,7 +12,12 @@ log.setLevel(logging.INFO)
 
 
 @six.add_metaclass(abc.ABCMeta)
-class AbstractDeformationCommand(object):
+class AbstractCommand(object):
+    pass
+
+
+@six.add_metaclass(abc.ABCMeta)
+class AbstractDeformationCommand(AbstractCommand):
     def __init__(
         self,
         base_table,

@@ -4,6 +4,7 @@ from maya import cmds as mc
 
 from domain import table
 from domain import executor
+from domain.commands.deformation_commands import BakeDifferenceCommand
 from tests.fixtures import common
 
 
@@ -80,8 +81,9 @@ class TestUndo(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         executor_ = executor.Executor()
-        executor_.bake_difference(
-            sym_table, geo_table, target_dag_path=self.other_cube
+        executor_.execute(
+            BakeDifferenceCommand,
+            base_table=sym_table, target_table=geo_table, target_dag_path=self.other_cube
         )
         executor_.stash_command()
         executor_.undo()
@@ -237,8 +239,9 @@ class TestRedo(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         executor_ = executor.Executor()
-        executor_.bake_difference(
-            sym_table, geo_table, target_dag_path=self.other_cube
+        executor_.execute(
+            BakeDifferenceCommand,
+            base_table=sym_table, target_table=geo_table, target_dag_path=self.other_cube
         )
         executor_.stash_command()
         executor_.undo()

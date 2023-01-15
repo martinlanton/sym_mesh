@@ -51,42 +51,20 @@ class Executor(object):
         last_action.redo()
         self.undo_queue.append(last_action)
 
-    def bake_difference(
-        self,
-        base_table,
-        target_table,
-        vertex_selection=selection.VertexSelection(from_list=()),
-        percentage=100,
-        target_dag_path=None,
-    ):
+    def execute(self, command, **kwargs):
         """
         Bake the difference between 2 mesh on a list of vertices on a selection
         of meshes.
 
-        :param base_table: GeometryTable of the base geometry
-        :type base_table: domain.table.GeometryTable
-
-        :param target_table: GeometryTable of the target geometry
-        :type target_table: domain.table.GeometryTable
-
-        :param vertex_selection: indices of the selected points on the target mesh
-        :type vertex_selection: domain.selection.VertexSelection
-
-        :param percentage: percentage used for the bake delta function. This
-        is a value from 0 to 100, a value of 100 means we're adding the full
-        delta between base and target to the destination meshes, a value of 0
-        means we're staying at the current position.
-        :type percentage: int
-
-        :param target_dag_path: MDagPath of the target
-        :type target_dag_path: maya.api.OpenMaya.MDagPath or str
+        :param command: command to execute
+        :type command: domain.commands.abstract_commands.AbstractCommand
         """
-        if not isinstance(target_dag_path, om2.MDagPath):
+        target_dag_path = kwargs.get("target_dag_path")
+        if target_dag_path and not isinstance(target_dag_path, om2.MDagPath):
             target_dag_path = create_MDagPath(target_dag_path)
+            kwargs["target_dag_path"] = target_dag_path
 
-        self._current_command = commands.BakeDifferenceCommand(
-            base_table, target_table, vertex_selection, percentage, target_dag_path,
-        )
+        self._current_command = command(**kwargs)
 
     def revert_to_base(
         self,
