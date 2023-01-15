@@ -513,12 +513,29 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_sym_position, result)
 
-    def test_revert_to_base_from_slider_with_different_values(self):
-        # TODO : add test for revert to base from a QSlider with different values to
-        #  make sure the command is only added to the undo stack from the
-        #  mouseRelease signal and that only the same command is edited as long
-        #  as the mouse has not been released.
-        pass
+    # TODO : finish coding this
+    # def test_revert_to_base_from_slider_with_different_values(self):
+    #     mc.select(self.sym_cube)
+    #     QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+    #
+    #     mc.select(self.asym_cube)
+    #     self.gui.revert_to_base_slider.setValue(50)
+    #     self.gui.revert_to_base_slider.setValue(100)
+    #     QtTest.QTest.mouseRelease(self.gui.revert_to_base_slider, QtCore.Qt.LeftButton)
+    #
+    #     result = [
+    #         mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+    #         for vtx in range(self.vtx_number)
+    #     ]
+    #
+    #     self.assertEqual(self.expected_sym_position, result)
+    #
+    #     QtTest.QTest.mouseClick(self.gui.undo_push_button, QtCore.Qt.LeftButton)
+    #
+    #     with self.assertLogs(base_test.connection_widget.controller.log, logging.ERROR) as captured:
+    #         QtTest.QTest.mouseClick(self.gui.undo_push_button, QtCore.Qt.LeftButton)
+    #
+    #     self.assertTrue("No action to undo." in captured.records[0].message)
 
     def test_bake_deltas_no_base(self):
         mc.select(self.asym_cube)

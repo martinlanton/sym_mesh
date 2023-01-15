@@ -164,7 +164,6 @@ class Layout(QtWidgets.QVBoxLayout):
         self.revert_to_base_slider.setObjectName("revert_to_base_slider")
         revert_to_base_layout.addWidget(self.revert_to_base_slider)
 
-
         # Symmetry
         sym_layout = QtWidgets.QHBoxLayout()
         commands_layout.addLayout(sym_layout)
