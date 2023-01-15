@@ -60,44 +60,15 @@ class Executor(object):
         :type command: domain.commands.abstract_commands.AbstractCommand
         """
         target_dag_path = kwargs.get("target_dag_path")
-        if target_dag_path and not isinstance(target_dag_path, om2.MDagPath):
-            target_dag_path = create_MDagPath(target_dag_path)
-            kwargs["target_dag_path"] = target_dag_path
+        if target_dag_path:
+            if not isinstance(target_dag_path, om2.MDagPath):
+                target_dag_path = create_MDagPath(target_dag_path)
+        else:
+            target_table = kwargs.get("target_table")
+            target_dag_path = target_table.dag_path.getPath()
+        kwargs["target_dag_path"] = target_dag_path
 
         self._current_command = command(**kwargs)
-
-    def revert_to_base(
-        self,
-        base_table,
-        target_table,
-        vertex_selection=selection.VertexSelection(from_list=()),
-        percentage=100,
-    ):
-        """
-        Revert selected vertices on the target mesh to the base position.
-
-        :param base_table: positions of the points of the base mesh
-        :type base_table: domain.table.GeometryTable
-
-        :param target_table: positions of the points of the current mesh
-        :type target_table: domain.table.GeometryTable
-
-        :param vertex_selection: indices of the selected points on the target mesh
-        :type vertex_selection: domain.selection.VertexSelection
-
-        :param percentage: percentage used for the revert to base function. This
-        is a value from 0 to 100, a value of 100 means we're reverting the
-        position of the base, a value of 0 means we're staying at the current
-        position.
-        :type percentage: int
-        """
-        self._current_command = commands.RevertToBaseCommand(
-            base_table,
-            target_table,
-            vertex_selection,
-            percentage,
-            target_table.dag_path.getPath(),
-        )
 
     def symmetrize(
         self,

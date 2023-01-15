@@ -4,7 +4,10 @@ import logging
 import domain.table
 from domain import executor
 from domain import table
-from domain.commands.deformation_commands import BakeDifferenceCommand
+from domain.commands.deformation_commands import (
+    BakeDifferenceCommand,
+    RevertToBaseCommand,
+)
 from domain.selection import VertexSelection
 from gui import signal
 
@@ -157,9 +160,10 @@ class Controller(object):
         vertex_selection = (
             self.vertex_selection if self.vertices_are_stored else VertexSelection()
         )
-        self.executor.revert_to_base(
-            base_table,
-            target_table,
+        self.executor.execute(
+            RevertToBaseCommand,
+            base_table=base_table,
+            target_table=target_table,
             vertex_selection=vertex_selection,
             percentage=value,
         )

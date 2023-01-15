@@ -1,6 +1,7 @@
 from maya import cmds as mc
 
 from domain import table, executor, selection
+from domain.commands.deformation_commands import RevertToBaseCommand
 from tests.fixtures import common
 
 
@@ -10,8 +11,11 @@ class TestRevertToBase(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         executor_ = executor.Executor()
-        executor_.revert_to_base(
-            base_table=sym_table, target_table=geo_table, percentage=0
+        executor_.execute(
+            RevertToBaseCommand,
+            base_table=sym_table,
+            target_table=geo_table,
+            percentage=0,
         )
 
         result = [
@@ -25,8 +29,11 @@ class TestRevertToBase(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         executor_ = executor.Executor()
-        executor_.revert_to_base(
-            base_table=sym_table, target_table=geo_table, percentage=100
+        executor_.execute(
+            RevertToBaseCommand,
+            base_table=sym_table,
+            target_table=geo_table,
+            percentage=100,
         )
 
         result = [
@@ -43,7 +50,8 @@ class TestRevertToBase(common.BaseTest):
         mc.select("{}.vtx[1]".format(self.asym_cube))
         vertex_selection = selection.VertexSelection()
         executor_ = executor.Executor()
-        executor_.revert_to_base(
+        executor_.execute(
+            RevertToBaseCommand,
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -75,7 +83,8 @@ class TestRevertToBase(common.BaseTest):
         mc.select(clear=True)
         vertex_selection = selection.VertexSelection()
         executor_ = executor.Executor()
-        executor_.revert_to_base(
+        executor_.execute(
+            RevertToBaseCommand,
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -97,7 +106,8 @@ class TestRevertToBase(common.BaseTest):
         mc.select(self.asym_cube)
         vertex_selection = selection.VertexSelection()
         executor_ = executor.Executor()
-        executor_.revert_to_base(
+        executor_.execute(
+            RevertToBaseCommand,
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
