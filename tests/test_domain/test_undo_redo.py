@@ -19,14 +19,6 @@ class TestUndo(common.BaseTest):
 
         self.assertTrue("No action to undo." in captured.records[0].message)
 
-    def test_nothing_to_redo(self):
-        mesh_modifier = mesh_modification.Executor()
-
-        with self.assertLogs(mesh_modification.log, logging.ERROR) as captured:
-            mesh_modifier.redo()
-
-        self.assertTrue("No action to redo." in captured.records[0].message)
-
     def test_undo_revert_to_base(self):
         """Test that undo after revert to base works properly."""
         vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
@@ -135,6 +127,14 @@ class TestUndo(common.BaseTest):
 
 
 class TestRedo(common.BaseTest):
+    def test_nothing_to_redo(self):
+        mesh_modifier = mesh_modification.Executor()
+
+        with self.assertLogs(mesh_modification.log, logging.ERROR) as captured:
+            mesh_modifier.redo()
+
+        self.assertTrue("No action to redo." in captured.records[0].message)
+
     def test_redo_revert_to_base(self):
         """Test that undo after revert to base works properly."""
         vtx_number = len(mc.ls("{}.vtx[*]".format(self.sym_cube), flatten=True))
