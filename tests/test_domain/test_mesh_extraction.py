@@ -5,6 +5,7 @@ from maya import cmds as mc
 from domain import table
 from domain import executor
 from domain import shading
+from domain.commands.geometry_commands import ExtractAxesCommand
 from tests.fixtures import common
 
 
@@ -16,8 +17,8 @@ class TestExtractAxes(common.BaseTest):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
         executor_ = executor.Executor()
-        extracted_mesh, blendshape = executor_.extract_axes(
-            base_table=base_table, target_table=target_table
+        extracted_mesh, blendshape = executor_.execute(
+            ExtractAxesCommand, base_table=base_table, target_table=target_table
         )
 
         shading_group = shading.get_shading_group_from_shader("lambert1")
@@ -45,8 +46,8 @@ class TestExtractAxes(common.BaseTest):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
         executor_ = executor.Executor()
-        extracted_mesh, blendshape = executor_.extract_axes(
-            base_table=base_table, target_table=target_table
+        extracted_mesh, blendshape = executor_.execute(
+            ExtractAxesCommand, base_table=base_table, target_table=target_table
         )
         expected_x = [
             [0.5, -0.5, 0.5],
@@ -114,7 +115,7 @@ class TestExtractAxes(common.BaseTest):
     #     before = time.time()
     #     target_table = table.GeometryTable(cube2)
     #     executor_ = executor.MeshModifier()
-    #     extracted_shapes = executor_.extract_axes(
+    #     extracted_shapes = executor_.execute(ExtractAxesCommand,
     #         base_table=base_table, target_table=target_table
     #     )
     #     after = time.time()

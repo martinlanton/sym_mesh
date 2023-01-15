@@ -57,7 +57,7 @@ class Executor(object):
         of meshes.
 
         :param command: command to execute
-        :type command: domain.commands.abstract_commands.AbstractCommand
+        :type command: domain.commands.abstract_commands.AbstractGeometryCommand
         """
         target_dag_path = kwargs.get("target_dag_path")
         if target_dag_path:
@@ -69,20 +69,6 @@ class Executor(object):
         kwargs["target_dag_path"] = target_dag_path
 
         self._current_command = command(**kwargs)
-
-    def extract_axes(self, base_table, target_table):
-        """Extract deltas between target table and base table on a new geometry.
-
-        :param base_table:
-        :type base_table: domain.table.GeometryTable
-
-        :param target_table:
-        :type target_table: domain.table.GeometryTable
-
-        :return: names of the newly created geometries
-        :rtype: str, str, str
-        """
-        self._current_command = commands.ExtractAxesCommand(base_table, target_table)
 
         return self._current_command.result
 

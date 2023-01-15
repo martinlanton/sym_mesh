@@ -10,6 +10,7 @@ from domain.commands.deformation_commands import (
     RevertToBaseCommand,
     SymmetrizeCommand,
 )
+from domain.commands.geometry_commands import ExtractAxesCommand
 from domain.selection import VertexSelection
 from gui import signal
 
@@ -250,8 +251,8 @@ class Controller(object):
             direction=self._direction,
             threshold=self._threshold,
         )
-        self.executor.extract_axes(
-            base_table, target_table,
+        self.executor.execute(
+            ExtractAxesCommand, base_table=base_table, target_table=target_table,
         )
         self.executor.stash_command()
 

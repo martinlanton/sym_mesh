@@ -2,14 +2,23 @@ import logging
 
 from maya.api import OpenMaya as om2
 from maya import cmds as mc
-from domain.dag_path import create_MDagPath
+from domain import selection
 from domain import shading
+from domain.commands.abstract_commands import AbstractGeometryCommand
+from domain.dag_path import create_MDagPath
 
 log = logging.getLogger(__name__)
 
 
-class ExtractAxesCommand(object):
-    def __init__(self, base_table, target_table):
+class ExtractAxesCommand(AbstractGeometryCommand):
+    def __init__(
+        self,
+        base_table,
+        target_table,
+        vertex_selection=selection.VertexSelection(from_list=()),
+        percentage=100,
+        target_dag_path=None,
+    ):
         """Extract deltas between target table and base table on a new geometry.
 
         :param base_table:
@@ -18,14 +27,18 @@ class ExtractAxesCommand(object):
         :param target_table:
         :type target_table: domain.table.GeometryTable
         """
-        self.point_arrays = list()
-        self.base_table = base_table
-        self.target_table = target_table
         self.base_dag_path = base_table.dag_path
-        self.meshes = self.extract_axes()
-        self.result = self.create_blendshape()
+        self.point_arrays = list()
+        self.meshes = list()
+        super().__init__(
+            base_table,
+            target_table,
+            vertex_selection,
+            percentage=percentage,
+            target_dag_path=target_dag_path,
+        )
 
-    def extract_axes(self):
+    def do_it(self):
         """Extract deltas between target table and base table on a new geometry.
 
         :return: names of the newly created geometries
@@ -35,11 +48,10 @@ class ExtractAxesCommand(object):
         base_point_array = self.base_table.point_array
         target_point_array = self.target_table.point_array
 
-        pathes = list()
         for i, axis in enumerate(["x", "y", "z"]):
             dag_path = self.duplicate_mesh(self.base_dag_path, target_name, suffix=axis)
             path = dag_path.fullPathName()
-            pathes.append(path)
+            self.meshes.append(path)
 
             # Init MFnMesh
             destination_table = om2.MPointArray()
@@ -63,9 +75,9 @@ class ExtractAxesCommand(object):
         dag_path = self.duplicate_mesh(
             self.base_dag_path, target_name, suffix="extracted"
         )
-        pathes.append(dag_path.fullPathName())
+        self.meshes.append(dag_path.fullPathName())
 
-        return pathes
+        return self.create_blendshape()
 
     def duplicate_mesh(self, dag_path, name, suffix=""):
         """Duplicate the mesh at the selected dag path and rename it with the specified name.

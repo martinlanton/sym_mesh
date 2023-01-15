@@ -12,12 +12,7 @@ log.setLevel(logging.INFO)
 
 
 @six.add_metaclass(abc.ABCMeta)
-class AbstractCommand(object):
-    pass
-
-
-@six.add_metaclass(abc.ABCMeta)
-class AbstractDeformationCommand(AbstractCommand):
+class AbstractGeometryCommand(object):
     def __init__(
         self,
         base_table,
@@ -62,10 +57,25 @@ class AbstractDeformationCommand(AbstractCommand):
             target_dag_path, base_table.space
         )
         self.undo_action = self.current_point_array
-        self.result = self.deform()
+        self.result = self.do_it()
         self.redo_action = self.result
 
-    def deform(self):
+    @abc.abstractmethod
+    def do_it(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def undo(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def redo(self):
+        raise NotImplementedError
+
+
+@six.add_metaclass(abc.ABCMeta)
+class AbstractDeformationCommand(AbstractGeometryCommand):
+    def do_it(self):
         """
         Set the positions of the points of the mesh based on the computation algorithm.
         """

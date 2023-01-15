@@ -10,6 +10,7 @@ from domain.commands.deformation_commands import (
     SymmetrizeCommand,
     FlipCommand,
 )
+from domain.commands.geometry_commands import ExtractAxesCommand
 from tests.fixtures import common
 
 
@@ -111,8 +112,8 @@ class TestUndo(common.BaseTest):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
         executor_ = executor.Executor()
-        extracted_mesh, blendshape = executor_.extract_axes(
-            base_table=base_table, target_table=target_table
+        extracted_mesh, blendshape = executor_.execute(
+            ExtractAxesCommand, base_table=base_table, target_table=target_table
         )
         executor_.stash_command()
         executor_.undo()
@@ -281,8 +282,8 @@ class TestRedo(common.BaseTest):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
         executor_ = executor.Executor()
-        extracted_mesh, blendshape = executor_.extract_axes(
-            base_table=base_table, target_table=target_table
+        extracted_mesh, blendshape = executor_.execute(
+            ExtractAxesCommand, base_table=base_table, target_table=target_table
         )
         executor_.stash_command()
         executor_.undo()
