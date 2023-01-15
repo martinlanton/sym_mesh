@@ -6,7 +6,7 @@ from tests.fixtures import common
 
 
 class TestRevertToBase(common.BaseTest):
-    def test_revert_to_current(self):
+    def test_revert_to_base_zero_percent(self):
         """Test that reverting to base with a value of 100% doesn't revert anything."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
