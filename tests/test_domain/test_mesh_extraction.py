@@ -15,7 +15,7 @@ class TestExtractAxes(common.BaseTest):
     def test_extract_axes_creates_geometry(self):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         extracted_mesh, blendshape = mesh_modifier.extract_axes(
             base_table=base_table, target_table=target_table
         )
@@ -44,7 +44,7 @@ class TestExtractAxes(common.BaseTest):
     def test_extract_axes_geometries_point_positions(self):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         extracted_mesh, blendshape = mesh_modifier.extract_axes(
             base_table=base_table, target_table=target_table
         )

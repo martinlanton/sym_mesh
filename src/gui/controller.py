@@ -20,7 +20,7 @@ class Controller(object):
 
         self.vertex_selection = VertexSelection(from_list=())
 
-        self.mesh_modifier = mesh_modification.MeshModifier()
+        self.mesh_modifier = mesh_modification.Executor()
 
         self.vertices_are_stored = False
         self._threshold = 0.001

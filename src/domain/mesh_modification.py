@@ -23,7 +23,7 @@ log.setLevel(logging.INFO)
 #  mechanism for some commands.
 
 
-class MeshModifier(object):
+class Executor(object):
     def __init__(self):
         self.undo_queue = list()
         self.redo_queue = list()

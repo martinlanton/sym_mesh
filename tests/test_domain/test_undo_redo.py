@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 
 class TestUndo(common.BaseTest):
     def test_nothing_to_undo(self):
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
 
         with self.assertLogs(mesh_modification.log, logging.ERROR) as captured:
             mesh_modifier.undo()
@@ -20,7 +20,7 @@ class TestUndo(common.BaseTest):
         self.assertTrue("No action to undo." in captured.records[0].message)
 
     def test_nothing_to_redo(self):
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
 
         with self.assertLogs(mesh_modification.log, logging.ERROR) as captured:
             mesh_modifier.redo()
@@ -37,7 +37,7 @@ class TestUndo(common.BaseTest):
 
         asym_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.revert_to_base(
             base_table=sym_table, target_table=asym_table, percentage=100
         )
@@ -62,7 +62,7 @@ class TestUndo(common.BaseTest):
 
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table)
         mesh_modifier.undo()
 
@@ -85,7 +85,7 @@ class TestUndo(common.BaseTest):
 
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.bake_difference(
             sym_table, geo_table, target_dag_path=self.other_cube
         )
@@ -101,7 +101,7 @@ class TestUndo(common.BaseTest):
         """Test that undo after extracting axes works properly."""
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         extracted_mesh, blendshape = mesh_modifier.extract_axes(
             base_table=base_table, target_table=target_table
         )
@@ -120,7 +120,7 @@ class TestUndo(common.BaseTest):
 
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.flip(base_table=sym_table, target_table=geo_table)
         mesh_modifier.undo()
 
@@ -145,7 +145,7 @@ class TestRedo(common.BaseTest):
 
         asym_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.revert_to_base(
             base_table=sym_table, target_table=asym_table, percentage=100
         )
@@ -171,7 +171,7 @@ class TestRedo(common.BaseTest):
 
         asym_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.revert_to_base(
             base_table=sym_table, target_table=asym_table, percentage=100
         )
@@ -204,7 +204,7 @@ class TestRedo(common.BaseTest):
 
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table)
         mesh_modifier.undo()
         mesh_modifier.redo()
@@ -228,7 +228,7 @@ class TestRedo(common.BaseTest):
 
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.bake_difference(
             sym_table, geo_table, target_dag_path=self.other_cube
         )
@@ -246,7 +246,7 @@ class TestRedo(common.BaseTest):
 
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         extracted_mesh, blendshape = mesh_modifier.extract_axes(
             base_table=base_table, target_table=target_table
         )
@@ -312,7 +312,7 @@ class TestRedo(common.BaseTest):
 
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="positive")
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.flip(base_table=sym_table, target_table=geo_table)
         mesh_modifier.undo()
         mesh_modifier.redo()

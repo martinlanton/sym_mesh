@@ -9,7 +9,7 @@ class TestRevertToBase(common.BaseTest):
         """Test that reverting to base with a value of 100% doesn't revert anything."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.revert_to_base(
             base_table=sym_table, target_table=geo_table, percentage=0
         )
@@ -24,7 +24,7 @@ class TestRevertToBase(common.BaseTest):
         """Test that reverting to base with a value of 0% reverts to base."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.revert_to_base(
             base_table=sym_table, target_table=geo_table, percentage=100
         )
@@ -42,7 +42,7 @@ class TestRevertToBase(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select("{}.vtx[1]".format(self.asym_cube))
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.revert_to_base(
             base_table=sym_table,
             target_table=geo_table,
@@ -74,7 +74,7 @@ class TestRevertToBase(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select(clear=True)
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.revert_to_base(
             base_table=sym_table,
             target_table=geo_table,
@@ -96,7 +96,7 @@ class TestRevertToBase(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select(self.asym_cube)
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.revert_to_base(
             base_table=sym_table,
             target_table=geo_table,

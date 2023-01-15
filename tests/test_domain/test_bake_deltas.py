@@ -14,7 +14,7 @@ class TestBakeDeltas(common.BaseTest):
         """Test that baking delta functions properly on one geometry."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.bake_difference(
             base_table=sym_table,
             target_table=geo_table,
@@ -31,7 +31,7 @@ class TestBakeDeltas(common.BaseTest):
         """Test that baking delta functions properly on one geometry."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.bake_difference(
             base_table=sym_table,
             target_table=geo_table,
@@ -52,7 +52,7 @@ class TestBakeDeltas(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         mc.select("{}.vtx[1]".format(self.asym_cube))
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.bake_difference(
             base_table=sym_table,
             target_table=geo_table,
@@ -87,7 +87,7 @@ class TestBakeDeltas(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select(clear=True)
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.bake_difference(
             base_table=sym_table,
             target_table=geo_table,
@@ -107,7 +107,7 @@ class TestBakeDeltas(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select(self.asym_cube)
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.bake_difference(
             base_table=sym_table,
             target_table=geo_table,

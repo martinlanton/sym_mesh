@@ -14,7 +14,7 @@ class TestFlip(common.BaseTest):
         Flipping on the Y axis positive direction for this test."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="positive")
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.flip(base_table=sym_table, target_table=geo_table)
 
         expected = [
@@ -44,7 +44,7 @@ class TestFlip(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select("{}.vtx[1]".format(self.asym_cube))
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.flip(
             base_table=sym_table,
             target_table=geo_table,
@@ -76,7 +76,7 @@ class TestFlip(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="positive")
         mc.select(clear=True)
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.flip(
             base_table=sym_table,
             target_table=geo_table,
@@ -110,7 +110,7 @@ class TestFlip(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="positive")
         mc.select(self.asym_cube)
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.MeshModifier()
+        mesh_modifier = mesh_modification.Executor()
         mesh_modifier.flip(
             base_table=sym_table,
             target_table=geo_table,
