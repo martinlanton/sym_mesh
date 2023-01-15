@@ -70,36 +70,6 @@ class Executor(object):
 
         self._current_command = command(**kwargs)
 
-    def symmetrize(
-        self,
-        base_table,
-        target_table,
-        vertex_selection=selection.VertexSelection(from_list=()),
-        percentage=100,
-    ):
-        """
-        Symmetrize selected vertices on the target mesh.
-
-        :param base_table: positions of the points of the base mesh
-        :type base_table: domain.table.GeometryTable
-
-        :param target_table: positions of the points of the current mesh
-        :type target_table: domain.table.GeometryTable
-
-        :param vertex_selection: indices of the selected points on the target mesh
-        :type vertex_selection: domain.selection.VertexSelection
-
-        :param percentage: percentage used for the revert to base function
-        :type percentage: int
-        """
-        self._current_command = commands.SymmetrizeCommand(
-            base_table,
-            target_table,
-            vertex_selection,
-            percentage,
-            target_table.dag_path.getPath(),
-        )
-
     def extract_axes(self, base_table, target_table):
         """Extract deltas between target table and base table on a new geometry.
 

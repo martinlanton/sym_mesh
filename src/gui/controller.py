@@ -7,6 +7,7 @@ from domain import table
 from domain.commands.deformation_commands import (
     BakeDifferenceCommand,
     RevertToBaseCommand,
+    SymmetrizeCommand,
 )
 from domain.selection import VertexSelection
 from gui import signal
@@ -195,9 +196,10 @@ class Controller(object):
             direction=self._direction,
             threshold=self._threshold,
         )
-        self.executor.symmetrize(
-            base_table,
-            target_table,
+        self.executor.execute(
+            SymmetrizeCommand,
+            base_table=base_table,
+            target_table=target_table,
             vertex_selection=vertex_selection,
             percentage=value,
         )

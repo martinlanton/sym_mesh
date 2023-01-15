@@ -4,7 +4,7 @@ from maya import cmds as mc
 
 from domain import table
 from domain import executor
-from domain.commands.deformation_commands import BakeDifferenceCommand, RevertToBaseCommand
+from domain.commands.deformation_commands import BakeDifferenceCommand, RevertToBaseCommand, SymmetrizeCommand
 from tests.fixtures import common
 
 
@@ -58,7 +58,7 @@ class TestUndo(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         executor_ = executor.Executor()
-        executor_.symmetrize(base_table=sym_table, target_table=geo_table)
+        executor_.execute(SymmetrizeCommand, base_table=sym_table, target_table=geo_table)
         executor_.stash_command()
         executor_.undo()
 
@@ -217,7 +217,7 @@ class TestRedo(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         executor_ = executor.Executor()
-        executor_.symmetrize(base_table=sym_table, target_table=geo_table)
+        executor_.execute(SymmetrizeCommand, base_table=sym_table, target_table=geo_table)
         executor_.stash_command()
         executor_.undo()
         executor_.redo()

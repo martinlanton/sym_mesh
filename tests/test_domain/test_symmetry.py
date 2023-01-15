@@ -2,6 +2,7 @@ import logging
 from maya import cmds as mc
 
 from domain import table, executor, selection
+from domain.commands.deformation_commands import SymmetrizeCommand
 from tests.fixtures import common
 
 log = logging.getLogger(__name__)
@@ -14,7 +15,9 @@ class TestSymmetry(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         executor_ = executor.Executor()
-        executor_.symmetrize(base_table=sym_table, target_table=geo_table)
+        executor_.execute(
+            SymmetrizeCommand, base_table=sym_table, target_table=geo_table
+        )
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -33,7 +36,9 @@ class TestSymmetry(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="negative")
         executor_ = executor.Executor()
-        executor_.symmetrize(base_table=sym_table, target_table=geo_table)
+        executor_.execute(
+            SymmetrizeCommand, base_table=sym_table, target_table=geo_table
+        )
 
         expected = [
             [-0.5, 0.5, 0.5],
@@ -62,7 +67,9 @@ class TestSymmetry(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="negative")
         executor_ = executor.Executor()
-        executor_.symmetrize(base_table=sym_table, target_table=geo_table)
+        executor_.execute(
+            SymmetrizeCommand, base_table=sym_table, target_table=geo_table
+        )
 
         expected = [
             [-0.5, -0.5, 0.5],
@@ -89,8 +96,11 @@ class TestSymmetry(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         executor_ = executor.Executor()
-        executor_.symmetrize(
-            base_table=sym_table, target_table=geo_table, percentage=0
+        executor_.execute(
+            SymmetrizeCommand,
+            base_table=sym_table,
+            target_table=geo_table,
+            percentage=0,
         )
 
         result = [
@@ -111,7 +121,8 @@ class TestSymmetry(common.BaseTest):
         mc.select("{}.vtx[1]".format(self.asym_cube))
         vertex_selection = selection.VertexSelection()
         executor_ = executor.Executor()
-        executor_.symmetrize(
+        executor_.execute(
+            SymmetrizeCommand,
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -145,7 +156,8 @@ class TestSymmetry(common.BaseTest):
         mc.select(clear=True)
         vertex_selection = selection.VertexSelection()
         executor_ = executor.Executor()
-        executor_.symmetrize(
+        executor_.execute(
+            SymmetrizeCommand,
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -171,7 +183,8 @@ class TestSymmetry(common.BaseTest):
         mc.select(self.asym_cube)
         vertex_selection = selection.VertexSelection()
         executor_ = executor.Executor()
-        executor_.symmetrize(
+        executor_.execute(
+            SymmetrizeCommand,
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
