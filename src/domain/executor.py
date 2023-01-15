@@ -86,35 +86,6 @@ class Executor(object):
 
         return self._current_command.result
 
-    def flip(
-        self,
-        base_table,
-        target_table,
-        vertex_selection=selection.VertexSelection(from_list=()),
-        percentage=100,
-    ):
-        """Flip selected vertices on the target mesh.
-
-        :param base_table: positions of the points of the base mesh
-        :type base_table: domain.table.GeometryTable
-
-        :param target_table: positions of the points of the current mesh
-        :type target_table: domain.table.GeometryTable
-
-        :param vertex_selection: indices of the selected points on the target mesh
-        :type vertex_selection: domain.selection.VertexSelection
-
-        :param percentage: percentage used for the revert to base function
-        :type percentage: int
-        """
-        self._current_command = commands.FlipCommand(
-            base_table,
-            target_table,
-            vertex_selection,
-            percentage,
-            target_table.dag_path.getPath(),
-        )
-
     def stash_command(self):
         """Add the current command to the undo queue and remove it from self._current_command."""
         self.undo_queue.append(self._current_command)

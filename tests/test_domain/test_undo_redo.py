@@ -4,7 +4,12 @@ from maya import cmds as mc
 
 from domain import table
 from domain import executor
-from domain.commands.deformation_commands import BakeDifferenceCommand, RevertToBaseCommand, SymmetrizeCommand
+from domain.commands.deformation_commands import (
+    BakeDifferenceCommand,
+    RevertToBaseCommand,
+    SymmetrizeCommand,
+    FlipCommand,
+)
 from tests.fixtures import common
 
 
@@ -33,7 +38,9 @@ class TestUndo(common.BaseTest):
         executor_ = executor.Executor()
         executor_.execute(
             RevertToBaseCommand,
-            base_table=sym_table, target_table=asym_table, percentage=100
+            base_table=sym_table,
+            target_table=asym_table,
+            percentage=100,
         )
         executor_.stash_command()
         executor_.undo()
@@ -58,7 +65,9 @@ class TestUndo(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         executor_ = executor.Executor()
-        executor_.execute(SymmetrizeCommand, base_table=sym_table, target_table=geo_table)
+        executor_.execute(
+            SymmetrizeCommand, base_table=sym_table, target_table=geo_table
+        )
         executor_.stash_command()
         executor_.undo()
 
@@ -84,7 +93,9 @@ class TestUndo(common.BaseTest):
         executor_ = executor.Executor()
         executor_.execute(
             BakeDifferenceCommand,
-            base_table=sym_table, target_table=geo_table, target_dag_path=self.other_cube
+            base_table=sym_table,
+            target_table=geo_table,
+            target_dag_path=self.other_cube,
         )
         executor_.stash_command()
         executor_.undo()
@@ -120,7 +131,7 @@ class TestUndo(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         executor_ = executor.Executor()
-        executor_.flip(base_table=sym_table, target_table=geo_table)
+        executor_.execute(FlipCommand, base_table=sym_table, target_table=geo_table)
         executor_.stash_command()
         executor_.undo()
 
@@ -156,7 +167,9 @@ class TestRedo(common.BaseTest):
         executor_ = executor.Executor()
         executor_.execute(
             RevertToBaseCommand,
-            base_table=sym_table, target_table=asym_table, percentage=100
+            base_table=sym_table,
+            target_table=asym_table,
+            percentage=100,
         )
         executor_.stash_command()
         executor_.undo()
@@ -184,7 +197,9 @@ class TestRedo(common.BaseTest):
         executor_ = executor.Executor()
         executor_.execute(
             RevertToBaseCommand,
-            base_table=sym_table, target_table=asym_table, percentage=100
+            base_table=sym_table,
+            target_table=asym_table,
+            percentage=100,
         )
         executor_.stash_command()
         executor_.undo()
@@ -217,7 +232,9 @@ class TestRedo(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         executor_ = executor.Executor()
-        executor_.execute(SymmetrizeCommand, base_table=sym_table, target_table=geo_table)
+        executor_.execute(
+            SymmetrizeCommand, base_table=sym_table, target_table=geo_table
+        )
         executor_.stash_command()
         executor_.undo()
         executor_.redo()
@@ -244,7 +261,9 @@ class TestRedo(common.BaseTest):
         executor_ = executor.Executor()
         executor_.execute(
             BakeDifferenceCommand,
-            base_table=sym_table, target_table=geo_table, target_dag_path=self.other_cube
+            base_table=sym_table,
+            target_table=geo_table,
+            target_dag_path=self.other_cube,
         )
         executor_.stash_command()
         executor_.undo()
@@ -328,7 +347,7 @@ class TestRedo(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="positive")
         executor_ = executor.Executor()
-        executor_.flip(base_table=sym_table, target_table=geo_table)
+        executor_.execute(FlipCommand, base_table=sym_table, target_table=geo_table)
         executor_.stash_command()
         executor_.undo()
         executor_.redo()

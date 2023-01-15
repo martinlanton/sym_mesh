@@ -4,6 +4,7 @@ import maya.cmds as mc
 from tests.fixtures import common
 
 from domain import table, executor, selection
+from domain.commands.deformation_commands import FlipCommand
 
 log = logging.getLogger(__name__)
 
@@ -15,7 +16,7 @@ class TestFlip(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="positive")
         executor_ = executor.Executor()
-        executor_.flip(base_table=sym_table, target_table=geo_table)
+        executor_.execute(FlipCommand, base_table=sym_table, target_table=geo_table)
 
         expected = [
             [-0.5, -0.5, 0.5],
@@ -45,7 +46,8 @@ class TestFlip(common.BaseTest):
         mc.select("{}.vtx[1]".format(self.asym_cube))
         vertex_selection = selection.VertexSelection()
         executor_ = executor.Executor()
-        executor_.flip(
+        executor_.execute(
+            FlipCommand,
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -77,7 +79,8 @@ class TestFlip(common.BaseTest):
         mc.select(clear=True)
         vertex_selection = selection.VertexSelection()
         executor_ = executor.Executor()
-        executor_.flip(
+        executor_.execute(
+            FlipCommand,
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -111,7 +114,8 @@ class TestFlip(common.BaseTest):
         mc.select(self.asym_cube)
         vertex_selection = selection.VertexSelection()
         executor_ = executor.Executor()
-        executor_.flip(
+        executor_.execute(
+            FlipCommand,
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,

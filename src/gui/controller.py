@@ -6,6 +6,7 @@ from domain import executor
 from domain import table
 from domain.commands.deformation_commands import (
     BakeDifferenceCommand,
+    FlipCommand,
     RevertToBaseCommand,
     SymmetrizeCommand,
 )
@@ -224,9 +225,10 @@ class Controller(object):
             direction=self._direction,
             threshold=self._threshold,
         )
-        self.executor.flip(
-            base_table,
-            target_table,
+        self.executor.execute(
+            FlipCommand,
+            base_table=base_table,
+            target_table=target_table,
             vertex_selection=vertex_selection,
             percentage=self._percentage,
         )
