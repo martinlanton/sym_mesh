@@ -1,7 +1,7 @@
 import logging
 from maya import cmds as mc
 
-from domain import table, mesh_modification, selection
+from domain import table, executor, selection
 from tests.fixtures import common
 
 log = logging.getLogger(__name__)
@@ -13,8 +13,8 @@ class TestSymmetry(common.BaseTest):
         symmetrizes properly."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table)
+        executor_ = executor.Executor()
+        executor_.symmetrize(base_table=sym_table, target_table=geo_table)
 
         result = [
             mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
@@ -32,8 +32,8 @@ class TestSymmetry(common.BaseTest):
         """
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="negative")
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table)
+        executor_ = executor.Executor()
+        executor_.symmetrize(base_table=sym_table, target_table=geo_table)
 
         expected = [
             [-0.5, 0.5, 0.5],
@@ -61,8 +61,8 @@ class TestSymmetry(common.BaseTest):
         """
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="negative")
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.symmetrize(base_table=sym_table, target_table=geo_table)
+        executor_ = executor.Executor()
+        executor_.symmetrize(base_table=sym_table, target_table=geo_table)
 
         expected = [
             [-0.5, -0.5, 0.5],
@@ -88,8 +88,8 @@ class TestSymmetry(common.BaseTest):
         """Test that symmetrizing with a value of 0% doesn't do anything."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.symmetrize(
+        executor_ = executor.Executor()
+        executor_.symmetrize(
             base_table=sym_table, target_table=geo_table, percentage=0
         )
 
@@ -110,8 +110,8 @@ class TestSymmetry(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         mc.select("{}.vtx[1]".format(self.asym_cube))
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.symmetrize(
+        executor_ = executor.Executor()
+        executor_.symmetrize(
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -144,8 +144,8 @@ class TestSymmetry(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         mc.select(clear=True)
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.symmetrize(
+        executor_ = executor.Executor()
+        executor_.symmetrize(
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -170,8 +170,8 @@ class TestSymmetry(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube, axis="x", direction="positive")
         mc.select(self.asym_cube)
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.symmetrize(
+        executor_ = executor.Executor()
+        executor_.symmetrize(
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,

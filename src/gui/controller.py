@@ -2,7 +2,7 @@ from maya import cmds as mc
 import logging
 
 import domain.table
-from domain import mesh_modification
+from domain import executor
 from domain.selection import VertexSelection
 from gui import signal
 from domain import table
@@ -20,7 +20,7 @@ class Controller(object):
 
         self.vertex_selection = VertexSelection(from_list=())
 
-        self.mesh_modifier = mesh_modification.Executor()
+        self.mesh_modifier = executor.Executor()
 
         self.vertices_are_stored = False
         self._threshold = 0.001

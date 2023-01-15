@@ -69,8 +69,6 @@ class TestGeometryTable(common.BaseTest):
 
         expected_sym_table = {1: 2, 7: 4}
         expected_non_mirrored_vertices_indices = [0, 3, 5, 6]
-        print("LOOK HERE")
-        print(captured)
         self.assertTrue(
             "Model {} is NOT symmetrical,"
             " mirroring might not work as expected.".format(self.asym_cube)

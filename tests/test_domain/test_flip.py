@@ -3,7 +3,7 @@ import logging
 import maya.cmds as mc
 from tests.fixtures import common
 
-from domain import table, mesh_modification, selection
+from domain import table, executor, selection
 
 log = logging.getLogger(__name__)
 
@@ -14,8 +14,8 @@ class TestFlip(common.BaseTest):
         Flipping on the Y axis positive direction for this test."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="positive")
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.flip(base_table=sym_table, target_table=geo_table)
+        executor_ = executor.Executor()
+        executor_.flip(base_table=sym_table, target_table=geo_table)
 
         expected = [
             [-0.5, -0.5, 0.5],
@@ -44,8 +44,8 @@ class TestFlip(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select("{}.vtx[1]".format(self.asym_cube))
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.flip(
+        executor_ = executor.Executor()
+        executor_.flip(
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -76,8 +76,8 @@ class TestFlip(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="positive")
         mc.select(clear=True)
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.flip(
+        executor_ = executor.Executor()
+        executor_.flip(
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -110,8 +110,8 @@ class TestFlip(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube, axis="y", direction="positive")
         mc.select(self.asym_cube)
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.flip(
+        executor_ = executor.Executor()
+        executor_.flip(
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,

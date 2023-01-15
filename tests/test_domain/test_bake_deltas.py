@@ -2,7 +2,7 @@ import logging
 
 from maya import cmds as mc
 
-from domain import mesh_modification, selection, table
+from domain import executor, selection, table
 from tests.fixtures import common
 
 logging.basicConfig()
@@ -14,8 +14,8 @@ class TestBakeDeltas(common.BaseTest):
         """Test that baking delta functions properly on one geometry."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.bake_difference(
+        executor_ = executor.Executor()
+        executor_.bake_difference(
             base_table=sym_table,
             target_table=geo_table,
             target_dag_path=self.other_cube,
@@ -31,8 +31,8 @@ class TestBakeDeltas(common.BaseTest):
         """Test that baking delta functions properly on one geometry."""
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.bake_difference(
+        executor_ = executor.Executor()
+        executor_.bake_difference(
             base_table=sym_table,
             target_table=geo_table,
             percentage=0,
@@ -52,8 +52,8 @@ class TestBakeDeltas(common.BaseTest):
         geo_table = table.GeometryTable(self.asym_cube)
         mc.select("{}.vtx[1]".format(self.asym_cube))
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.bake_difference(
+        executor_ = executor.Executor()
+        executor_.bake_difference(
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -87,8 +87,8 @@ class TestBakeDeltas(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select(clear=True)
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.bake_difference(
+        executor_ = executor.Executor()
+        executor_.bake_difference(
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,
@@ -107,8 +107,8 @@ class TestBakeDeltas(common.BaseTest):
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select(self.asym_cube)
         vertex_selection = selection.VertexSelection()
-        mesh_modifier = mesh_modification.Executor()
-        mesh_modifier.bake_difference(
+        executor_ = executor.Executor()
+        executor_.bake_difference(
             base_table=sym_table,
             target_table=geo_table,
             vertex_selection=vertex_selection,

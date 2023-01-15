@@ -3,7 +3,7 @@ import logging
 from maya import cmds as mc
 
 from domain import table
-from domain import mesh_modification
+from domain import executor
 from domain import shading
 from tests.fixtures import common
 
@@ -15,8 +15,8 @@ class TestExtractAxes(common.BaseTest):
     def test_extract_axes_creates_geometry(self):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.Executor()
-        extracted_mesh, blendshape = mesh_modifier.extract_axes(
+        executor_ = executor.Executor()
+        extracted_mesh, blendshape = executor_.extract_axes(
             base_table=base_table, target_table=target_table
         )
 
@@ -44,8 +44,8 @@ class TestExtractAxes(common.BaseTest):
     def test_extract_axes_geometries_point_positions(self):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
         base_table = table.GeometryTable(self.sym_cube)
-        mesh_modifier = mesh_modification.Executor()
-        extracted_mesh, blendshape = mesh_modifier.extract_axes(
+        executor_ = executor.Executor()
+        extracted_mesh, blendshape = executor_.extract_axes(
             base_table=base_table, target_table=target_table
         )
         expected_x = [
@@ -113,8 +113,8 @@ class TestExtractAxes(common.BaseTest):
     #
     #     before = time.time()
     #     target_table = table.GeometryTable(cube2)
-    #     mesh_modifier = mesh_modification.MeshModifier()
-    #     extracted_shapes = mesh_modifier.extract_axes(
+    #     executor_ = executor.MeshModifier()
+    #     extracted_shapes = executor_.extract_axes(
     #         base_table=base_table, target_table=target_table
     #     )
     #     after = time.time()
