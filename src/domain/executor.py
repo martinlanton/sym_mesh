@@ -80,9 +80,6 @@ class Executor(object):
 
         :param target_dag_path: MDagPath of the target
         :type target_dag_path: maya.api.OpenMaya.MDagPath or str
-
-        :param space: space in which operate the deformation (object or world)
-        :type space: constant
         """
         if not isinstance(target_dag_path, om2.MDagPath):
             target_dag_path = create_MDagPath(target_dag_path)
@@ -115,9 +112,6 @@ class Executor(object):
         position of the base, a value of 0 means we're staying at the current
         position.
         :type percentage: int
-
-        :param space: space in which operate the deformation (object or world)
-        :type space: constant
         """
         self._current_command = commands.RevertToBaseCommand(
             base_table,
@@ -148,9 +142,6 @@ class Executor(object):
 
         :param percentage: percentage used for the revert to base function
         :type percentage: int
-
-        :param space: space in which operate the deformation (object or world)
-        :type space: constant
         """
         self._current_command = commands.SymmetrizeCommand(
             base_table,
@@ -196,9 +187,6 @@ class Executor(object):
 
         :param percentage: percentage used for the revert to base function
         :type percentage: int
-
-        :param space: space in which operate the deformation (object or world)
-        :type space: constant
         """
         self._current_command = commands.FlipCommand(
             base_table,
