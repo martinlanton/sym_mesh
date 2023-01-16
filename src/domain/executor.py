@@ -1,9 +1,7 @@
 import maya.api.OpenMaya as om2
 import logging
 
-from domain import commands
 from domain.dag_path import create_MDagPath
-from domain import selection
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
