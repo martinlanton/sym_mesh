@@ -50,13 +50,23 @@ class AbstractGeometryCommand(object):
         self.base_table = base_table
         self.target_table = target_table
         self.vertex_selection = vertex_selection
-        self.percentage = percentage
+        self._percentage = percentage
         self.target_dag_path = target_dag_path
         self.space = base_table.space
         self.current_point_array = selection.get_points_positions(
             target_dag_path, base_table.space
         )
         self.undo_action = self.current_point_array
+        self.result = self.do_it()
+        self.redo_action = self.result
+
+    @property
+    def percentage(self):
+        return self._percentage
+
+    @percentage.setter
+    def percentage(self, value):
+        self._percentage = value
         self.result = self.do_it()
         self.redo_action = self.result
 

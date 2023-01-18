@@ -21,10 +21,11 @@ class ConnectionWidget(QtWidgets.QGroupBox):
         self.gui.get_base_pb.clicked.connect(self.ctrl.get_base)
         self.gui.get_target_pb.clicked.connect(self.ctrl.get_target)
 
-        self.gui.revert_to_base_pb.clicked.connect(
-            partial(self.ctrl.revert_to_base, 100)
+        self.gui.revert_to_base_pb.clicked.connect(self.ctrl.revert_to_base)
+        self.gui.revert_to_base_slider.valueChanged.connect(
+            self.ctrl.revert_to_base_live
         )
-        self.gui.revert_to_base_slider.valueChanged.connect(self.ctrl.revert_to_base)
+        self.gui.revert_to_base_slider.sliderReleased.connect(self.ctrl.stash_command)
         self.gui.symmetry_pb.clicked.connect(partial(self.ctrl.symmetrize, 100))
         self.gui.symmetry_slider.valueChanged.connect(self.ctrl.symmetrize)
         self.gui.flip_pb.clicked.connect(self.ctrl.flip)

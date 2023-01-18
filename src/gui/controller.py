@@ -47,6 +47,7 @@ class Controller(object):
 
     @threshold.setter
     def threshold(self, value):
+        """Set the threshold and regenerate the base geometry table."""
         log.info("Setting threshold to : %s", value)
         self._threshold = value
 
@@ -58,6 +59,7 @@ class Controller(object):
 
     @axis.setter
     def axis(self, value):
+        """Set the axis and regenerate the base geometry table."""
         log.info("Setting axis to : %s", value)
         self._axis = value
 
@@ -69,12 +71,17 @@ class Controller(object):
 
     @direction.setter
     def direction(self, value):
+        """Set the direction and regenerate the base geometry table."""
         log.info("Setting direction to : %s", value)
         self._direction = value
 
         self._regenerate_base()
 
     def _regenerate_base(self):
+        """Regenerate the geometry table for the base mesh. This is a convenience
+        method used exclusively to regenerate the existing base geometry table
+        when setting the properties to change the threshold, axis, or direction
+        to use for the geometry tables."""
         if self.base_table:
             mesh = str(self.base_table)
             log.debug(
@@ -137,14 +144,10 @@ class Controller(object):
     def select_non_mirrored_vertices(self):
         self.base_table.non_mirrored_vertices.select()
 
-    def revert_to_base(self, value):
+    def revert_to_base(self):
         """Revert selected mesh or vertices to base from the current value, using
         vertices selection (if one has been stored or is active) or on the whole
-        mesh.
-
-        :param value: percentage value to use for the revert to base operation.
-        :type value: int
-        """
+        mesh."""
         selection = mc.ls(sl=True)
         if not selection:
             log.error("Unable to revert to base, no target selected.")
@@ -168,8 +171,41 @@ class Controller(object):
             base_table=base_table,
             target_table=target_table,
             vertex_selection=vertex_selection,
-            percentage=value,
+            percentage=100,
         )
+        self.executor.stash_command()
+
+    def revert_to_base_live(self, value):
+        if not self.executor.has_active_command():
+            selection = mc.ls(sl=True)
+            if not selection:
+                log.error("Unable to revert to base, no target selected.")
+                return
+            target = selection[0]
+            base_table = self.base_table
+            if not base_table:
+                log.error("Unable to revert to base, no base defined.")
+                return
+            target_table = table.GeometryTable(
+                target,
+                axis=self._axis,
+                direction=self._direction,
+                threshold=self._threshold,
+            )
+            vertex_selection = (
+                self.vertex_selection if self.vertices_are_stored else VertexSelection()
+            )
+            self.executor.execute(
+                RevertToBaseCommand,
+                base_table=base_table,
+                target_table=target_table,
+                vertex_selection=vertex_selection,
+                percentage=value,
+            )
+        else:
+            self.executor.command.percentage = value
+
+    def stash_command(self):
         self.executor.stash_command()
 
     def symmetrize(self, value):

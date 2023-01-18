@@ -27,6 +27,18 @@ class Executor(object):
         self.undo_queue = list()
         self.redo_queue = list()
 
+    @property
+    def command(self):
+        """
+
+        :return: the current command, if any.
+        :rtype: domain.commands.abstract_commands.AbstractGeometryCommand
+        """
+        return self._current_command
+
+    def has_active_command(self):
+        return bool(self._current_command)
+
     def undo(self):
         """Undo the last move stored in the undo queue."""
         if len(self.undo_queue) > 0:

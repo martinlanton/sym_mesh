@@ -24,7 +24,7 @@ class BakeDifferenceCommand(AbstractDeformationCommand):
                     self.current_point_array[i]
                     + (
                         (target_point_array[i] - base_point_array[i])
-                        * (self.percentage / 100.0)
+                        * (self._percentage / 100.0)
                     )
                 )
             # If the current point is not selected
@@ -50,7 +50,7 @@ class RevertToBaseCommand(AbstractDeformationCommand):
                 base_position = base_point_array[i]
                 new_position = base_position + (
                     (target_point_array[i] - base_position)
-                    * ((100 - self.percentage) / 100.0)
+                    * ((100 - self._percentage) / 100.0)
                 )
                 log.debug("New position : %s", new_position)
                 destination_table.append(new_position)
@@ -93,7 +93,7 @@ class SymmetrizeCommand(AbstractDeformationCommand):
                     symmetry_position,
                 )
                 symmetry_position = current_position + (
-                    (symmetry_position - current_position) * (self.percentage / 100.0)
+                    (symmetry_position - current_position) * (self._percentage / 100.0)
                 )
             else:
                 log.debug("Not mirroring the position of vtx %s", i)
@@ -139,7 +139,7 @@ class FlipCommand(AbstractDeformationCommand):
                 new_target_position = om2.MPoint(new_target_position)
                 new_target_position = target_vertex_position + (
                     (new_target_position - target_vertex_position)
-                    * (self.percentage / 100.0)
+                    * (self._percentage / 100.0)
                 )
 
                 # source point's new position
@@ -148,7 +148,7 @@ class FlipCommand(AbstractDeformationCommand):
                 new_source_position = om2.MPoint(new_source_position)
                 new_source_position = source_vertex_position + (
                     (new_source_position - source_vertex_position)
-                    * (self.percentage / 100.0)
+                    * (self._percentage / 100.0)
                 )
 
                 destination_point_array[source_index] = new_source_position
