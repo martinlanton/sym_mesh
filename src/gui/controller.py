@@ -176,6 +176,13 @@ class Controller(object):
         self.executor.stash_command()
 
     def revert_to_base_live(self, value):
+        """Revert selected mesh or vertices to base from the current value, using
+        vertices selection (if one has been stored or is active) or on the whole
+        mesh.
+
+        :param value: percentage value to use for the revert to base operation.
+        :type value: int
+        """
         if not self.executor.has_active_command():
             selection = mc.ls(sl=True)
             if not selection:
@@ -208,13 +215,10 @@ class Controller(object):
     def stash_command(self):
         self.executor.stash_command()
 
-    def symmetrize(self, value):
-        """symmetrize selected mesh or vertices from the current value, using
+    def symmetrize(self):
+        """Symmetrize selected mesh or vertices from the current value, using
         vertices selection (if one has been stored or is active) or on the whole
         mesh.
-
-        :param value: percentage value to use for the symmetry operation.
-        :type value: int
         """
         selection = mc.ls(sl=True)
         if not selection:
@@ -239,9 +243,46 @@ class Controller(object):
             base_table=base_table,
             target_table=target_table,
             vertex_selection=vertex_selection,
-            percentage=value,
+            percentage=100,
         )
         self.executor.stash_command()
+
+    def symmetrize_live(self, value):
+        """Symmetrize selected mesh or vertices from the current value, using
+        vertices selection (if one has been stored or is active) or on the whole
+        mesh.
+
+        :param value: percentage value to use for the symmetry operation.
+        :type value: int
+        """
+        if not self.executor.has_active_command():
+            selection = mc.ls(sl=True)
+            if not selection:
+                log.error("Unable to symmetrize, no target selected.")
+                return
+            target = selection[0]
+            base_table = self.base_table
+            if not base_table:
+                log.error("Unable to symmetrize, no base defined.")
+                return
+            vertex_selection = (
+                self.vertex_selection if self.vertices_are_stored else VertexSelection()
+            )
+            target_table = table.GeometryTable(
+                target,
+                axis=self._axis,
+                direction=self._direction,
+                threshold=self._threshold,
+            )
+            self.executor.execute(
+                SymmetrizeCommand,
+                base_table=base_table,
+                target_table=target_table,
+                vertex_selection=vertex_selection,
+                percentage=value,
+            )
+        else:
+            self.executor.command.percentage = value
 
     def flip(self):
         selection = mc.ls(sl=True)

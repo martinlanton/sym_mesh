@@ -282,32 +282,34 @@ class TestGUI(base_test.BaseGUITest):
 
         self.assertEqual(self.expected_sym_position, result)
 
-    # TODO : finish testing/implementing this
-    # def test_symmetry_from_slider_with_different_values(self):
-    #     """Test that moving the slider continuously changes the value dynamically,
-    #     but that the command is only added to the undo queue once the slider is released."""
-    #     mc.select(self.sym_cube)
-    #     QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
-    #
-    #     mc.select(self.asym_cube)
-    #     self.gui.revert_to_base_slider.setValue(50)
-    #     self.gui.revert_to_base_slider.setValue(100)
-    #     self.gui.revert_to_base_slider.sliderReleased.emit()
-    #
-    #     result = [
-    #         mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
-    #         for vtx in range(self.vtx_number)
-    #     ]
-    #
-    #     self.assertEqual(self.expected_sym_position, result)
-    #
-    #     QtTest.QTest.mouseClick(self.gui.undo_push_button, QtCore.Qt.LeftButton)
-    #
-    #     with self.assertLogs(base_test.connection_widget.controller.executor.log,
-    #                          logging.ERROR) as captured:
-    #         QtTest.QTest.mouseClick(self.gui.undo_push_button, QtCore.Qt.LeftButton)
-    #
-    #     self.assertTrue("No action to undo." in captured.records[0].message)
+    def test_symmetry_from_slider_with_different_values(self):
+        """Test that moving the slider continuously changes the value dynamically,
+        but that the command is only added to the undo queue once the slider is released."""
+        mc.select(self.sym_cube)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+
+        mc.select(self.asym_cube)
+        self.gui.symmetry_slider.setValue(50)
+        self.gui.symmetry_slider.setValue(100)
+        self.gui.symmetry_slider.sliderReleased.emit()
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+
+        self.assertEqual(self.expected_sym_position, result)
+
+        log.info("LOOK HERE : %s", len(self.connector.ctrl.executor.undo_queue))
+        QtTest.QTest.mouseClick(self.gui.undo_push_button, QtCore.Qt.LeftButton)
+        log.info("LOOK HERE : %s", len(self.connector.ctrl.executor.undo_queue))
+
+        with self.assertLogs(
+            base_test.connection_widget.controller.executor.log, logging.ERROR
+        ) as captured:
+            QtTest.QTest.mouseClick(self.gui.undo_push_button, QtCore.Qt.LeftButton)
+
+        self.assertTrue("No action to undo." in captured.records[0].message)
 
     def test_flip_no_base(self):
         mc.select(self.asym_cube)
