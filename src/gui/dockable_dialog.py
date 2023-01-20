@@ -10,12 +10,18 @@ class DockableDialog(dockable, QtWidgets.QDialog):
         """This dialog merely exists so that we can pass it other widgets to parent to it.
 
         It is mostly used for dockability in Maya.
-        One thing to note is that we create a Layout inside this widget so that
+
+        Notes :
+        - we create a Layout inside this widget so that
         we can parent the contained widget to it. Parenting the contained widget
         without a layout does work BUT prevents the resizing of the dialog and
         the widget in relation to each other. As a consequence the dialog just
         opens tiny and its content does not resize when the dialog is
         resized.
+        - this window is required for dockability in Maya, however it requires
+        Maya's GUI to be open, which makes it unsuitable for automated testing,
+        this is why all the key event and connections between the gui objects
+        and the controller have been done inside the ConnectionWidget itself.
 
         :param connector: Class in charge of connecting the functionality of the layout to the controller.
         :type connector: gui.connection_widget.ConnectionWidget
