@@ -2,7 +2,6 @@
 
 * build `symmetry table` (local space vertices position)
 * build `symmetry table` (topology)
-* Add a slider for geometry operations and use the mouseReleased message to store the current command into the undo queue
 * Geometry operations with a spinbox in addition to the button
 * Add click/drag and ctrl/click/drag events to spinboxes
 * Geometry operations `from target` or `from selection`
