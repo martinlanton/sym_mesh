@@ -18,6 +18,7 @@ class ExtractAxesCommand(AbstractGeometryCommand):
         vertex_selection=selection.VertexSelection(from_list=()),
         percentage=100,
         target_dag_path=None,
+        translate=20.0,
     ):
         """Extract deltas between target table and base table on a new geometry.
 
@@ -26,10 +27,14 @@ class ExtractAxesCommand(AbstractGeometryCommand):
 
         :param target_table:
         :type target_table: domain.table.GeometryTable
+
+        :param translate: value to use to translate the extracted geometry in Y
+        :type translate: float
         """
         self.base_dag_path = base_table.dag_path
         self.point_arrays = list()
         self.meshes = list()
+        self.translate = translate
         super().__init__(
             base_table,
             target_table,
@@ -159,7 +164,7 @@ class ExtractAxesCommand(AbstractGeometryCommand):
             worldSpace=True,
             translation=True,
         )
-        new_position = [position[0], position[1] + 20, position[2]]
+        new_position = [position[0], position[1] + self.translate, position[2]]
         mc.xform(self.meshes[-1], relative=True, translation=new_position)
         shading.assign_shader(self.meshes[-1], "lambert1")
         return self.meshes[-1], blendshape

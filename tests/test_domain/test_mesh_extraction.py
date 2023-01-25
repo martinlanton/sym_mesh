@@ -94,6 +94,22 @@ class TestExtractAxes(common.BaseTest):
         self.assertEqual(expected_z, z)
         self.assertEqual(expected_pos, pos)
 
+    def test_extract_axes_geometry_translate(self):
+        target_table = table.GeometryTable(self.test_extract_axes_cube)
+        base_table = table.GeometryTable(self.sym_cube)
+        executor_ = executor.Executor()
+        extracted_mesh, blendshape = executor_.execute(
+            ExtractAxesCommand,
+            base_table=base_table,
+            target_table=target_table,
+            translate=40,
+        )
+
+        expected_pos = [10, 50, 10]
+        pos = mc.xform(extracted_mesh, query=True, translation=True)
+
+        self.assertEqual(expected_pos, pos)
+
     # def test_timing_extract_axes(self):
     #     import time
     #     from sym_mesh import dag_path
