@@ -4,6 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 name = "sym_mesh"
+version = "0.11.0"
+
 author = "Martin L'Anton"
 author_email = "lantonmartin@gmail.com"
 url = "https://github.com/martinlanton/sym_mesh"
@@ -14,7 +16,7 @@ python_requires = ">=3.6, <4"
 
 setup(
     name=name,
-    version="0.11.0",
+    version=version,
     author=author,
     author_email=author_email,
     description=description,
