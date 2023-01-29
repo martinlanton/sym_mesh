@@ -185,6 +185,9 @@ class Layout(QtWidgets.QVBoxLayout):
         commands_layout.addWidget(self.flip_pb)
 
         # Extract axes
+        extract_layout = QtWidgets.QHBoxLayout()
+        commands_layout.addLayout(extract_layout)
+
         # TODO : add a doubleSpinbox to set the Y value at which the new mesh
         #  should be translated from the target
         # TODO : add a button to put the deformation of the extracted shape to
@@ -192,7 +195,16 @@ class Layout(QtWidgets.QVBoxLayout):
         self.extract_axes_pb = QtWidgets.QPushButton("Extract X Y Z")
         self.extract_axes_pb.setObjectName("extract_axes_pB")
         self.extract_axes_pb.setMinimumSize(80, 30)
-        commands_layout.addWidget(self.extract_axes_pb)
+        extract_layout.addWidget(self.extract_axes_pb)
+
+        extract_label = QtWidgets.QLabel("Translate Y")
+        extract_layout.addWidget(extract_label)
+
+        self.extract_sb = QtWidgets.QDoubleSpinBox()
+        self.extract_sb.setMinimum(-10000)
+        self.extract_sb.setMaximum(10000)
+        self.extract_sb.setValue(20)
+        extract_layout.addWidget(self.extract_sb)
 
         # Bake deltas
         self.bake_deltas_pb = QtWidgets.QPushButton("Bake Deltas")

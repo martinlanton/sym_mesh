@@ -20,6 +20,17 @@ class ConnectionWidget(QtWidgets.QGroupBox):
 
         self.gui.get_base_pb.clicked.connect(self.ctrl.get_base)
         self.gui.get_target_pb.clicked.connect(self.ctrl.get_target)
+        self.gui.select_non_symmetrical_vertices_pb.clicked.connect(
+            self.ctrl.select_non_mirrored_vertices
+        )
+
+        store_selection = partial(
+            self.ctrl.get_vertex_selection, self.gui.vertices_are_stored
+        )
+        self.gui.get_vertex_selection_pb.clicked.connect(store_selection)
+        self.gui.select_vertex_selection_pb.clicked.connect(
+            self.ctrl.select_stored_vertices
+        )
 
         self.gui.revert_to_base_pb.clicked.connect(self.ctrl.revert_to_base)
         self.gui.revert_to_base_slider.valueChanged.connect(
@@ -32,20 +43,11 @@ class ConnectionWidget(QtWidgets.QGroupBox):
         self.gui.symmetry_slider.sliderReleased.connect(self.ctrl.stash_command)
 
         self.gui.flip_pb.clicked.connect(self.ctrl.flip)
+
         self.gui.extract_axes_pb.clicked.connect(self.ctrl.extract_axes)
+        self.gui.extract_sb.valueChanged.connect(self.set_extract_translate)
+
         self.gui.bake_deltas_pb.clicked.connect(self.ctrl.bake_deltas)
-
-        store_selection = partial(
-            self.ctrl.get_vertex_selection, self.gui.vertices_are_stored
-        )
-        self.gui.get_vertex_selection_pb.clicked.connect(store_selection)
-
-        self.gui.select_vertex_selection_pb.clicked.connect(
-            self.ctrl.select_stored_vertices
-        )
-        self.gui.select_non_symmetrical_vertices_pb.clicked.connect(
-            self.ctrl.select_non_mirrored_vertices
-        )
 
         self.gui.undo_push_button.clicked.connect(self.ctrl.undo)
         self.gui.redo_push_button.clicked.connect(self.ctrl.redo)
@@ -98,3 +100,6 @@ class ConnectionWidget(QtWidgets.QGroupBox):
         button_text = button.text()
         axis = button_text.split(" : ")[-1].lower()
         self.ctrl.axis = axis
+
+    def set_extract_translate(self, value):
+        self.ctrl.translate_value = value

@@ -756,6 +756,8 @@ class TestGUI(base_test.BaseGUITest):
             )
             for axis in ["x", "y", "z"]
         ]
+        expected_pos = [10, 30, 10]
+        pos = mc.xform(extracted_mesh, query=True, translation=True)
 
         self.assertTrue(
             mc.objExists("|{}_extracted".format(self.test_extract_axes_cube))
@@ -764,6 +766,21 @@ class TestGUI(base_test.BaseGUITest):
         self.assertEqual(expected_x, x)
         self.assertEqual(expected_y, y)
         self.assertEqual(expected_z, z)
+        self.assertEqual(expected_pos, pos)
+
+    def test_extract_axes_moves_geometry(self):
+        self.gui.extract_sb.setValue(40)
+        mc.select(self.sym_cube)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+
+        mc.select(self.test_extract_axes_cube)
+        QtTest.QTest.mouseClick(self.gui.extract_axes_pb, QtCore.Qt.LeftButton)
+
+        extracted_mesh = "{}_extracted".format(self.test_extract_axes_cube)
+
+        expected_pos = [10, 50, 10]
+        pos = mc.xform(extracted_mesh, query=True, translation=True)
+        self.assertEqual(expected_pos, pos)
 
     def test_base_line_edit(self):
         mc.select(self.sym_cube)

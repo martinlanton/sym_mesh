@@ -34,6 +34,7 @@ class Controller(object):
         self._percentage = 100
         self._direction = "positive"
         self._axis = "x"
+        self.translate_value = 20
         self.base_table: domain.table.GeometryTable = None
         self.target_table: domain.table.GeometryTable = None
 
@@ -329,7 +330,10 @@ class Controller(object):
             threshold=self._threshold,
         )
         self.executor.execute(
-            ExtractAxesCommand, base_table=base_table, target_table=target_table,
+            ExtractAxesCommand,
+            base_table=base_table,
+            target_table=target_table,
+            translate=self.translate_value,
         )
         self.executor.stash_command()
 
