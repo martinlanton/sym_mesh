@@ -188,8 +188,6 @@ class Layout(QtWidgets.QVBoxLayout):
         extract_layout = QtWidgets.QHBoxLayout()
         commands_layout.addLayout(extract_layout)
 
-        # TODO : add a doubleSpinbox to set the Y value at which the new mesh
-        #  should be translated from the target
         # TODO : add a button to put the deformation of the extracted shape to
         #  the original mesh (based on name) "bake extracted"
         self.extract_axes_pb = QtWidgets.QPushButton("Extract X Y Z")
