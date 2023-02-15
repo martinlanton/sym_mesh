@@ -8,6 +8,10 @@ from gui import SymMesh_ui
 class ConnectionWidget(QtWidgets.QGroupBox):
     """Group box that can be parented to a dialog to open it in Maya or other DCCs."""
 
+    StyleSheet = """
+    QGroupBox { border: 1px solid gray; }
+    """
+
     def __init__(self, parent=None):
         super(ConnectionWidget, self).__init__(parent)
 
@@ -58,6 +62,7 @@ class ConnectionWidget(QtWidgets.QGroupBox):
             self.gui.set_line_edit, self.gui.target_line_edit
         )
         self.ctrl.set_target.connect(set_target_line_edit)
+        self.setStyleSheet(ConnectionWidget.StyleSheet)
 
     def keyPressEvent(self, event):
         """Overriding this method is necessary to force the key event to be accepted.
