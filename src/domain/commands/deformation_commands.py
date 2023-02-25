@@ -132,6 +132,7 @@ class FlipCommand(AbstractDeformationCommand):
                 # TODO : could be worth doing a conditional here to only flip
                 #  the points that are ACTUALLY selected, instead of flipping
                 #  the selected points AND their counterpart
+                #  Ask Sebastien about this.
 
                 # target point's new position
                 new_target_position = list(source_vertex_position)
