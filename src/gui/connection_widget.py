@@ -47,6 +47,8 @@ class ConnectionWidget(QtWidgets.QGroupBox):
         self.gui.symmetry_slider.sliderReleased.connect(self.ctrl.stash_command)
 
         self.gui.flip_pb.clicked.connect(self.ctrl.flip)
+        self.gui.flip_slider.valueChanged.connect(self.ctrl.flip_live)
+        self.gui.flip_slider.sliderReleased.connect(self.ctrl.stash_command)
 
         self.gui.extract_axes_pb.clicked.connect(self.ctrl.extract_axes)
         self.gui.extract_sb.valueChanged.connect(self.set_extract_translate)

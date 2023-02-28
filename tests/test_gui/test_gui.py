@@ -423,11 +423,42 @@ class TestGUI(base_test.BaseGUITest):
         pass
 
     def test_flip_from_slider_with_different_values(self):
-        # TODO : add test for flip from a QSlider with different values to
-        #  make sure the command is only added to the undo stack from the
-        #  mouseRelease signal and that only the same command is edited as long
-        #  as the mouse has not been released.
-        pass
+        """Test that moving the slider continuously changes the value dynamically,
+        but that the command is only added to the undo queue once the slider is released."""
+        mc.select(self.sym_cube)
+        QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
+
+        mc.select(self.asym_cube)
+        self.gui.flip_slider.setValue(50)
+        self.gui.flip_slider.setValue(100)
+        self.gui.flip_slider.sliderReleased.emit()
+
+        expected = [
+            [-0.5, 0.5, 0.5],
+            [0.5, -0.5, 0.5],
+            [-0.5, 1.5, 0.5],
+            [0.5, 0.5, 0.5],
+            [-0.5, 1.5, -0.5],
+            [0.5, 0.5, -0.5],
+            [-0.5, 0.5, -0.5],
+            [0.5, -0.5, -0.5],
+        ]
+
+        result = [
+            mc.pointPosition("{}.vtx[{}]".format(self.asym_cube, vtx), world=True)
+            for vtx in range(self.vtx_number)
+        ]
+
+        self.assertEqual(expected, result)
+
+        QtTest.QTest.mouseClick(self.gui.undo_push_button, QtCore.Qt.LeftButton)
+
+        with self.assertLogs(
+                base_test.connection_widget.controller.executor.log, logging.ERROR
+        ) as captured:
+            QtTest.QTest.mouseClick(self.gui.undo_push_button, QtCore.Qt.LeftButton)
+
+        self.assertTrue("No action to undo." in captured.records[0].message)
 
     def test_revert_to_base_no_base(self):
         mc.select(self.asym_cube)

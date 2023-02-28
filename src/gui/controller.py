@@ -313,6 +313,43 @@ class Controller(object):
         )
         self.executor.stash_command()
 
+    def flip_live(self, value):
+        """Flip selected mesh or vertices from the current value, using
+        vertices selection (if one has been stored or is active) or on the whole
+        mesh.
+
+        :param value: percentage value to use for the flip operation.
+        :type value: int
+        """
+        if not self.executor.has_active_command():
+            selection = mc.ls(sl=True)
+            if not selection:
+                log.error("Unable to flip, no target selected.")
+                return
+            target = selection[0]
+            base_table = self.base_table
+            if not base_table:
+                log.error("Unable to flip, no base defined.")
+                return
+            vertex_selection = (
+                self.vertex_selection if self.vertices_are_stored else VertexSelection()
+            )
+            target_table = table.GeometryTable(
+                target,
+                axis=self._axis,
+                direction=self._direction,
+                threshold=self._threshold,
+            )
+            self.executor.execute(
+                FlipCommand,
+                base_table=base_table,
+                target_table=target_table,
+                vertex_selection=vertex_selection,
+                percentage=value,
+            )
+        else:
+            self.executor.command.percentage = value
+
     def extract_axes(self):
         selection = mc.ls(sl=True)
         if not selection:

@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 name = "sym_mesh"
-version = "0.12.0"
+version = "0.13.0"
 
 author = "Martin L'Anton"
 author_email = "lantonmartin@gmail.com"

@@ -179,10 +179,18 @@ class Layout(QtWidgets.QVBoxLayout):
         sym_layout.addWidget(self.symmetry_slider)
 
         # Flip
+        flip_layout = QtWidgets.QHBoxLayout()
+        commands_layout.addLayout(flip_layout)
+
         self.flip_pb = QtWidgets.QPushButton("Flip")
         self.flip_pb.setObjectName("flip_pB")
         self.flip_pb.setMinimumSize(80, 30)
-        commands_layout.addWidget(self.flip_pb)
+        flip_layout.addWidget(self.flip_pb)
+
+        self.flip_slider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal)
+        self.flip_slider.setMaximum(100)
+        self.flip_slider.setObjectName("flip_slider")
+        flip_layout.addWidget(self.flip_slider)
 
         # Extract axes
         extract_layout = QtWidgets.QHBoxLayout()
