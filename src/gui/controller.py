@@ -111,10 +111,7 @@ class Controller(object):
         self.set_base.emit(mesh)
 
     def get_target(self):
-        """
-        Get target data and set its name in the corresponding lineEdit.
-        :return:
-        """
+        """Get target data and set its name in the corresponding lineEdit."""
         mesh = mc.ls(sl=True)[0]
         self.target_table = table.GeometryTable(
             mesh, axis=self._axis, direction=self._direction, threshold=self._threshold
