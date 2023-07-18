@@ -77,7 +77,8 @@ class TestRevertToBase(common.BaseTest):
 
     def test_revert_to_base_with_no_vertex_selection(self):
         """Test that reverting to base with a vertex selection when nothing is
-        selected does revert the entire mesh and doesn't care about the vertex selection."""
+        selected does revert the entire mesh and doesn't care about the vertex selection.
+        """
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select(clear=True)
@@ -100,7 +101,8 @@ class TestRevertToBase(common.BaseTest):
 
     def test_revert_to_base_with_geometry_selected_for_vertex_selection(self):
         """Test that reverting to base with a vertex selection from a full mesh
-        selected does revert the entire mesh and doesn't care about the vertex selection."""
+        selected does revert the entire mesh and doesn't care about the vertex selection.
+        """
         geo_table = table.GeometryTable(self.asym_cube)
         sym_table = table.GeometryTable(self.sym_cube)
         mc.select(self.asym_cube)

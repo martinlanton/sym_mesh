@@ -284,7 +284,8 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_symmetry_from_slider_with_different_values(self):
         """Test that moving the slider continuously changes the value dynamically,
-        but that the command is only added to the undo queue once the slider is released."""
+        but that the command is only added to the undo queue once the slider is released.
+        """
         mc.select(self.sym_cube)
         QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
@@ -457,7 +458,8 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_flip_from_slider_with_different_values(self):
         """Test that moving the slider continuously changes the value dynamically,
-        but that the command is only added to the undo queue once the slider is released."""
+        but that the command is only added to the undo queue once the slider is released.
+        """
         mc.select(self.sym_cube)
         QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
@@ -487,7 +489,7 @@ class TestGUI(base_test.BaseGUITest):
         QtTest.QTest.mouseClick(self.gui.undo_push_button, QtCore.Qt.LeftButton)
 
         with self.assertLogs(
-                base_test.connection_widget.controller.executor.log, logging.ERROR
+            base_test.connection_widget.controller.executor.log, logging.ERROR
         ) as captured:
             QtTest.QTest.mouseClick(self.gui.undo_push_button, QtCore.Qt.LeftButton)
 
@@ -614,7 +616,8 @@ class TestGUI(base_test.BaseGUITest):
 
     def test_revert_to_base_from_slider_with_different_values(self):
         """Test that moving the slider continuously changes the value dynamically,
-        but that the command is only added to the undo queue once the slider is released."""
+        but that the command is only added to the undo queue once the slider is released.
+        """
         mc.select(self.sym_cube)
         QtTest.QTest.mouseClick(self.gui.get_base_pb, QtCore.Qt.LeftButton)
 
