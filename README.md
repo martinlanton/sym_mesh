@@ -28,9 +28,12 @@ If you have more than one maya version installed, you will need to replace `maya
 Note that you will have to put the path in quotation marks if there are any blank spaces in it as Windows can't handle those.
 
 ## Launch
-You can currently launch the tool with the current command : 
+You can currently launch the tool with the current command :
+
 ```python
-from gui import startup
+
+from sym_mesh.gui import startup
+
 startup.startup()
 ```
 

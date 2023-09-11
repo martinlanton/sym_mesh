@@ -1,8 +1,8 @@
 import logging
 from maya import cmds as mc
 
-from domain import table, executor, selection
-from domain.commands.deformation_commands import SymmetrizeCommand
+from sym_mesh.domain import table, executor, selection
+from sym_mesh.domain.commands.deformation_commands import SymmetrizeCommand
 from tests.fixtures import common
 
 log = logging.getLogger(__name__)

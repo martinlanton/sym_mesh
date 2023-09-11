@@ -1,5 +1,5 @@
-from gui import connection_widget
-from gui import dockable_dialog
+from sym_mesh.gui import connection_widget
+from sym_mesh.gui import dockable_dialog
 
 
 def startup():  # pragma: no cover

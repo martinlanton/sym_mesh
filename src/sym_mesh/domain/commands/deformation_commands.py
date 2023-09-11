@@ -2,7 +2,7 @@ import logging
 
 from maya.api import OpenMaya as om2
 
-from domain.commands.abstract_commands import AbstractDeformationCommand
+from sym_mesh.domain.commands.abstract_commands import AbstractDeformationCommand
 
 log = logging.getLogger(__name__)
 

@@ -1,9 +1,8 @@
 import sys
 from Qt import QtWidgets
 
-from gui import connection_widget
+from sym_mesh.gui import connection_widget
 from tests.fixtures import common
-from gui import startup  # This is only here for coverage purposes
 
 
 class BaseGUITest(common.BaseTest):

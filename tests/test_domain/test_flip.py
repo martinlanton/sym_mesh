@@ -3,8 +3,8 @@ import logging
 import maya.cmds as mc
 from tests.fixtures import common
 
-from domain import table, executor, selection
-from domain.commands.deformation_commands import FlipCommand
+from sym_mesh.domain import table, executor, selection
+from sym_mesh.domain.commands.deformation_commands import FlipCommand
 
 log = logging.getLogger(__name__)
 

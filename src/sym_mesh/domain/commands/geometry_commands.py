@@ -2,10 +2,10 @@ import logging
 
 from maya.api import OpenMaya as om2
 from maya import cmds as mc
-from domain import selection
-from domain import shading
-from domain.commands.abstract_commands import AbstractGeometryCommand
-from domain.dag_path import create_MDagPath
+from sym_mesh.domain import selection
+from sym_mesh.domain import shading
+from sym_mesh.domain.commands.abstract_commands import AbstractGeometryCommand
+from sym_mesh.domain.dag_path import create_MDagPath
 
 log = logging.getLogger(__name__)
 

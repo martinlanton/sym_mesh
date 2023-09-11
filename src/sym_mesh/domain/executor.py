@@ -1,7 +1,7 @@
 import maya.api.OpenMaya as om2
 import logging
 
-from domain.dag_path import create_MDagPath
+from sym_mesh.domain.dag_path import create_MDagPath
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)

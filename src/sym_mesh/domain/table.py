@@ -2,8 +2,8 @@ import logging
 import math
 from maya.api import OpenMaya as om2
 
-from domain import dag_path
-from domain import selection
+from sym_mesh.domain import dag_path
+from sym_mesh.domain import selection
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)

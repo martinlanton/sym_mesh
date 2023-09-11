@@ -2,8 +2,8 @@ import logging
 
 from maya import cmds as mc
 
-from domain import executor, selection, table
-from domain.commands.deformation_commands import BakeDifferenceCommand
+from sym_mesh.domain import executor, selection, table
+from sym_mesh.domain.commands.deformation_commands import BakeDifferenceCommand
 from tests.fixtures import common
 
 logging.basicConfig()

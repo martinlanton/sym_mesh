@@ -1,8 +1,7 @@
 from functools import partial
 from Qt import QtWidgets, QtCore
 
-from gui import controller
-from gui import layout
+from sym_mesh.gui import controller, layout
 
 
 class ConnectionWidget(QtWidgets.QGroupBox):

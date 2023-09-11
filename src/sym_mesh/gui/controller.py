@@ -1,19 +1,17 @@
 from maya import cmds as mc
 import logging
 
-import domain.table
-from domain import executor
-from domain import table
-from domain.commands.deformation_commands import (
+from sym_mesh.domain import executor
+from sym_mesh.domain import table
+from sym_mesh.domain.commands.deformation_commands import (
     BakeDifferenceCommand,
     FlipCommand,
     RevertToBaseCommand,
     SymmetrizeCommand,
 )
-from domain.commands.geometry_commands import ExtractAxesCommand
-from domain.selection import VertexSelection
-from gui import signal
-
+from sym_mesh.domain.commands.geometry_commands import ExtractAxesCommand
+from sym_mesh.domain.selection import VertexSelection
+from sym_mesh.gui import signal
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
@@ -35,8 +33,8 @@ class Controller(object):
         self._direction = "positive"
         self._axis = "x"
         self.translate_value = 20
-        self.base_table: domain.table.GeometryTable = None
-        self.target_table: domain.table.GeometryTable = None
+        self.base_table: sym_mesh.domain.table.GeometryTable = None
+        self.target_table: sym_mesh.domain.table.GeometryTable = None
 
         # Signals
         self.set_base = signal.Signal()

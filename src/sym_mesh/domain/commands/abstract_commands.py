@@ -1,18 +1,16 @@
 import abc
 import logging
 from pprint import pformat
-import six
 
 from maya.api import OpenMaya as om2
 
-from domain import selection
+from sym_mesh.domain import selection
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class AbstractGeometryCommand(object):
+class AbstractGeometryCommand(metaclass=abc.ABCMeta):
     def __init__(
         self,
         base_table,
@@ -83,8 +81,7 @@ class AbstractGeometryCommand(object):
         raise NotImplementedError
 
 
-@six.add_metaclass(abc.ABCMeta)
-class AbstractDeformationCommand(AbstractGeometryCommand):
+class AbstractDeformationCommand(AbstractGeometryCommand, metaclass=abc.ABCMeta):
     def do_it(self):
         """
         Set the positions of the points of the mesh based on the computation algorithm.

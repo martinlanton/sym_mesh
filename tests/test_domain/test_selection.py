@@ -1,7 +1,7 @@
 import logging
 from maya import cmds as mc
 
-from domain import selection
+from sym_mesh.domain import selection
 from tests.fixtures import common
 
 log = logging.getLogger(__name__)

@@ -2,10 +2,9 @@ import logging
 
 from maya import cmds as mc
 
-from domain import table
-from domain import executor
-from domain import shading
-from domain.commands.geometry_commands import ExtractAxesCommand
+from sym_mesh.domain import table, executor
+from sym_mesh.domain import shading
+from sym_mesh.domain.commands.geometry_commands import ExtractAxesCommand
 from tests.fixtures import common
 
 
