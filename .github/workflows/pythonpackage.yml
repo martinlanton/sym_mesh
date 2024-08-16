@@ -16,7 +16,11 @@ jobs:
 
       matrix:
         include:
-          - maya: "2022"
+          - maya: "2023"
+            pip: "get-pip.py"
+          - maya: "2024"
+            pip: "get-pip.py"
+          - maya: "2025"
             pip: "get-pip.py"
 
     container: mottosso/maya:${{ matrix.maya }}
@@ -51,4 +55,3 @@ jobs:
         ls
         mayapy --version
         mayapy -m pytest
-
