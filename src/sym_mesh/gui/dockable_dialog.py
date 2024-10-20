@@ -1,6 +1,6 @@
 from maya.app.general.mayaMixin import MayaQWidgetDockableMixin as dockable
 
-from Qt import QtWidgets
+from qtpy import QtWidgets
 
 
 class DockableDialog(dockable, QtWidgets.QDialog):
@@ -9,7 +9,7 @@ class DockableDialog(dockable, QtWidgets.QDialog):
     def __init__(self, connector, parent=None):
         """This dialog merely exists so that we can pass it other widgets to parent to it.
 
-        It is mostly used for dockability in Maya.
+        It is used for dockability in Maya.
 
         Notes :
         - we create a Layout inside this widget so that
@@ -24,7 +24,7 @@ class DockableDialog(dockable, QtWidgets.QDialog):
         and the controller have been done inside the ConnectionWidget itself.
 
         :param connector: Class in charge of connecting the functionality of the layout to the controller.
-        :type connector: gui.connection_widget.ConnectionWidget
+        :type connector: sym_mesh.gui.connection_widget.ConnectionWidget
 
         :param parent:
         """

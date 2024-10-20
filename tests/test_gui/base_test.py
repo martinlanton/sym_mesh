@@ -1,5 +1,5 @@
 import sys
-from Qt import QtWidgets
+from qtpy import QtWidgets
 
 from sym_mesh.gui import connection_widget
 from tests.fixtures import common

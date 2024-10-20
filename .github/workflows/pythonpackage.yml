@@ -43,7 +43,7 @@ jobs:
           sphinxcontrib-napoleon==0.7 \
           pytest \
           pytest-cov \
-          Qt.py
+          qtpy
 
     - name: Environment
       run: |

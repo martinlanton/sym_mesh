@@ -1,6 +1,6 @@
 import logging
 from maya import cmds as mc
-from Qt import QtTest, QtCore, QtGui
+from qtpy import QtTest, QtCore, QtGui
 import unittest
 from tests.test_gui import base_test
 

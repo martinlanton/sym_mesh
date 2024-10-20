@@ -1,5 +1,5 @@
 from functools import partial
-from Qt import QtWidgets, QtCore
+from qtpy import QtWidgets, QtCore
 
 from sym_mesh.gui import controller, layout
 

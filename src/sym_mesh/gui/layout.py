@@ -1,5 +1,5 @@
 import logging
-from Qt import QtWidgets, QtCore
+from qtpy import QtWidgets, QtCore
 
 log = logging.getLogger("SymUI")
 log.setLevel(logging.INFO)
