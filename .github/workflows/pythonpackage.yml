@@ -16,6 +16,8 @@ jobs:
 
       matrix:
         include:
+          - maya: "2022"
+            pip: "get-pip.py"
           - maya: "2023"
             pip: "get-pip.py"
           - maya: "2024"
@@ -41,8 +43,6 @@ jobs:
           flaky==3.7.0 \
           sphinx==1.8.5 \
           sphinxcontrib-napoleon==0.7 \
-          pytest \
-          pytest-cov \
           qtpy
 
     - name: Environment
