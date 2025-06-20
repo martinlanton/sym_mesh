@@ -166,5 +166,5 @@ class ExtractAxesCommand(AbstractGeometryCommand):
         )
         new_position = [position[0], position[1] + self.translate, position[2]]
         mc.xform(self.meshes[-1], relative=True, translation=new_position)
-        shading.assign_shader(self.meshes[-1], "lambert1")
+        shading.assign_default_shader(self.meshes[-1])
         return self.meshes[-1], blendshape

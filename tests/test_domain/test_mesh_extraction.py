@@ -20,7 +20,7 @@ class TestExtractAxes(common.BaseTest):
             ExtractAxesCommand, base_table=base_table, target_table=target_table
         )
 
-        shading_group = shading.get_shading_group_from_shader("lambert1")
+        shader = shading.get_assigned_shader(extracted_mesh)
 
         self.assertTrue(mc.objExists(blendshape))
         self.assertEqual(
@@ -39,7 +39,7 @@ class TestExtractAxes(common.BaseTest):
         self.assertTrue(
             mc.objExists("|{}_extracted".format(self.test_extract_axes_cube))
         )
-        self.assertEqual("initialShadingGroup", shading_group)
+        self.assertIn(shader, ['lambert1', 'standardSurface1'])
 
     def test_extract_axes_geometries_point_positions(self):
         target_table = table.GeometryTable(self.test_extract_axes_cube)
