@@ -89,9 +89,12 @@ class VertexSelection(object):
             self.dag_path = from_list[0]
             self.indices = om2.MIntArray(from_list[1])
 
-    def select(self):
+    def select(self, msg=None):
         if len(self.indices) == 0:
-            log.warning("No vertex selection stored")
+            if msg:
+                log.warning(msg)
+            else:
+                log.warning("No vertex selection stored")
         else:
             vtcs_to_select = om2.MSelectionList()
             MItVtx = om2.MItMeshVertex(self.dag_path)
