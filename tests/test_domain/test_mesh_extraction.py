@@ -27,6 +27,7 @@ class TestExtractAxes(common.BaseTest):
             "{}_extracted_blendShape".format(self.test_extract_axes_cube), blendshape
         )
         targets = mc.listAttr("{}.weight".format(blendshape), multi=True)
+        print("Targets: ", targets)
         self.assertTrue("{}_x".format(self.test_extract_axes_cube) in targets)
         self.assertTrue("{}_y".format(self.test_extract_axes_cube) in targets)
         self.assertTrue("{}_z".format(self.test_extract_axes_cube) in targets)
@@ -110,6 +111,9 @@ class TestExtractAxes(common.BaseTest):
         self.assertEqual(expected_pos, pos)
 
     # def test_timing_extract_axes(self):
+    #     """Uncomment to test the performance of the extraction.
+    #     This is a long-running test, so it is commented out by default.
+    #     """
     #     import time
     #     from sym_mesh import dag_path
     #     from maya.api import OpenMaya as om2
