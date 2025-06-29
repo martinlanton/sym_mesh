@@ -27,8 +27,6 @@ class TestExtractAxes(common.BaseTest):
             "{}_extracted_blendShape".format(self.test_extract_axes_cube), blendshape
         )
         targets = mc.listAttr("{}.weight".format(blendshape), multi=True)
-        print("Targets: ", targets)
-        print("{}_x".format(self.test_extract_axes_cube))
         self.assertTrue(any("{}_x".format(self.test_extract_axes_cube) in s for s in targets))
         self.assertTrue(any("{}_y".format(self.test_extract_axes_cube) in s for s in targets))
         self.assertTrue(any("{}_z".format(self.test_extract_axes_cube) in s for s in targets))
