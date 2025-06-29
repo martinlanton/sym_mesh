@@ -41,8 +41,6 @@ jobs:
           flaky==3.7.0 \
           sphinx==1.8.5 \
           sphinxcontrib-napoleon==0.7 \
-          pytest \
-          pytest-cov \
           qtpy
 
     - name: Environment
@@ -54,4 +52,4 @@ jobs:
         pwd
         ls
         mayapy --version
-        mayapy -m pytest
+        mayapy -m unittest
