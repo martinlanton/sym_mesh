@@ -41,11 +41,11 @@ class Layout(QtWidgets.QVBoxLayout):
 
         self.direction_rb_group = QtWidgets.QButtonGroup()
 
-        self.negative_rb = QtWidgets.QRadioButton("Negative: - \u21D0 +")
+        self.negative_rb = QtWidgets.QRadioButton("Negative: - \u21d0 +")
         direction_layout.addWidget(self.negative_rb)
         self.direction_rb_group.addButton(self.negative_rb)
 
-        self.positive_rb = QtWidgets.QRadioButton("Positive: - \u21D2 +")
+        self.positive_rb = QtWidgets.QRadioButton("Positive: - \u21d2 +")
         direction_layout.addWidget(self.positive_rb)
         self.direction_rb_group.addButton(self.positive_rb)
 
@@ -90,7 +90,7 @@ class Layout(QtWidgets.QVBoxLayout):
         self.get_base_pb.setObjectName("get_base_pB")
         base_layout.addWidget(self.get_base_pb)
 
-        base_label = QtWidgets.QLabel("\u21D2")
+        base_label = QtWidgets.QLabel("\u21d2")
         base_layout.addWidget(base_label)
 
         self.base_line_edit = QtWidgets.QLineEdit("base")
@@ -106,7 +106,7 @@ class Layout(QtWidgets.QVBoxLayout):
         self.get_target_pb.setObjectName("get_target_pB")
         target_layout.addWidget(self.get_target_pb)
 
-        target_label = QtWidgets.QLabel("\u21D2")
+        target_label = QtWidgets.QLabel("\u21d2")
         target_layout.addWidget(target_label)
 
         self.target_line_edit = QtWidgets.QLineEdit("target")

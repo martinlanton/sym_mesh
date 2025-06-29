@@ -138,7 +138,9 @@ class Controller(object):
         self.vertex_selection.select()
 
     def select_non_mirrored_vertices(self):
-        self.base_table.non_mirrored_vertices.select(msg="No non-mirrored vertices found.")
+        self.base_table.non_mirrored_vertices.select(
+            msg="No non-mirrored vertices found."
+        )
 
     def revert_to_base(self):
         """Revert selected mesh or vertices to base from the current value, using

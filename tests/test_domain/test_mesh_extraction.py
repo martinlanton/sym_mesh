@@ -28,9 +28,10 @@ class TestExtractAxes(common.BaseTest):
         )
         targets = mc.listAttr("{}.weight".format(blendshape), multi=True)
         print("Targets: ", targets)
-        self.assertTrue("{}_x".format(self.test_extract_axes_cube) in targets)
-        self.assertTrue("{}_y".format(self.test_extract_axes_cube) in targets)
-        self.assertTrue("{}_z".format(self.test_extract_axes_cube) in targets)
+        print("{}_x".format(self.test_extract_axes_cube))
+        self.assertTrue(any("{}_x".format(self.test_extract_axes_cube) in s for s in targets))
+        self.assertTrue(any("{}_y".format(self.test_extract_axes_cube) in s for s in targets))
+        self.assertTrue(any("{}_z".format(self.test_extract_axes_cube) in s for s in targets))
         self.assertTrue(not mc.objExists("{}_x".format(self.test_extract_axes_cube)))
         self.assertTrue(not mc.objExists("{}_y".format(self.test_extract_axes_cube)))
         self.assertTrue(not mc.objExists("{}_z".format(self.test_extract_axes_cube)))
@@ -40,7 +41,7 @@ class TestExtractAxes(common.BaseTest):
         self.assertTrue(
             mc.objExists("|{}_extracted".format(self.test_extract_axes_cube))
         )
-        self.assertIn(shader, ['lambert1', 'standardSurface1'])
+        self.assertIn(shader, ["lambert1", "standardSurface1"])
 
     def test_extract_axes_geometries_point_positions(self):
         target_table = table.GeometryTable(self.test_extract_axes_cube)

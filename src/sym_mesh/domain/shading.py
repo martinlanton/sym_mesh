@@ -10,11 +10,11 @@ def get_assigned_shader(geometry):
         logger.warning("No shapes found for geometry: {}".format(geometry))
         return None
     # Get shading groups assigned to the geometry
-    shading_groups = mc.listConnections(shapes[0], type='shadingEngine')
+    shading_groups = mc.listConnections(shapes[0], type="shadingEngine")
     if not shading_groups:
         return None
     # Get surface shader connected to the shading group
-    shader = mc.listConnections(shading_groups[0] + '.surfaceShader')
+    shader = mc.listConnections(shading_groups[0] + ".surfaceShader")
     if shader:
         return shader[0]
     return None
