@@ -142,18 +142,58 @@ class GeometryTable:
         )
 
     def _build_symmetry_map(self, points_table):
-        """Build the symmetry map as a dict {target: source}.
+        """Build the symmetry map as a dict ``{target_index: source_index}``.
 
-        Uses a spatial hash grid so that each vertex only needs to check a
-        small, constant number of neighbouring cells instead of every other
-        vertex.  This reduces the algorithmic complexity from O(n^2) to O(n)
-        on average.
+        For each vertex, this method computes its mirror reflection across the
+        symmetry plane and searches for a matching vertex within the Euclidean
+        distance threshold.  Matched vertices are assigned a role:
 
-        :param points_table: MPointArray of the positions of all the points
+        - **source** -- the vertex whose position is preserved and mirrored
+          onto its counterpart during symmetry operations.
+        - **target** -- the vertex that receives the mirrored position.
+
+        The *direction* setting controls which half-space contains the sources.
+        With ``positive`` direction the vertices on the negative side of the
+        axis are the sources; with ``negative`` direction it is the opposite.
+
+        Mathematical formulation:
+            Given symmetry axis index ``a`` (0 = X, 1 = Y, 2 = Z), the mirror
+            of a point ``p`` is defined as::
+
+                mirror(p)_i = -p_i   if i = a
+                mirror(p)_i =  p_i   otherwise
+
+            Two vertices ``v_i`` and ``v_j`` form a symmetrical pair when::
+
+                || mirror(v_i) - v_j ||_2  <  threshold
+
+            where ``||.||_2`` is the Euclidean (L2) norm.
+
+            Vertices that lie on the symmetry plane (``|p_a| < threshold / 2``)
+            satisfy ``mirror(p) ~= p`` and therefore match themselves.  These
+            self-paired vertices are included in the map as
+            ``{idx: idx}`` so that they are not reported as non-mirrored.
+
+            The distance comparison is performed in squared form
+            (``d^2 < threshold^2``) to avoid the cost of a square root.
+
+        Performance:
+            Instead of comparing every vertex against every other vertex
+            (O(n^2)), positions are discretized into a uniform spatial hash
+            grid with cell size equal to the threshold.  For each vertex only
+            the 3^3 = 27 cells surrounding its mirror position are inspected,
+            yielding **O(n) average-case** complexity.
+
+            For an in-depth discussion of spatial hashing see:
+            Teschner, M. et al. (2003). *Optimized Spatial Hashing for
+            Collision Detection of Deformable Objects.* Proceedings of VMV.
+            https://matthias-research.github.io/pages/publications/tetraederCollision.pdf
+
+        :param points_table: positions of all mesh vertices.
         :type points_table: maya.api.OpenMaya.MPointArray
 
-        :return: map of the symmetry as a dict {target: source}.
-        :rtype: dict[int: int]
+        :return: symmetry map ``{target_index: source_index}``.
+        :rtype: dict[int, int]
         """
         n = len(points_table)
         log.debug("Building symmetry map for %d points.", n)
@@ -163,45 +203,28 @@ class GeometryTable:
         is_positive = self.positive
         threshold_sq = threshold * threshold
 
-        # --- build spatial hash ------------------------------------------------
-        # Cell size equals the threshold so that any two points within
-        # *threshold* distance of each other are in the same cell or in
-        # directly adjacent cells.
         cell_size = threshold if threshold > 0 else 1.0
         inv_cell = 1.0 / cell_size
 
-        # Pre-extract positions as tuples and populate the spatial hash.
         positions = [(pt[0], pt[1], pt[2]) for pt in points_table]
-        grid = {}  # (cx, cy, cz) -> list[(idx, position)]
-        for idx, pos in enumerate(positions):
-            cell = (
-                int(pos[0] * inv_cell + (0.5 if pos[0] >= 0 else -0.5)),
-                int(pos[1] * inv_cell + (0.5 if pos[1] >= 0 else -0.5)),
-                int(pos[2] * inv_cell + (0.5 if pos[2] >= 0 else -0.5)),
-            )
-            grid.setdefault(cell, []).append((idx, pos))
+        grid = self._build_spatial_hash(positions, inv_cell)
 
-        # --- query spatial hash for mirror matches -----------------------------
         symmetry_map = {}
-
         for idx, position in enumerate(positions):
-            # Compute mirrored position.
             mirror = list(position)
             mirror[axis] = -mirror[axis]
+            mirror_cell = self._compute_cell_key(mirror, inv_cell)
 
-            # Determine the grid cell of the mirror point.
-            mc0 = int(mirror[0] * inv_cell + (0.5 if mirror[0] >= 0 else -0.5))
-            mc1 = int(mirror[1] * inv_cell + (0.5 if mirror[1] >= 0 else -0.5))
-            mc2 = int(mirror[2] * inv_cell + (0.5 if mirror[2] >= 0 else -0.5))
-
-            # Search the 3x3x3 neighbourhood (27 cells).
             for di in (-1, 0, 1):
-                ci = mc0 + di
                 for dj in (-1, 0, 1):
-                    cj = mc1 + dj
                     for dk in (-1, 0, 1):
-                        ck = mc2 + dk
-                        cell_contents = grid.get((ci, cj, ck))
+                        cell_contents = grid.get(
+                            (
+                                mirror_cell[0] + di,
+                                mirror_cell[1] + dj,
+                                mirror_cell[2] + dk,
+                            )
+                        )
                         if cell_contents is None:
                             continue
                         for other_idx, other_pos in cell_contents:
@@ -218,6 +241,53 @@ class GeometryTable:
                                 else:
                                     symmetry_map[idx] = other_idx
         return symmetry_map
+
+    @staticmethod
+    def _compute_cell_key(position, inv_cell):
+        """Quantize a 3D position into a spatial hash grid cell key.
+
+        Each coordinate is mapped to the nearest integer grid index using
+        round-half-away-from-zero rounding, which guarantees that any two
+        points within one cell width of each other end up in the same cell
+        or in directly adjacent cells.
+
+        :param position: 3D coordinates to quantize.
+        :type position: tuple[float, float, float] | list[float]
+
+        :param inv_cell: inverse of the grid cell size (``1.0 / cell_size``).
+        :type inv_cell: float
+
+        :return: integer grid cell indices.
+        :rtype: tuple[int, int, int]
+        """
+        return (
+            int(position[0] * inv_cell + (0.5 if position[0] >= 0 else -0.5)),
+            int(position[1] * inv_cell + (0.5 if position[1] >= 0 else -0.5)),
+            int(position[2] * inv_cell + (0.5 if position[2] >= 0 else -0.5)),
+        )
+
+    @classmethod
+    def _build_spatial_hash(cls, positions, inv_cell):
+        """Populate a spatial hash grid from a list of vertex positions.
+
+        Each vertex is placed in the grid cell corresponding to its quantized
+        position (see :meth:`_compute_cell_key`).  The resulting dictionary
+        maps cell keys to lists of ``(vertex_index, position)`` tuples.
+
+        :param positions: vertex positions as a list of 3-tuples.
+        :type positions: list[tuple[float, float, float]]
+
+        :param inv_cell: inverse of the grid cell size (``1.0 / cell_size``).
+        :type inv_cell: float
+
+        :return: spatial hash grid.
+        :rtype: dict[tuple[int, int, int], list[tuple[int, tuple[float, float, float]]]]
+        """
+        grid = {}
+        for idx, pos in enumerate(positions):
+            cell = cls._compute_cell_key(pos, inv_cell)
+            grid.setdefault(cell, []).append((idx, pos))
+        return grid
 
     def _get_opposite_position(self, position):
         """Get the opposite position along the selected symmetry axis.
