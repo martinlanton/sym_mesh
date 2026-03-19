@@ -2,22 +2,40 @@
 This is a Maya project for mesh modification, including unittest setup
 
 ## Installation
-To install this package for your local maya, you can use the following command in a `TERMINAL` in
-**_ADMINISTRATOR MODE_**: 
+
+### 1. Download the project
+
+Clone or download the repository from GitHub:
+
 ```commandline
-mayapy -m pip install {package location} -r {package location}/requirements.txt
+git clone https://github.com/martinlanton/sym_mesh.git
 ```
-Where `{package location}` represents the location where you downloaded the package, for example :
+
+Or download the ZIP archive from
+[https://github.com/martinlanton/sym_mesh/tree/master](https://github.com/martinlanton/sym_mesh/tree/master)
+and extract it to a folder of your choice.
+
+### 2. Install the package for Maya
+
+Open a terminal **as administrator** and run:
+
+```commandline
+mayapy -m pip install <path-to-sym-mesh> -r <path-to-sym-mesh>/requirements.txt
+```
+
+Replace `<path-to-sym-mesh>` with the folder where you cloned or extracted the project. For
+example:
+
 ```commandline
 mayapy -m pip install D:/python/sym-mesh -r D:/python/sym-mesh/requirements.txt
 ```
-If you have more than one maya version installed, you will need to replace `mayapy` with the full
-path to your `mayapy` executable file, like so : 
-```commandline
-"C:\Program Files\Autodesk\Maya2022\bin\mayapy.exe" -m pip install D:/python/sym-mesh -r D:/python/sym-mesh/requirements.txt
-```
-Note that on Windows you will have to put the path in quotation marks if there are any blank spaces in it, as
-Windows can't handle those.
+
+> **Note:** If you have multiple Maya versions installed, replace `mayapy` with the full path to
+> the desired version's executable:
+> ```commandline
+> "C:\Program Files\Autodesk\Maya2022\bin\mayapy.exe" -m pip install D:/python/sym-mesh -r D:/python/sym-mesh/requirements.txt
+> ```
+> On Windows, wrap the path in quotes when it contains spaces.
 
 ## Launch
 You can currently launch the tool with the current command :
@@ -31,133 +49,135 @@ startup.startup()
 
 # How to use it?
 
-## GUI Look
+## GUI overview
 
-* Open the `sym_mesh` tool by running the command from the previous section in the script editor.
+Open the tool by running the launch command from the previous section in Maya's script editor.
 
 ![Sym Mesh GUI](images/SymMesh_GUI.png)
 
-## General settings
-By default, the tool uses the X axis from positive to negative (+X to -X) as the symmetry axis for 
-all operations, but you can change this by selecting the desired axis from the `Base setup` section.
+### General workflow
 
-The symmetry threshold is set to `0.001` by default, but you can change this value to adjust the 
-value used to detect symmetry for the base mesh and build the symmetry table. If your base mesh is 
-not symmetrical, you can try setting a higher threshold.
+Most operations follow the same pattern:
 
-<div style="background-color:#d4edda; color:#155724; padding:10px; border-radius:5px; border:1px solid #c3e6cb; margin:10px 0;">
-  <strong>Note:</strong> In the case of a non-symmetrical base mesh, you can use the `Select Non Symmetrical Vertices on base` button to select the vertices that are not symmetrical, which will help you identify the non-symmetrical parts of the mesh.
-</div>
+1. Configure the **Base Setup** settings (axis, direction, threshold).
+2. Select your base mesh and click **Get Base**.
+3. Select the mesh you want to modify in the viewport.
+4. Use the desired tool (button for instant 100% application, or slider for interactive control).
 
-Setting a higher symmetry threshold will help you build a symmetry table for the base mesh for
-meshes that are close to symmetrical but aren't perfectly symmetrical. You can then select that mesh
-and symmetrize it using the [Symmetry operation](#symmetrize-mesh), 
-allowing you to make your base mesh perfectly symmetrical in some instances. This won't work for 
-very asymmetrical meshes however, but it can help with meshes that are mostly symmetrical with some 
-minor asymmetries.
+## Base setup
 
-## Check base mesh for symmetry
-* Select your base mesh in the scene and click the `Get Base` button.
-* Click the `Select Non Symmetrical Vertices on base` button to select the vertices that are not symmetrical.
+### Axis
 
-<div style="background-color:#d4edda; color:#155724; padding:10px; border-radius:5px; border:1px solid #c3e6cb; margin:10px 0;">
-  <strong>Note:</strong> Keep in mind that this operation is based on the threshold set in the `Symmetry Threshold` spinbox.
-</div>
+Choose the symmetry axis (**X**, **Y**, or **Z**). Default is **X**.
 
+### Direction
 
-## Selection based operations
+Choose which side of the axis is the **source** (i.e. the side whose vertex positions are preserved
+and mirrored onto the other side):
 
-### Vertex selection
-For each of the selection based operations (`revert to base`, `symmetry`, `flip`, `bake deltas`), you can either:
-* Select the vertices you want to operate on in the viewport, or
-* Store a selection of vertices to operate on for subsequent operations, or
-* Work on the whole mesh by not selecting any vertices.
+* **Positive (- ⇒ +)** — the negative side is the source, mirrored onto the positive side.
+* **Negative (- ⇐ +)** — the positive side is the source, mirrored onto the negative side.
 
-The operations will be applied to the stored vertex selection, even if you select new vertices in 
-the viewport. If no vertex selection is stored, the operations will be applied to the vertices
-currently selected in the viewport. If there is no vertex selection stored, and no vertices selected
-in the viewport, the operations will be applied to the selected mesh in its entirety.
+### Symmetry threshold
 
-To store a vertex selection, select the vertices you want to operate on and click the `Get Vertex Selection` button (which will make it turn red).
+Controls how close two vertices must be (after mirroring across the axis) to be considered
+a symmetrical pair. Default is `0.001`.
 
-![Sym Mesh GUI](images/vertex_selection.png)
+> **Tip:** If your base mesh is not perfectly symmetrical, try raising the threshold. You can then
+> symmetrize the base mesh itself to make it perfectly symmetrical — this works for meshes with
+> minor asymmetries but not for heavily asymmetrical meshes.
 
-If you want to remove the stored vertex selection, you can click the `Get Vertex Selection` button again, which will revert it to gray.
+### Checking base mesh symmetry
 
-If you want to create a new vertex selection, you must first remove the stored vertex selection by clicking the `Get Vertex Selection` button, then select the new vertices you want to operate on and click the `Get Vertex Selection` button again.
+1. Select your base mesh and click **Get Base**.
+2. Click **Select Non Symmetrical Vertices on base** to highlight vertices that have no symmetrical
+   counterpart (based on the current threshold).
 
-![Sym Mesh GUI](images/SymMesh_GUI_with_base_and_target.png)
+## Vertex selection
+
+The **Revert to Base**, **Symmetry**, **Flip**, and **Bake Deltas** operations can be applied to a
+subset of vertices instead of the whole mesh. The priority order is:
+
+1. **Stored selection** — if vertices have been stored, they are always used.
+2. **Live viewport selection** — if no stored selection exists, the currently selected vertices are used.
+3. **Whole mesh** — if neither of the above exists, the operation applies to every vertex.
+
+To **store** a selection, select vertices in the viewport and click **Get Vertex Selection** (the
+button turns red to indicate a stored selection is active).
+
+![Vertex selection](images/vertex_selection.png)
+
+To **clear** the stored selection, click the (red) **Get Vertex Selection** button again (it reverts
+to gray).
+
+To **re-select** stored vertices in the viewport, click **Select stored Vertices**.
+
+> **Note:** To change the stored selection, you must first clear it, then select new vertices and
+> store them again.
+
+![Sym Mesh GUI with base and target](images/SymMesh_GUI_with_base_and_target.png)
+
+## Tools
+
+> All tools below respect the [vertex selection](#vertex-selection) priority described above, unless
+> noted otherwise.
 
 ### Revert to base
-* Select your base mesh in the scene and click the `Get Base` button.
-* Select the target mesh in the scene.
-* Use the `Revert to Base` slider to revert the selected vertices (or entire target mesh) to the point position of the base mesh.
 
-See the [Vertex selection](#vertex-selection) section above for how to select vertices and selection priority order.
+Moves vertices on the selected mesh back toward the base mesh position.
 
-### Symmetrize mesh
-* Select your base mesh in the scene and click the `Get Base` button.
-* Select the target mesh in the scene.
-* Use the `Symmetry` slider to symmetrize the selected vertices (or entire target mesh) based on the base mesh.
+* Click **Revert to base** to apply at 100%, or drag the slider for interactive control.
 
-See the [Vertex selection](#vertex-selection) section above for how to select vertices and selection priority order.
+### Symmetrize
 
-### Flip mesh
-* Select your base mesh in the scene and click the `Get Base` button.
-* Select the target mesh in the scene.
-* Use the `Flip` slider to flip the selected vertices (or entire target mesh) based on the base mesh.
+Mirrors vertex positions across the symmetry axis using the base mesh's symmetry table.
 
-See the [Vertex selection](#vertex-selection) section above for how to select vertices and selection priority order.
+* Click **Symmetry** to apply at 100%, or drag the slider for interactive control.
 
-### Extract X, Y, Z
-The `Extract XYZ` operation allows you to extract the X, Y, and Z coordinates of the target mesh 
-vertices and apply them as blendshapes (one for the X axis, one for the Y axis, and one for the Z
-axis) to a copy of the base mesh. This allows for easy creation of blendshapes by allowing the user
-to manipulate the intensity of X, Y, or Z coordinates of the points of the target mesh independently.
-The base mesh is first duplicated and placed in the scene above the target mesh based on the 
-distance set in the `Translate Y` spinbox, then the X, Y, and Z coordinates of the target mesh 
-vertices are extracted to separate meshes and applied as blendshapes to the duplicated base mesh
-(after which the meshes are deleted, leaving only one duplicated mesh with the blendshapes on it).
+### Flip
 
-<div style="background-color:#d4edda; color:#155724; padding:10px; border-radius:5px; border:1px solid #c3e6cb; margin:10px 0;">
-  <strong>Note:</strong> The naming of the new mesh is based on the selected mesh name. For example, if the target mesh is named `target_mesh`, the new mesh will be named `target_mesh_extracted`.
-</div>
+Swaps vertex positions across the symmetry axis (each vertex trades places with its symmetrical
+counterpart).
 
+* Click **Flip** to apply at 100%, or drag the slider for interactive control.
 
-To use the `Extract XYZ` operation, follow these steps:
-* Select your base mesh in the scene and click the `Get Base` button.
-* Select the target mesh in the scene.
-* Use the `Extract XYZ` slider to extract the X, Y, or Z coordinates of the target mesh vertices and apply them as blendshapes to a copy of the base mesh.
+### Extract X Y Z
 
+Splits the difference between the selected mesh and the base mesh into separate X, Y, and Z
+components, then applies them as blendshape targets on a duplicate of the base mesh. This lets you
+control each axis of the deformation independently.
 
-## Target based operations
+* The duplicate is placed above the target mesh by the distance set in the **Translate Y** spinbox
+  (default `20`).
+* The new mesh is named `<selected_mesh>_extracted`.
+
+> **Note:** This operation always applies to the entire mesh (vertex selection is ignored).
 
 ### Bake Deltas
-The bake deltas operation allows you to bake the deltas between the base mesh and the target mesh into
-a selection of meshes.
 
-To use the `Bake Deltas` operation, follow these steps:
-* Select your base mesh in the scene and click the `Get Base` button.
-* Select the target mesh in the scene and click the `Get Target` button.
-* Select the meshes you want to bake the delta on into in the scene.
-* Use the `Bake Deltas` button to bake the delta between the base mesh vertices' position and the target mesh's vertices position onto the selected meshes.
+Bakes the difference between the base mesh and a **stored** target mesh onto one or more selected
+meshes.
 
-## Notes
-In order to use interactive sliders for the `Revert to Base`, `Symmetry`, and `Flip` operations, a
-custom undo mechanism had to be implemented, instead of Maya's default undo mechanism when using
-MPxCommand. This is because using MPxCommand would cause each call to the command (and therefore
-every single pixel movement of the sliders) to create a new undo step, which would lead to a very
-large number of undo steps being created thus making the undo stack essentially unusable. The
-custom undo mechanism allows for a single undo step to be created for the entire operation, which
-is more efficient and improves usability.
+1. Select your base mesh and click **Get Base**.
+2. Select the target mesh and click **Get Target**.
+3. Select the mesh(es) you want to bake onto in the viewport.
+4. Click **Bake Deltas**.
 
-As a result, the undo and redo operations can be performed using the `Undo` and `Redo` buttons at
-the bottom the GUI, which will undo or redo the last operation performed using the GUI. Be mindful
-that this undo mechanism essentially stores a handle to the mesh that was modified as well as the
-points positions of that mesh before and after the operation, which means that modifying meshes
-manually after an operation and then undoing that operation can lead to unexpected results, as the
-custom undo mechanism only tracks the operations performed using the GUI and not any manual
-modifications made to the meshes.
+> **Note:** Unlike the other tools, Bake Deltas uses the target stored via the **Get Target**
+> button, not the currently selected mesh in the viewport.
+
+## Undo & Redo
+
+The tool uses a **custom undo/redo stack** (separate from Maya's native undo) so that interactive
+slider operations create only a single undo step instead of one per slider tick.
+
+* **GUI buttons:** Use the **Undo** / **Redo** buttons at the bottom of the window.
+* **Keyboard shortcuts:** `Ctrl+Z` (undo) and `Ctrl+Shift+Z` (redo) while the tool window is
+  focused.
+
+> **Warning:** The custom undo stack only tracks operations performed through the tool. If you
+> manually edit a mesh between tool operations and then undo, the result may be unexpected because
+> the stored undo state won't account for your manual edits.
 
 
 
