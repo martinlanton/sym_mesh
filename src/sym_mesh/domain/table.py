@@ -108,6 +108,14 @@ class GeometryTable:
         :rtype: dict
 
         """
+        log.info(
+            "Building symmetry table for mesh '%s' (axis=%s, direction=%s, threshold=%s).",
+            base_mesh or self._dag_path,
+            self._axis,
+            self._direction,
+            self.threshold,
+        )
+
         points_table = (
             selection.get_points_positions(
                 dag_path.create_MDagPath(base_mesh), self.space
@@ -115,13 +123,14 @@ class GeometryTable:
             if base_mesh
             else self._points_table
         )
+
         symmetry_map = self._build_symmetry_map(points_table)
         non_mirrored_table = self._get_non_mirrored_vertices(points_table, symmetry_map)
 
         path = base_mesh if base_mesh else self.dag_path
         if non_mirrored_table:
             log.warning(
-                "Model %s is NOT symmetrical," " mirroring might not work as expected.",
+                "Model %s is NOT symmetrical, mirroring might not work as expected.",
                 path,
             )
         else:
@@ -135,25 +144,79 @@ class GeometryTable:
     def _build_symmetry_map(self, points_table):
         """Build the symmetry map as a dict {target: source}.
 
+        Uses a spatial hash grid so that each vertex only needs to check a
+        small, constant number of neighbouring cells instead of every other
+        vertex.  This reduces the algorithmic complexity from O(n^2) to O(n)
+        on average.
+
         :param points_table: MPointArray of the positions of all the points
         :type points_table: maya.api.OpenMaya.MPointArray
 
         :return: map of the symmetry as a dict {target: source}.
         :rtype: dict[int: int]
         """
-        symmetry_map = dict()
-        check_table = dict()
-        for idx, item in enumerate(points_table):
-            position = (item[0], item[1], item[2])
-            check_table[position] = idx
-            position_to_check = self._get_opposite_position(position)
+        n = len(points_table)
+        log.debug("Building symmetry map for %d points.", n)
 
-            for pos in check_table:
-                if self._distance(position_to_check, pos) < self.threshold:
-                    if self._vertex_should_be_symmetry_source(position, pos):
-                        symmetry_map[check_table[pos]] = idx
-                    else:  # Vertex should be symmetry target
-                        symmetry_map[idx] = check_table[pos]
+        threshold = self.threshold
+        axis = self.axis
+        is_positive = self.positive
+        threshold_sq = threshold * threshold
+
+        # --- build spatial hash ------------------------------------------------
+        # Cell size equals the threshold so that any two points within
+        # *threshold* distance of each other are in the same cell or in
+        # directly adjacent cells.
+        cell_size = threshold if threshold > 0 else 1.0
+        inv_cell = 1.0 / cell_size
+
+        # Pre-extract positions as tuples and populate the spatial hash.
+        positions = [(pt[0], pt[1], pt[2]) for pt in points_table]
+        grid = {}  # (cx, cy, cz) -> list[(idx, position)]
+        for idx, pos in enumerate(positions):
+            cell = (
+                int(pos[0] * inv_cell + (0.5 if pos[0] >= 0 else -0.5)),
+                int(pos[1] * inv_cell + (0.5 if pos[1] >= 0 else -0.5)),
+                int(pos[2] * inv_cell + (0.5 if pos[2] >= 0 else -0.5)),
+            )
+            grid.setdefault(cell, []).append((idx, pos))
+
+        # --- query spatial hash for mirror matches -----------------------------
+        symmetry_map = {}
+
+        for idx, position in enumerate(positions):
+            # Compute mirrored position.
+            mirror = list(position)
+            mirror[axis] = -mirror[axis]
+
+            # Determine the grid cell of the mirror point.
+            mc0 = int(mirror[0] * inv_cell + (0.5 if mirror[0] >= 0 else -0.5))
+            mc1 = int(mirror[1] * inv_cell + (0.5 if mirror[1] >= 0 else -0.5))
+            mc2 = int(mirror[2] * inv_cell + (0.5 if mirror[2] >= 0 else -0.5))
+
+            # Search the 3x3x3 neighbourhood (27 cells).
+            for di in (-1, 0, 1):
+                ci = mc0 + di
+                for dj in (-1, 0, 1):
+                    cj = mc1 + dj
+                    for dk in (-1, 0, 1):
+                        ck = mc2 + dk
+                        cell_contents = grid.get((ci, cj, ck))
+                        if cell_contents is None:
+                            continue
+                        for other_idx, other_pos in cell_contents:
+                            dx = mirror[0] - other_pos[0]
+                            dy = mirror[1] - other_pos[1]
+                            dz = mirror[2] - other_pos[2]
+                            if dx * dx + dy * dy + dz * dz < threshold_sq:
+                                if (
+                                    is_positive and position[axis] < other_pos[axis]
+                                ) or (
+                                    not is_positive and position[axis] > other_pos[axis]
+                                ):
+                                    symmetry_map[other_idx] = idx
+                                else:
+                                    symmetry_map[idx] = other_idx
         return symmetry_map
 
     def _get_opposite_position(self, position):
@@ -190,10 +253,11 @@ class GeometryTable:
         :return: list of the vertex indices that do not have a mirrored counterpart.
         :rtype: list[int]
         """
-        non_mirrored_table = list()
-        for idx in range(len(points_table)):
-            if idx not in list(symmetry_map.keys()) + list(symmetry_map.values()):
-                non_mirrored_table.append(idx)
+        mapped_indices = set(symmetry_map.keys()) | set(symmetry_map.values())
+        non_mirrored_table = [
+            idx for idx in range(len(points_table)) if idx not in mapped_indices
+        ]
+
         return non_mirrored_table
 
     @staticmethod

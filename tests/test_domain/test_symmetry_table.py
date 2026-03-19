@@ -25,9 +25,9 @@ class TestGeometryTable(common.BaseTest):
 
         expected_sym_table = {1: 0, 3: 2, 5: 4, 7: 6}
         expected_non_mirrored_vertices_indices = []
+        expected_message = "Model {} is symmetrical.".format(self.sym_cube)
         self.assertTrue(
-            "Model {} is symmetrical.".format(self.sym_cube)
-            in captured.records[0].message
+            any(expected_message in record.message for record in captured.records)
         )
         self.assertEqual(geo_table.symmetry_table, expected_sym_table)
         self.assertEqual(
@@ -69,10 +69,13 @@ class TestGeometryTable(common.BaseTest):
 
         expected_sym_table = {1: 2, 7: 4}
         expected_non_mirrored_vertices_indices = [0, 3, 5, 6]
+        expected_message = (
+            "Model {} is NOT symmetrical, mirroring might not work as expected.".format(
+                self.asym_cube
+            )
+        )
         self.assertTrue(
-            "Model {} is NOT symmetrical,"
-            " mirroring might not work as expected.".format(self.asym_cube)
-            in captured.records[0].message
+            any(expected_message in record.message for record in captured.records)
         )
         self.assertEqual(geo_table.symmetry_table, expected_sym_table)
         self.assertEqual(

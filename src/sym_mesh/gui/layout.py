@@ -255,7 +255,7 @@ class Layout(QtWidgets.QVBoxLayout):
             "will be used instead of the stored one."
         )
         self.select_non_symmetrical_vertices_pb.setToolTip(
-            "Select non symmetrical vertices on the " "model stored as base."
+            "Select non symmetrical vertices on the model stored as base."
         )
         self.select_vertex_selection_pb.setToolTip(
             "Select the currently stored vertex selection."
